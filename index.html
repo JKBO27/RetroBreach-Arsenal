@@ -6,506 +6,203 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #1a1a1a;
-    --surface: #242424;
-    --surface2: #2e2e2e;
-    --border: #3a3a3a;
-    --accent: #c8a84b;
-    --accent2: #e8c86a;
-    --text: #d4d4d4;
-    --text-dim: #777;
-    --tier1: #5ba3e0;
-    --tier2: #78c97a;
-    --tier3: #c8a84b;
-    --tier4: #c97ad4;
-    --comun: #aaa;
-    --poco_comun: #78c97a;
-    --inusual: #5ba3e0;
-    --rara: #c97ad4;
-    --muy_rara: #e0845b;
+    --bg:#1a1a1a; --surface:#242424; --surface2:#2e2e2e; --border:#3a3a3a;
+    --accent:#c8a84b; --accent2:#e8c86a; --text:#d4d4d4; --text-dim:#777;
+    --tier1:#5ba3e0; --tier2:#78c97a; --tier3:#c8a84b; --tier4:#c97ad4;
+    --comun:#aaa; --poco_comun:#78c97a; --inusual:#5ba3e0; --rara:#c97ad4; --muy_rara:#e0845b;
+    --win:#78c97a; --lose:#e0845b;
   }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);pointer-events:none;z-index:999;}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  header{background:var(--surface);border-bottom:2px solid var(--accent);padding:18px 40px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:200;}
+  header h1{font-family:'Share Tech Mono',monospace;font-size:1.35rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;flex:1;}
+  header p{font-family:'Rajdhani',sans-serif;font-size:.78rem;color:var(--text-dim);letter-spacing:.04em;}
+  .header-left{display:flex;flex-direction:column;gap:3px;flex:1;}
+  header span{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--text-dim);border:1px solid var(--border);padding:3px 8px;border-radius:2px;align-self:center;}
+  .header-actions{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+  .btn-discord{background:rgba(88,101,242,.15);border:1px solid rgba(88,101,242,.5);color:#8891f2;padding:6px 14px;border-radius:2px;font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.08em;cursor:pointer;text-decoration:none;transition:background .15s;white-space:nowrap;}
+  .btn-discord:hover{background:rgba(88,101,242,.3);}
+  .btn-lang{background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);padding:6px 12px;border-radius:2px;font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.08em;cursor:pointer;transition:all .15s;}
+  .btn-lang:hover,.btn-lang.active{border-color:var(--accent);color:var(--accent);background:rgba(200,168,75,.08);}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Rajdhani', sans-serif;
-    min-height: 100vh;
-  }
+  .view-tabs{display:flex;padding:0 40px;background:var(--surface);border-bottom:1px solid var(--border);}
+  .view-tab{font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);padding:10px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none;}
+  .view-tab:hover{color:var(--text);}
+  .view-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
-    pointer-events: none;
-    z-index: 999;
-  }
+  /* ── ARSENAL BARS ── */
+  .toolbar{padding:10px 40px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .toolbar-sep{width:1px;height:22px;background:var(--border);margin:0 4px;}
+  .filter-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);padding:4px 12px;border-radius:2px;font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.05em;cursor:pointer;text-transform:uppercase;transition:all .15s;}
+  .filter-btn:hover,.filter-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(200,168,75,.07);}
+  .searchbar-wrap{padding:10px 40px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  #searchInput{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:2px;font-family:'Share Tech Mono',monospace;font-size:.82rem;width:240px;outline:none;transition:border-color .15s;}
+  #searchInput:focus{border-color:var(--accent);}
+  #searchInput::placeholder{color:var(--text-dim);}
+  .select-styled{background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);padding:6px 10px;border-radius:2px;font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.04em;cursor:pointer;outline:none;text-transform:uppercase;}
+  .select-styled:focus{border-color:var(--accent);color:var(--accent);}
+  .btn-action{background:rgba(200,168,75,.1);border:1px solid var(--accent);color:var(--accent);padding:5px 14px;border-radius:2px;font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.06em;cursor:pointer;text-transform:uppercase;transition:background .15s;}
+  .btn-action:hover{background:rgba(200,168,75,.2);}
 
-  header {
-    background: var(--surface);
-    border-bottom: 2px solid var(--accent);
-    padding: 20px 40px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    position: sticky;
-    top: 0;
-    z-index: 200;
-  }
+  /* ── MAIN ── */
+  main{padding:28px 40px;max-width:1400px;margin:0 auto;}
+  .categoria{margin-bottom:44px;animation:fadeIn .35s ease both;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .categoria-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+  .categoria-header h2{font-family:'Share Tech Mono',monospace;font-size:.85rem;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;}
+  .count{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--text-dim);background:var(--surface2);padding:2px 8px;border-radius:2px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;}
 
-  header h1 {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1.4rem;
-    color: var(--accent);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    flex: 1;
-  }
+  /* ── CARD ── */
+  .arma{background:var(--surface);border:1px solid var(--border);padding:14px 16px;border-radius:3px;transition:border-color .15s,transform .15s,box-shadow .15s;position:relative;overflow:hidden;cursor:pointer;user-select:none;}
+  .arma::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--tier-color,var(--border));opacity:.85;}
+  .arma:hover{border-color:#555;transform:translateY(-1px);}
+  .arma.selected-compare{border-color:var(--accent)!important;box-shadow:0 0 0 1px var(--accent);}
+  .arma-nombre{font-family:'Share Tech Mono',monospace;font-size:.98rem;color:#eee;margin-bottom:10px;padding-left:10px;}
+  .badges{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;padding-left:10px;}
+  .badge{font-size:.68rem;font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:2px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;}
+  .badge-tier1{background:rgba(91,163,224,.15);color:var(--tier1);border:1px solid rgba(91,163,224,.3);}
+  .badge-tier2{background:rgba(120,201,122,.15);color:var(--tier2);border:1px solid rgba(120,201,122,.3);}
+  .badge-tier3{background:rgba(200,168,75,.15);color:var(--tier3);border:1px solid rgba(200,168,75,.3);}
+  .badge-tier4{background:rgba(201,122,212,.15);color:var(--tier4);border:1px solid rgba(201,122,212,.3);}
+  .badge-comun{background:rgba(170,170,170,.1);color:var(--comun);border:1px solid rgba(170,170,170,.2);}
+  .badge-poco_comun{background:rgba(120,201,122,.1);color:var(--poco_comun);border:1px solid rgba(120,201,122,.2);}
+  .badge-inusual{background:rgba(91,163,224,.1);color:var(--inusual);border:1px solid rgba(91,163,224,.2);}
+  .badge-rara{background:rgba(201,122,212,.1);color:var(--rara);border:1px solid rgba(201,122,212,.2);}
+  .badge-muy_rara{background:rgba(224,132,91,.1);color:var(--muy_rara);border:1px solid rgba(224,132,91,.2);}
+  .badge-na{background:rgba(80,80,80,.2);color:#666;border:1px solid #444;}
+  .badge-tba{background:rgba(80,80,80,.2);color:#888;border:1px solid #555;}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;padding-left:10px;}
+  .stat{display:flex;justify-content:space-between;font-size:.82rem;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+  .stat-label{color:var(--text-dim);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;}
+  .stat-value{font-family:'Share Tech Mono',monospace;color:#ccc;font-size:.82rem;}
+  .stat-value.hi{color:var(--accent2);}
+  .stat-recoil{grid-column:1/-1;}
+  .recoil-bar-wrap{display:flex;gap:6px;align-items:center;margin-top:2px;}
+  .recoil-label{font-size:.68rem;color:var(--text-dim);width:10px;}
+  .recoil-bar-bg{flex:1;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+  .recoil-bar-fill{height:100%;border-radius:2px;background:var(--accent);opacity:.7;}
+  .recoil-val{font-family:'Share Tech Mono',monospace;font-size:.68rem;color:#888;width:28px;text-align:right;}
 
-  header span {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--text-dim);
-    border: 1px solid var(--border);
-    padding: 3px 8px;
-    border-radius: 2px;
-  }
+  /* ── RANKING PANEL ── */
+  #rankingPanel{display:none;padding:24px 40px;max-width:960px;margin:0 auto;animation:fadeIn .3s ease both;}
+  .rank-checks{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .rank-check-label{display:flex;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);padding:5px 12px;border-radius:2px;font-family:'Rajdhani',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.05em;cursor:pointer;text-transform:uppercase;transition:all .15s;user-select:none;}
+  .rank-check-label:hover{border-color:var(--accent);color:var(--accent);}
+  .rank-check-label.checked{border-color:var(--accent);color:var(--accent);background:rgba(200,168,75,.1);}
+  .rank-check-label input{display:none;}
+  .rank-check-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .15s;flex-shrink:0;}
+  .rank-check-label.checked .rank-check-dot{background:var(--accent);}
+  .rank-active-desc{font-family:'Rajdhani',sans-serif;font-size:.82rem;color:var(--text-dim);margin-bottom:14px;padding:8px 14px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:2px;line-height:1.5;}
+  .ranking-title{font-family:'Share Tech Mono',monospace;font-size:.82rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+  .ranking-row{display:flex;align-items:center;gap:10px;padding:7px 12px;margin-bottom:5px;background:var(--surface);border:1px solid var(--border);border-radius:3px;border-left:3px solid var(--tier-color,#555);}
+  .ranking-pos{font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--text-dim);width:26px;text-align:right;flex-shrink:0;}
+  .ranking-pos.gold{color:#ffd700;} .ranking-pos.silver{color:#c0c0c0;} .ranking-pos.bronze{color:#cd7f32;}
+  .ranking-nombre{font-family:'Share Tech Mono',monospace;font-size:.88rem;color:#ddd;flex:1;}
+  .ranking-cat{font-size:.7rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.04em;flex-shrink:0;}
+  .ranking-score{font-family:'Share Tech Mono',monospace;font-size:.88rem;color:var(--accent2);width:90px;text-align:right;flex-shrink:0;}
+  .ranking-bar-bg{width:120px;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;flex-shrink:0;}
+  .ranking-bar-fill{height:100%;background:var(--accent);opacity:.75;border-radius:2px;}
+  .rank-no-sel{text-align:center;padding:40px;color:var(--text-dim);font-family:'Share Tech Mono',monospace;font-size:.75rem;letter-spacing:.1em;}
 
-  .view-tabs {
-    display: flex;
-    padding: 0 40px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-  }
+  /* ── COMPARADOR ── */
+  #comparadorPanel{display:none;padding:24px 40px;max-width:1000px;margin:0 auto;animation:fadeIn .3s ease both;}
+  .comp-mode-tabs{display:flex;gap:0;margin-bottom:18px;}
+  .comp-mode-tab{font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);padding:8px 18px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);transition:all .15s;}
+  .comp-mode-tab:first-child{border-radius:2px 0 0 2px;}
+  .comp-mode-tab:last-child{border-radius:0 2px 2px 0;border-left:none;}
+  .comp-mode-tab.active{color:var(--accent);border-color:var(--accent);background:rgba(200,168,75,.08);}
+  .comp-title{font-family:'Share Tech Mono',monospace;font-size:.82rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+  .comp-hint{font-size:.72rem;color:var(--text-dim);font-family:'Rajdhani',sans-serif;font-weight:400;letter-spacing:.02em;text-transform:none;}
+  .comp-grid{display:grid;grid-template-columns:1fr 50px 1fr;gap:0;}
+  .comp-col{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:16px;border-left:3px solid var(--tier-color,#555);}
+  .comp-col-nombre{font-family:'Share Tech Mono',monospace;font-size:.98rem;color:#eee;margin-bottom:8px;}
+  .comp-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 4px;}
+  .comp-vs{font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--text-dim);}
+  .comp-stat-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.82rem;gap:6px;}
+  .comp-stat-label{color:var(--text-dim);font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;}
+  .comp-stat-val{font-family:'Share Tech Mono',monospace;color:#ccc;}
+  .comp-stat-val.win{color:var(--win);} .comp-stat-val.lose{color:var(--lose);}
+  .comp-placeholder{display:flex;align-items:center;justify-content:center;height:140px;color:var(--text-dim);font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:.1em;border:1px dashed var(--border);border-radius:3px;}
 
-  .view-tab {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    padding: 10px 20px;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all 0.15s;
-    background: none;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-  }
+  /* ── SIMULACIÓN ── */
+  .sim-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .sim-side{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:16px;border-left:3px solid var(--tier-color,#555);}
+  .sim-name{font-family:'Share Tech Mono',monospace;font-size:.95rem;color:#eee;margin-bottom:12px;}
+  .sim-hp-bar-bg{width:100%;height:10px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-bottom:6px;}
+  .sim-hp-bar{height:100%;border-radius:3px;transition:width .4s ease,background .3s;}
+  .sim-hp-text{font-family:'Share Tech Mono',monospace;font-size:.8rem;color:var(--text-dim);margin-bottom:14px;}
+  .sim-stat-mini{display:flex;justify-content:space-between;font-size:.78rem;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+  .sim-stat-lbl{color:var(--text-dim);font-size:.7rem;text-transform:uppercase;}
+  .sim-stat-val{font-family:'Share Tech Mono',monospace;color:#ccc;}
+  .sim-log{grid-column:1/-1;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:14px;max-height:220px;overflow-y:auto;font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--text-dim);}
+  .sim-log-line{padding:2px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+  .sim-log-line.hit-a{color:#88ccff;} .sim-log-line.hit-b{color:#ffcc66;} .sim-log-line.kill{color:var(--win);font-weight:bold;}
+  .sim-result{grid-column:1/-1;text-align:center;padding:16px;font-family:'Share Tech Mono',monospace;font-size:1rem;letter-spacing:.1em;border:1px solid var(--border);border-radius:3px;background:var(--surface);}
+  .sim-result.win-a{border-color:#88ccff;color:#88ccff;} .sim-result.win-b{border-color:#ffcc66;color:#ffcc66;} .sim-result.draw{border-color:var(--text-dim);color:var(--text-dim);}
+  .sim-controls{grid-column:1/-1;display:flex;gap:10px;justify-content:center;margin-bottom:4px;}
+  .sim-btn{background:rgba(200,168,75,.1);border:1px solid var(--accent);color:var(--accent);padding:7px 20px;border-radius:2px;font-family:'Share Tech Mono',monospace;font-size:.75rem;letter-spacing:.1em;cursor:pointer;text-transform:uppercase;transition:background .15s;}
+  .sim-btn:hover{background:rgba(200,168,75,.2);}
+  .sim-note{grid-column:1/-1;text-align:center;font-size:.72rem;color:var(--text-dim);font-family:'Share Tech Mono',monospace;}
 
-  .view-tab:hover { color: var(--text); }
-  .view-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .no-results{text-align:center;padding:60px 20px;color:var(--text-dim);font-family:'Share Tech Mono',monospace;font-size:.8rem;letter-spacing:.1em;}
 
-  .toolbar {
-    padding: 10px 40px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .toolbar-sep { width: 1px; height: 22px; background: var(--border); margin: 0 4px; }
-
-  .filter-btn {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    padding: 4px 12px;
-    border-radius: 2px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: all 0.15s;
-  }
-
-  .filter-btn:hover, .filter-btn.active {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(200,168,75,0.07);
-  }
-
-  .searchbar-wrap {
-    padding: 10px 40px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  #searchInput {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 6px 14px;
-    border-radius: 2px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.82rem;
-    width: 260px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-
-  #searchInput:focus { border-color: var(--accent); }
-  #searchInput::placeholder { color: var(--text-dim); }
-
-  .select-styled {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    padding: 6px 12px;
-    border-radius: 2px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    outline: none;
-    text-transform: uppercase;
-  }
-
-  .select-styled:focus { border-color: var(--accent); color: var(--accent); }
-
-  .btn-action {
-    background: rgba(200,168,75,0.1);
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 5px 14px;
-    border-radius: 2px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: background 0.15s;
-  }
-
-  .btn-action:hover { background: rgba(200,168,75,0.2); }
-
-  main {
-    padding: 30px 40px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .categoria { margin-bottom: 48px; animation: fadeIn 0.35s ease both; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .categoria-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .categoria-header h2 {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    letter-spacing: 0.18em;
-    color: var(--accent);
-    text-transform: uppercase;
-  }
-
-  .categoria-header .count {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--text-dim);
-    background: var(--surface2);
-    padding: 2px 8px;
-    border-radius: 2px;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 10px;
-  }
-
-  .arma {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 14px 16px;
-    border-radius: 3px;
-    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .arma::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px;
-    height: 100%;
-    background: var(--tier-color, var(--border));
-    opacity: 0.85;
-  }
-
-  .arma:hover { border-color: #555; transform: translateY(-1px); }
-
-  .arma.selected-compare {
-    border-color: var(--accent) !important;
-    box-shadow: 0 0 0 1px var(--accent);
-  }
-
-  .arma-nombre {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1rem;
-    color: #eee;
-    margin-bottom: 10px;
-    padding-left: 10px;
-  }
-
-  .badges {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
-    padding-left: 10px;
-  }
-
-  .badge {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    padding: 2px 8px;
-    border-radius: 2px;
-    text-transform: uppercase;
-    font-family: 'Share Tech Mono', monospace;
-  }
-
-  .badge-tier1 { background: rgba(91,163,224,0.15);  color: var(--tier1); border: 1px solid rgba(91,163,224,0.3); }
-  .badge-tier2 { background: rgba(120,201,122,0.15); color: var(--tier2); border: 1px solid rgba(120,201,122,0.3); }
-  .badge-tier3 { background: rgba(200,168,75,0.15);  color: var(--tier3); border: 1px solid rgba(200,168,75,0.3); }
-  .badge-tier4 { background: rgba(201,122,212,0.15); color: var(--tier4); border: 1px solid rgba(201,122,212,0.3); }
-
-  .badge-comun      { background: rgba(170,170,170,0.1); color: var(--comun);      border: 1px solid rgba(170,170,170,0.2); }
-  .badge-poco_comun { background: rgba(120,201,122,0.1); color: var(--poco_comun); border: 1px solid rgba(120,201,122,0.2); }
-  .badge-inusual    { background: rgba(91,163,224,0.1);  color: var(--inusual);    border: 1px solid rgba(91,163,224,0.2); }
-  .badge-rara       { background: rgba(201,122,212,0.1); color: var(--rara);       border: 1px solid rgba(201,122,212,0.2); }
-  .badge-muy_rara   { background: rgba(224,132,91,0.1);  color: var(--muy_rara);   border: 1px solid rgba(224,132,91,0.2); }
-  .badge-na         { background: rgba(80,80,80,0.2);    color: #666;              border: 1px solid #444; }
-  .badge-tba        { background: rgba(80,80,80,0.2);    color: #888;              border: 1px solid #555; }
-
-  .stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px 12px;
-    padding-left: 10px;
-  }
-
-  .stat {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.82rem;
-    padding: 3px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .stat-label { color: var(--text-dim); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
-  .stat-value { font-family: 'Share Tech Mono', monospace; color: #ccc; font-size: 0.82rem; }
-  .stat-value.highlight { color: var(--accent2); }
-  .stat-recoil { grid-column: 1 / -1; }
-
-  .recoil-bar-wrap { display: flex; gap: 6px; align-items: center; margin-top: 2px; }
-  .recoil-label { font-size: 0.68rem; color: var(--text-dim); width: 10px; }
-  .recoil-bar-bg { flex: 1; height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
-  .recoil-bar-fill { height: 100%; border-radius: 2px; background: var(--accent); opacity: 0.7; }
-  .recoil-val { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: #888; width: 28px; text-align: right; }
-
-  /* RANKING */
-  #rankingPanel {
-    display: none;
-    padding: 30px 40px;
-    max-width: 900px;
-    margin: 0 auto;
-    animation: fadeIn 0.3s ease both;
-  }
-
-  .ranking-title {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .ranking-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 12px;
-    margin-bottom: 6px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    border-left: 3px solid var(--tier-color, #555);
-  }
-
-  .ranking-pos { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: var(--text-dim); width: 28px; text-align: right; }
-  .ranking-pos.gold   { color: #ffd700; }
-  .ranking-pos.silver { color: #c0c0c0; }
-  .ranking-pos.bronze { color: #cd7f32; }
-  .ranking-nombre { font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; color: #ddd; flex: 1; }
-  .ranking-cat { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
-  .ranking-dps { font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; color: var(--accent2); width: 80px; text-align: right; }
-  .ranking-bar-bg { width: 140px; height: 5px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
-  .ranking-bar-fill { height: 100%; background: var(--accent); opacity: 0.75; border-radius: 2px; }
-
-  /* COMPARADOR */
-  #comparadorPanel {
-    display: none;
-    padding: 30px 40px;
-    max-width: 960px;
-    margin: 0 auto;
-    animation: fadeIn 0.3s ease both;
-  }
-
-  .comp-title {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .comp-hint {
-    font-size: 0.72rem;
-    color: var(--text-dim);
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-    text-transform: none;
-  }
-
-  .comp-grid {
-    display: grid;
-    grid-template-columns: 1fr 50px 1fr;
-    gap: 0;
-  }
-
-  .comp-col {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 16px;
-    border-left: 3px solid var(--tier-color, #555);
-  }
-
-  .comp-col-nombre {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1rem;
-    color: #eee;
-    margin-bottom: 8px;
-  }
-
-  .comp-mid {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 4px;
-  }
-
-  .comp-vs {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text-dim);
-  }
-
-  .comp-stat-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    font-size: 0.82rem;
-    gap: 6px;
-  }
-
-  .comp-stat-label { color: var(--text-dim); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
-  .comp-stat-val { font-family: 'Share Tech Mono', monospace; color: #ccc; }
-  .comp-stat-val.win  { color: #78c97a; }
-  .comp-stat-val.lose { color: #e0845b; }
-
-  .comp-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 120px;
-    color: var(--text-dim);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    border: 1px dashed var(--border);
-    border-radius: 3px;
-  }
-
-  .no-results {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text-dim);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-  }
-
-  footer {
-    text-align: center;
-    padding: 30px;
-    color: var(--text-dim);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
-    border-top: 1px solid var(--border);
-    letter-spacing: 0.1em;
-  }
+  /* ── INICIO ── */
+  #inicioPanel{display:none;padding:30px 40px;max-width:900px;margin:0 auto;animation:fadeIn .35s ease both;}
+  .inicio-disclaimer{background:rgba(200,168,75,.07);border:1px solid var(--accent);border-left:3px solid var(--accent);border-radius:3px;padding:14px 18px;margin-bottom:28px;font-family:'Rajdhani',sans-serif;font-size:.9rem;color:var(--text-dim);line-height:1.6;}
+  .inicio-disclaimer strong{color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:.8rem;letter-spacing:.1em;display:block;margin-bottom:6px;}
+  .inicio-disclaimer strong.inline{display:inline;font-size:inherit;letter-spacing:inherit;}
+  .inicio-section{margin-bottom:32px;}
+  .inicio-section-title{font-family:'Share Tech Mono',monospace;font-size:.82rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+  .inicio-intro{font-family:'Rajdhani',sans-serif;font-size:.95rem;color:var(--text-dim);line-height:1.7;margin-bottom:20px;}
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:14px 16px;border-left:3px solid var(--accent);}
+  .stat-card-nombre{font-family:'Share Tech Mono',monospace;font-size:.85rem;color:#eee;margin-bottom:6px;}
+  .stat-card-desc{font-family:'Rajdhani',sans-serif;font-size:.88rem;color:var(--text-dim);line-height:1.55;}
+  .stat-card-nota{font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--text-dim);margin-top:6px;opacity:.7;}
+  .stat-card.accent2{border-left-color:var(--tier2);}
+  .stat-card.accent3{border-left-color:var(--tier3);}
+  .stat-card.accent4{border-left-color:var(--tier4);}
+  .features-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+  .feature-item{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;}
+  .feature-icon{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--accent);flex-shrink:0;margin-top:2px;}
+  .feature-text{font-family:'Rajdhani',sans-serif;font-size:.88rem;color:var(--text-dim);line-height:1.5;}
+  .feature-text strong{color:var(--text);display:block;margin-bottom:2px;}
+  .tier-legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .tier-pill{font-family:'Share Tech Mono',monospace;font-size:.72rem;padding:4px 12px;border-radius:2px;letter-spacing:.06em;}
+  footer{text-align:center;padding:28px;color:var(--text-dim);font-family:'Share Tech Mono',monospace;font-size:.7rem;border-top:1px solid var(--border);letter-spacing:.1em;margin-top:20px;}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>&#9632; RBreach // Arsenal</h1>
-  <span>v2.0 — 08-03-2026</span>
+  <div class="header-left">
+    <h1>&#9632; SPC RBreach // Arsenal</h1>
+    <p id="header-sub">Wiki de armas sobre el videojuego SPC Retro Breach Roblox</p>
+  </div>
+  <div class="header-actions">
+    <button class="btn-lang active" id="btnES" onclick="setLang('es')">ES</button>
+    <button class="btn-lang" id="btnEN" onclick="setLang('en')">EN</button>
+    <a class="btn-discord" href="https://discord.gg/7kPBn5JUX5" target="_blank">&#9670; Discord</a>
+    <span>v1.0</span>
+  </div>
 </header>
 
 <div class="view-tabs">
-  <button class="view-tab active" data-view="armas">Arsenal</button>
-  <button class="view-tab" data-view="ranking">Ranking DPS</button>
+  <button class="view-tab active" data-view="inicio">Inicio</button>
+  <button class="view-tab" data-view="armas">Arsenal</button>
+  <button class="view-tab" data-view="ranking">Rankings</button>
   <button class="view-tab" data-view="comparador">Comparador</button>
 </div>
 
-<div class="toolbar" id="toolbar">
+<!-- Arsenal bars -->
+<div class="toolbar" id="toolbar" style="display:flex">
   <button class="filter-btn active" data-filter="all">Todas</button>
   <div class="toolbar-sep"></div>
 </div>
-
-<div class="searchbar-wrap">
+<div class="searchbar-wrap" id="searchbarWrap">
   <input type="text" id="searchInput" placeholder="Buscar arma..." autocomplete="off">
   <select class="select-styled" id="rarezaFilter">
     <option value="all">Rareza: Todas</option>
@@ -516,6 +213,13 @@
     <option value="muy_rara">Muy rara</option>
     <option value="N/A">N/A</option>
     <option value="TBA">TBA</option>
+  </select>
+  <select class="select-styled" id="tierFilter">
+    <option value="all">Tier: Todos</option>
+    <option value="1">Tier I</option>
+    <option value="2">Tier II</option>
+    <option value="3">Tier III</option>
+    <option value="4">Tier IV</option>
   </select>
   <select class="select-styled" id="sortFilter">
     <option value="default">Orden: Default</option>
@@ -529,6 +233,7 @@
 </div>
 
 <main id="contenedor"></main>
+<div id="inicioPanel"></div>
 <div id="rankingPanel"></div>
 <div id="comparadorPanel"></div>
 
@@ -537,91 +242,183 @@
 <script>
 const ARMAS = {"pistolas":[{"nombre":"MP443","cadencia":425,"difusion":1.4,"recoil":{"x":0.6,"y":1.2},"dano_cabeza":11.25,"dano_cuerpo":9,"cargador":15,"reserva_maxima":60,"tier":1,"rareza":"poco_comun"},{"nombre":"G17","cadencia":425,"difusion":1.2,"recoil":{"x":0.6,"y":1.2},"dano_cabeza":11.875,"dano_cuerpo":9.5,"cargador":17,"reserva_maxima":68,"tier":1,"rareza":"comun"},{"nombre":"Beretta M9","cadencia":425,"difusion":1.4,"recoil":{"x":0.6,"y":1.2},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":15,"reserva_maxima":60,"tier":1,"rareza":"comun"},{"nombre":"Makarov","cadencia":425,"difusion":1.4,"recoil":{"x":0.6,"y":1.2},"dano_cabeza":15.625,"dano_cuerpo":12.5,"cargador":8,"reserva_maxima":32,"tier":1,"rareza":"N/A"},{"nombre":"Five-Seven","cadencia":550,"difusion":1.5,"recoil":{"x":1.0,"y":1.0},"dano_cabeza":12.5,"dano_cuerpo":10,"cargador":20,"reserva_maxima":80,"tier":2,"rareza":"comun"},{"nombre":"M1911","cadencia":400,"difusion":1.6,"recoil":{"x":0.8,"y":1.4},"dano_cabeza":17.5,"dano_cuerpo":14,"cargador":8,"reserva_maxima":32,"tier":2,"rareza":"comun"},{"nombre":"USP","cadencia":425,"difusion":1.3,"recoil":{"x":1.0,"y":0.8},"dano_cabeza":13.125,"dano_cuerpo":10.5,"cargador":12,"reserva_maxima":48,"tier":2,"rareza":"comun"},{"nombre":"Beretta 93R","cadencia":700,"difusion":1.4,"recoil":{"x":0.6,"y":1.2},"dano_cabeza":12.5,"dano_cuerpo":10,"cargador":21,"reserva_maxima":60,"tier":3,"rareza":"N/A"},{"nombre":"Uzi Micro","cadencia":1500,"difusion":4.0,"recoil":{"x":1.0,"y":2.0},"dano_cabeza":10,"dano_cuerpo":8,"cargador":20,"reserva_maxima":60,"tier":3,"rareza":"muy_rara"},{"nombre":"RSH-12","cadencia":150,"difusion":1.0,"recoil":{"x":4.0,"y":5.0},"dano_cabeza":42.5,"dano_cuerpo":34,"cargador":5,"reserva_maxima":20,"tier":3,"rareza":"rara"},{"nombre":"Desert Eagle","cadencia":300,"difusion":1.5,"recoil":{"x":1.5,"y":2.5},"dano_cabeza":37.5,"dano_cuerpo":30,"cargador":7,"reserva_maxima":28,"tier":3,"rareza":"inusual"}],"submachine_guns":[{"nombre":"P90","cadencia":950,"difusion":1.75,"recoil":{"x":1.2,"y":1.3},"dano_cabeza":11.875,"dano_cuerpo":9.5,"cargador":50,"reserva_maxima":150,"tier":2,"rareza":"rara"},{"nombre":"MP5","cadencia":800,"difusion":1.9,"recoil":{"x":1.3,"y":1.1},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"inusual"},{"nombre":"MAC-10","cadencia":1000,"difusion":3.0,"recoil":{"x":1.0,"y":1.2},"dano_cabeza":7.5,"dano_cuerpo":6,"cargador":30,"reserva_maxima":80,"tier":1,"rareza":"N/A"},{"nombre":"Bizon","cadencia":700,"difusion":1.5,"recoil":{"x":1.6,"y":1.1},"dano_cabeza":10,"dano_cuerpo":8,"cargador":64,"reserva_maxima":128,"tier":2,"rareza":"rara"},{"nombre":"MP5SD","cadencia":800,"difusion":1.9,"recoil":{"x":1.3,"y":1.1},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":3,"rareza":"muy_rara"},{"nombre":"Uzi","cadencia":720,"difusion":1.3,"recoil":{"x":1.25,"y":0.85},"dano_cabeza":11.25,"dano_cuerpo":9,"cargador":20,"reserva_maxima":80,"tier":1,"rareza":"inusual"},{"nombre":"UMP-45","cadencia":650,"difusion":1.4,"recoil":{"x":1.1,"y":1.2},"dano_cabeza":16.25,"dano_cuerpo":13,"cargador":25,"reserva_maxima":120,"tier":2,"rareza":"poco_comun"},{"nombre":"MP7A1","cadencia":1000,"difusion":2.2,"recoil":{"x":1.2,"y":1.1},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"muy_rara"},{"nombre":"Kriss Vector","cadencia":1200,"difusion":2.4,"recoil":{"x":1.5,"y":1.5},"dano_cabeza":9.375,"dano_cuerpo":7.5,"cargador":32,"reserva_maxima":100,"tier":2,"rareza":"inusual"},{"nombre":"MP9","cadencia":1000,"difusion":1.5,"recoil":{"x":1.2,"y":1.1},"dano_cabeza":12.5,"dano_cuerpo":10,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"inusual"}],"escopetas":[{"nombre":"Barril Doble","cadencia":425,"difusion":4.0,"recoil":{"x":2.0,"y":4.5},"balas_por_disparo":9,"dano_cabeza":12.5,"dano_cuerpo":10,"cargador":2,"reserva_maxima":8,"tier":1,"rareza":"N/A"},{"nombre":"Mossberg","cadencia":100,"difusion":3.0,"recoil":{"x":2.0,"y":2.2},"balas_por_disparo":8,"dano_cabeza":11.25,"dano_cuerpo":9,"cargador":7,"reserva_maxima":28,"tier":2,"rareza":"muy_rara"},{"nombre":"M4 Super 90","cadencia":225,"difusion":5.0,"recoil":{"x":1.4,"y":2.5},"balas_por_disparo":10,"dano_cabeza":10,"dano_cuerpo":8,"cargador":8,"reserva_maxima":32,"tier":3,"rareza":"muy_rara"},{"nombre":"UTS-15","cadencia":100,"difusion":3.5,"recoil":{"x":3.0,"y":3.0},"balas_por_disparo":8,"dano_cabeza":15.625,"dano_cuerpo":12.5,"cargador":7,"reserva_maxima":28,"tier":4,"rareza":"N/A"},{"nombre":"Saiga-12","cadencia":250,"difusion":4.0,"recoil":{"x":2.0,"y":4.0},"balas_por_disparo":null,"dano_cabeza":8.125,"dano_cuerpo":6.5,"cargador":8,"reserva_maxima":32,"tier":3,"rareza":"N/A"},{"nombre":"KS-23M","cadencia":80,"difusion":5.0,"recoil":{"x":3.0,"y":4.0},"balas_por_disparo":9,"dano_cabeza":13.125,"dano_cuerpo":10.5,"cargador":4,"reserva_maxima":16,"tier":4,"rareza":"N/A"},{"nombre":"SPAS-12","cadencia":320,"difusion":5.0,"recoil":{"x":3.5,"y":2.2},"balas_por_disparo":11,"dano_cabeza":10,"dano_cuerpo":8,"cargador":8,"reserva_maxima":32,"tier":4,"rareza":"muy_rara"},{"nombre":"AA-12","cadencia":350,"difusion":4.0,"recoil":{"x":1.7,"y":2.0},"balas_por_disparo":8,"dano_cabeza":6.25,"dano_cuerpo":5,"cargador":8,"reserva_maxima":32,"tier":4,"rareza":"N/A"},{"nombre":"USAS-12","cadencia":450,"difusion":5.0,"recoil":{"x":2.3,"y":2.8},"balas_por_disparo":8,"dano_cabeza":7.5,"dano_cuerpo":6,"cargador":10,"reserva_maxima":10,"tier":4,"rareza":"N/A"}],"fusiles_asalto":[{"nombre":"Scar-L","cadencia":625,"difusion":0.9,"recoil":{"x":2.5,"y":1.5},"dano_cabeza":14.375,"dano_cuerpo":11.5,"cargador":30,"reserva_maxima":120,"tier":3,"rareza":"inusual"},{"nombre":"AKS-74U","cadencia":700,"difusion":1.1,"recoil":{"x":1.0,"y":2.0},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":1,"rareza":"TBA"},{"nombre":"G36","cadencia":750,"difusion":1.3,"recoil":{"x":1.8,"y":1.2},"dano_cabeza":14.375,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"muy_rara"},{"nombre":"SG-552","cadencia":650,"difusion":1.0,"recoil":{"x":1.8,"y":1.6},"dano_cabeza":14.375,"dano_cuerpo":11.5,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"rara"},{"nombre":"M16","cadencia":800,"difusion":0.8,"recoil":{"x":1.7,"y":1.4},"dano_cabeza":9.375,"dano_cuerpo":7.5,"cargador":20,"reserva_maxima":80,"tier":1,"rareza":"muy_rara"},{"nombre":"M4A1","cadencia":750,"difusion":1.0,"recoil":{"x":1.3,"y":1.5},"dano_cabeza":13.125,"dano_cuerpo":10.5,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"inusual"},{"nombre":"L85A2","cadencia":700,"difusion":1.25,"recoil":{"x":1.2,"y":1.6},"dano_cabeza":17.5,"dano_cuerpo":14,"cargador":30,"reserva_maxima":120,"tier":3,"rareza":"muy_rara"},{"nombre":"Honey Badger","cadencia":800,"difusion":1.0,"recoil":{"x":1.95,"y":2.15},"dano_cabeza":16.25,"dano_cuerpo":13,"cargador":30,"reserva_maxima":120,"tier":4,"rareza":"muy_rara"},{"nombre":"AK-74","cadencia":700,"difusion":1.0,"recoil":{"x":1.0,"y":1.75},"dano_cabeza":15,"dano_cuerpo":12,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"muy_rara"},{"nombre":"FAMAS","cadencia":900,"difusion":1.0,"recoil":{"x":1.5,"y":1.45},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":25,"reserva_maxima":100,"tier":2,"rareza":"rara"},{"nombre":"AUG","cadencia":800,"difusion":0.75,"recoil":{"x":1.2,"y":1.6},"dano_cabeza":15,"dano_cuerpo":12,"cargador":30,"reserva_maxima":120,"tier":4,"rareza":"muy_rara"},{"nombre":"F2000","cadencia":1000,"difusion":1.25,"recoil":{"x":1.9,"y":1.9},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":3,"rareza":"muy_rara"},{"nombre":"AS VAL","cadencia":800,"difusion":1.1,"recoil":{"x":1.5,"y":1.75},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":4,"rareza":"muy_rara"},{"nombre":"AKM","cadencia":650,"difusion":0.95,"recoil":{"x":2.0,"y":3.0},"dano_cabeza":18.125,"dano_cuerpo":14.5,"cargador":30,"reserva_maxima":120,"tier":3,"rareza":"muy_rara"},{"nombre":"HK416","cadencia":850,"difusion":1.0,"recoil":{"x":1.4,"y":1.3},"dano_cabeza":13.125,"dano_cuerpo":10,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"inusual"},{"nombre":"XM8","cadencia":800,"difusion":1.75,"recoil":{"x":1.4,"y":1.6},"dano_cabeza":17.5,"dano_cuerpo":14,"cargador":30,"reserva_maxima":120,"tier":3,"rareza":"N/A"}],"fusiles_combate":[{"nombre":"Scar-H","cadencia":550,"difusion":0.8,"recoil":{"x":2.5,"y":2.3},"dano_cabeza":25,"dano_cuerpo":20,"cargador":20,"reserva_maxima":80,"tier":4,"rareza":"rara"},{"nombre":"ASH-12","cadencia":600,"difusion":1.25,"recoil":{"x":3.4,"y":4.0},"dano_cabeza":28.75,"dano_cuerpo":23,"cargador":20,"reserva_maxima":80,"tier":4,"rareza":"TBA"},{"nombre":"Mk14 EBR","cadencia":600,"difusion":1.0,"recoil":{"x":2.0,"y":2.0},"dano_cabeza":22.5,"dano_cuerpo":18,"cargador":20,"reserva_maxima":80,"tier":4,"rareza":"TBA"}],"armas_ligeras":[{"nombre":"RPK","cadencia":650,"difusion":0.85,"recoil":{"x":1.9,"y":2.8},"dano_cabeza":18.75,"dano_cuerpo":15,"cargador":45,"reserva_maxima":135,"tier":3,"rareza":"muy_rara"},{"nombre":"M249","cadencia":700,"difusion":0.9,"recoil":{"x":2.7,"y":2.4},"dano_cabeza":15.625,"dano_cuerpo":12.5,"cargador":100,"reserva_maxima":100,"tier":4,"rareza":"N/A"}]};
 
-const TIER_COLORS = { 1: '#5ba3e0', 2: '#78c97a', 3: '#c8a84b', 4: '#c97ad4' };
-const TIER_ROMAN  = { 1: 'I', 2: 'II', 3: 'III', 4: 'IV' };
-const CAT_LABELS  = {
-  pistolas:'Pistolas', submachine_guns:'Sub-Machine Guns',
-  escopetas:'Escopetas', fusiles_asalto:'Fusiles de Asalto',
-  fusiles_combate:'Fusiles de Combate', armas_ligeras:'Armas Ligeras'
+const TIER_COLORS={1:'#5ba3e0',2:'#78c97a',3:'#c8a84b',4:'#c97ad4'};
+const TIER_ROMAN={1:'I',2:'II',3:'III',4:'IV'};
+function CAT_LABELS(cat){return(T[lang].cat||{})[cat]||cat;}
+const MAX_RECOIL=6; const HP=100;
+
+// ── IDIOMA ──
+let lang='es';
+const T={
+  es:{
+    tabs:['Inicio','Arsenal','Rankings','Comparador'],
+    header_sub:'Wiki de armas sobre el videojuego SPC Retro Breach Roblox',
+    todas:'Todas', rareza:'Rareza: Todas', tier:'Tier: Todos', orden:'Orden: Default',
+    comun:'Común', poco_comun:'Poco común', inusual:'Inusual', rara:'Rara', muy_rara:'Muy rara',
+    orden_dps_d:'DPS ↓', orden_dps_a:'DPS ↑', orden_ttk:'TTK más rápido', orden_dano:'Daño ↓', orden_cad:'Cadencia ↓',
+    comparar:'▶ Comparar seleccionadas',
+    buscar:'Buscar arma...',
+    dmg_cab:'Dmg cabeza', dmg_cuerpo:'Dmg cuerpo', cadencia:'Cadencia', difusion:'Difusión',
+    balas_disp:'Balas/disparo', dps:'DPS', ttk:'TTK (100hp)', cargador:'Cargador', reserva:'Reserva', recoil:'Recoil',
+    cat:{pistolas:'Pistolas',submachine_guns:'Sub-Machine Guns',escopetas:'Escopetas',fusiles_asalto:'Fusiles de Asalto',fusiles_combate:'Fusiles de Combate',armas_ligeras:'Armas Ligeras'},
+    footer:'DATABASE BY JKBO27 — SPC RBreach Weapons Compendium',
+  },
+  en:{
+    tabs:['Home','Arsenal','Rankings','Comparator'],
+    header_sub:'Weapon wiki for the Roblox game SPC Retro Breach',
+    todas:'All', rareza:'Rarity: All', tier:'Tier: All', orden:'Sort: Default',
+    comun:'Common', poco_comun:'Uncommon', inusual:'Unusual', rara:'Rare', muy_rara:'Very Rare',
+    orden_dps_d:'DPS ↓', orden_dps_a:'DPS ↑', orden_ttk:'Fastest TTK', orden_dano:'Damage ↓', orden_cad:'Fire Rate ↓',
+    comparar:'▶ Compare selected',
+    buscar:'Search weapon...',
+    dmg_cab:'Head dmg', dmg_cuerpo:'Body dmg', cadencia:'Fire Rate', difusion:'Spread',
+    balas_disp:'Pellets/shot', dps:'DPS', ttk:'TTK (100hp)', cargador:'Magazine', reserva:'Reserve', recoil:'Recoil',
+    cat:{pistolas:'Pistols',submachine_guns:'Submachine Guns',escopetas:'Shotguns',fusiles_asalto:'Assault Rifles',fusiles_combate:'Battle Rifles',armas_ligeras:'Light Machine Guns'},
+    footer:'DATABASE BY JKBO27 — SPC RBreach Weapons Compendium',
+  }
 };
-const MAX_RECOIL = 6;
-const HP = 100;
+function t(key){return T[lang][key]||key;}
 
-function calcDPS(a) {
-  const dmg = (a.balas_por_disparo && a.balas_por_disparo !== 'TBA')
-    ? a.dano_cuerpo * a.balas_por_disparo : a.dano_cuerpo;
-  return dmg * (a.cadencia / 60);
+function setLang(l){
+  lang=l;
+  document.getElementById('btnES').classList.toggle('active',l==='es');
+  document.getElementById('btnEN').classList.toggle('active',l==='en');
+  document.getElementById('header-sub').textContent=T[l].header_sub;
+  // tabs
+  const tabKeys=['inicio','armas','ranking','comparador'];
+  document.querySelectorAll('.view-tab').forEach((tab,i)=>tab.textContent=T[l].tabs[i]);
+  // botones de categoría en toolbar
+  document.querySelectorAll('.filter-btn[data-filter]').forEach(btn=>{
+    if(btn.dataset.filter==='all') btn.textContent=T[l].todas;
+    else btn.textContent=CAT_LABELS(btn.dataset.filter);
+  });
+  // searchbar
+  document.getElementById('searchInput').placeholder=T[l].buscar;
+  // selects
+  const rSel=document.getElementById('rarezaFilter');
+  rSel.options[0].text=T[l].rareza;
+  rSel.options[1].text=T[l].comun;
+  rSel.options[2].text=T[l].poco_comun;
+  rSel.options[3].text=T[l].inusual;
+  rSel.options[4].text=T[l].rara;
+  rSel.options[5].text=T[l].muy_rara;
+  const tSel=document.getElementById('tierFilter');
+  tSel.options[0].text=T[l].tier;
+  const sSel=document.getElementById('sortFilter');
+  sSel.options[0].text=T[l].orden;
+  sSel.options[1].text=T[l].orden_dps_d;
+  sSel.options[2].text=T[l].orden_dps_a;
+  sSel.options[3].text=T[l].orden_ttk;
+  sSel.options[4].text=T[l].orden_dano;
+  sSel.options[5].text=T[l].orden_cad;
+  document.getElementById('btnComparar').textContent=T[l].comparar;
+  document.querySelector('footer').textContent=T[l].footer;
+  // re-render vista actual
+  if(currentView==='inicio') renderInicio();
+  else if(currentView==='armas') renderArsenalView();
+  else if(currentView==='ranking') renderRanking();
+  else if(currentView==='comparador') renderComparador();
 }
 
-function calcTTK(a) {
-  const dmg = (a.balas_por_disparo && a.balas_por_disparo !== 'TBA')
-    ? a.dano_cuerpo * a.balas_por_disparo : a.dano_cuerpo;
-  if (!dmg || dmg <= 0) return null;
-  const balas = Math.ceil(HP / dmg);
-  return (balas - 1) * (60000 / a.cadencia);
+// ── CALCULOS ──
+function efectivoDPS(a){
+  // escopetas: 1 pellet = referencia (no multiplicar todos, asume ~40% impacto en combate)
+  const dmg = (a.balas_por_disparo && a.balas_por_disparo!=='TBA')
+    ? a.dano_cuerpo * a.balas_por_disparo * 0.4
+    : a.dano_cuerpo;
+  return dmg*(a.cadencia/60);
 }
-
-function fmtTTK(ms) {
-  if (ms === null) return 'N/A';
-  if (ms === 0) return '0 ms';
-  return ms < 1000 ? `${Math.round(ms)} ms` : `${(ms/1000).toFixed(2)} s`;
+function rawDPS(a){
+  const dmg=(a.balas_por_disparo&&a.balas_por_disparo!=='TBA')?a.dano_cuerpo*a.balas_por_disparo:a.dano_cuerpo;
+  return dmg*(a.cadencia/60);
 }
-
-function badgeTier(t) {
-  return `<span class="badge badge-tier${t}">Tier ${TIER_ROMAN[t]||t}</span>`;
+function calcTTK(a,hp){
+  hp=hp||HP;
+  const dmg=(a.balas_por_disparo&&a.balas_por_disparo!=='TBA')?a.dano_cuerpo*a.balas_por_disparo:a.dano_cuerpo;
+  if(!dmg||dmg<=0) return null;
+  return (Math.ceil(hp/dmg)-1)*(60000/a.cadencia);
 }
-
-function badgeRareza(r) {
-  const key = (r||'N/A').toLowerCase().replace(/ /g,'_');
-  if (key==='n/a') return `<span class="badge badge-na">N/A</span>`;
-  if (key==='tba') return `<span class="badge badge-tba">TBA</span>`;
-  return `<span class="badge badge-${key}">${r.replace(/_/g,' ')}</span>`;
+// DPS sostenido: incluye recarga estimada (asumimos 2.5s recarga fija — no hay dato en JSON)
+function calcDPSSostenido(a){
+  const RELOAD_S=2.5;
+  const dmgPorCargador=(a.balas_por_disparo&&a.balas_por_disparo!=='TBA')
+    ?a.dano_cuerpo*a.balas_por_disparo*0.4*a.cargador
+    :a.dano_cuerpo*a.cargador;
+  const tiempoCargador=(a.cargador/(a.cadencia/60));
+  const ciclo=tiempoCargador+RELOAD_S;
+  return dmgPorCargador/ciclo;
 }
-
-function recoilBar(label, val) {
-  const pct = Math.min((val/MAX_RECOIL)*100,100).toFixed(1);
-  return `<div class="recoil-bar-wrap">
-    <span class="recoil-label">${label}</span>
-    <div class="recoil-bar-bg"><div class="recoil-bar-fill" style="width:${pct}%"></div></div>
-    <span class="recoil-val">${val}</span>
-  </div>`;
+// score largo alcance: difusión baja pesa mucho, daño decente, penalizar difusión alta
+function scoreLejos(a){
+  if(a.difusion>2.5) return -9999; // armas muy imprecisas directamente excluidas
+  const difScore=1/(a.difusion+0.1);
+  return difScore*14 + a.dano_cuerpo*0.6;
 }
+// score cercano: escopetas con pellets, o armas con difusión alta + cadencia alta
+function scoreCercano(a){
+  const pellets=a.balas_por_disparo&&a.balas_por_disparo!=='TBA'?a.balas_por_disparo:1;
+  const dmgBurst=a.dano_cuerpo*pellets;
+  const cadFactor=a.cadencia/60;
+  // escopetas: el burst instantáneo importa más que la cadencia
+  if(pellets>1) return dmgBurst*1.5 + cadFactor*2;
+  // resto: cadencia + daño + difusion (no importa tanto en cercano)
+  return dmgBurst*1.0 + cadFactor*3;
+}
+// score batalla larga humano vs humano: DPS sostenido + reserva decente
+function scoreLargo(a){
+  return calcDPSSostenido(a)*2 + a.reserva_maxima*0.4;
+}
+// score vs SPCs: daño por bala pesa mucho (SCPs tienen mucha vida), reserva también
+function scoreVsSPC(a){
+  const dmgPorBala=(a.balas_por_disparo&&a.balas_por_disparo!=='TBA')
+    ?a.dano_cuerpo*a.balas_por_disparo*0.4
+    :a.dano_cuerpo;
+  // penalizar armas con poca reserva — te quedas sin balas contra un SCP
+  if(a.reserva_maxima<20) return -9999;
+  return dmgPorBala*4 + a.reserva_maxima*0.5 + (a.cadencia/60)*0.5;
+}
+// score casual: tier I-II, rareza accesible, stats decentes
+function scoreCasual(a){
+  if(a.tier>2) return -9999;
+  if(!['comun','poco_comun','inusual'].includes(a.rareza)) return -9999;
+  return efectivoDPS(a)*0.6 + a.dano_cuerpo*0.4;
+}
+function fmtTTK(ms){if(ms===null)return'N/A';if(ms===0)return'0 ms';return ms<1000?`${Math.round(ms)} ms`:`${(ms/1000).toFixed(2)} s`;}
 
-// state
-let currentView='armas', currentCat='all', currentRareza='all', currentSort='default', searchQuery='';
+function allArmas(){const l=[];for(const c in ARMAS)ARMAS[c].forEach(a=>l.push({...a,_cat:c}));return l;}
+function findArma(cat,nombre){return(ARMAS[cat]||[]).find(a=>a.nombre===nombre);}
+
+// ── BADGES ──
+function badgeTier(t){return`<span class="badge badge-tier${t}">Tier ${TIER_ROMAN[t]||t}</span>`;}
+function badgeRareza(r){const k=(r||'N/A').toLowerCase().replace(/ /g,'_');if(k==='n/a')return`<span class="badge badge-na">N/A</span>`;if(k==='tba')return`<span class="badge badge-tba">TBA</span>`;return`<span class="badge badge-${k}">${r.replace(/_/g,' ')}</span>`;}
+function recoilBar(label,val){const pct=Math.min((val/MAX_RECOIL)*100,100).toFixed(1);return`<div class="recoil-bar-wrap"><span class="recoil-label">${label}</span><div class="recoil-bar-bg"><div class="recoil-bar-fill" style="width:${pct}%"></div></div><span class="recoil-val">${val}</span></div>`;}
+
+// ── STATE ──
+let currentView='armas',currentCat='all',currentRareza='all',currentTier='all',currentSort='default',searchQuery='';
 let compareSlots=[];
+let compMode='stats';
+let simHP=100; // configurable
 
-function allArmas() {
-  const list=[];
-  for(const cat in ARMAS) ARMAS[cat].forEach(a=>list.push({...a,_cat:cat}));
-  return list;
-}
 
-function findArma(catKey,nombre) {
-  return (ARMAS[catKey]||[]).find(a=>a.nombre===nombre);
-}
-
-function toggleCompare(cat,nombre) {
-  if(currentView!=='armas') return;
+function toggleCompare(cat,nombre){
+  if(currentView!=='armas')return;
   const id=`${cat}::${nombre}`;
   const idx=compareSlots.indexOf(id);
-  if(idx>=0) compareSlots.splice(idx,1);
-  else { if(compareSlots.length>=2) compareSlots.shift(); compareSlots.push(id); }
-  document.getElementById('btnComparar').style.display = compareSlots.length===2 ? '' : 'none';
+  if(idx>=0)compareSlots.splice(idx,1);
+  else{if(compareSlots.length>=2)compareSlots.shift();compareSlots.push(id);}
+  document.getElementById('btnComparar').style.display=compareSlots.length===2?'':'none';
   renderArsenalView();
 }
 
-function renderArma(arma, catKey) {
-  const tc  = TIER_COLORS[arma.tier]||'#555';
-  const dps = calcDPS(arma).toFixed(1);
-  const ttk = fmtTTK(calcTTK(arma));
-  const balasStat = (arma.balas_por_disparo!=null)
-    ? `<div class="stat"><span class="stat-label">Balas/disparo</span><span class="stat-value">${arma.balas_por_disparo}</span></div>` : '';
-  const selCls = compareSlots.includes(`${catKey}::${arma.nombre}`) ? 'selected-compare' : '';
-  const safeName = arma.nombre.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-
-  return `
-  <div class="arma ${selCls}" style="--tier-color:${tc}" onclick="toggleCompare('${catKey}','${safeName}')">
+// ── CARD ──
+function renderArma(arma,catKey){
+  const tc=TIER_COLORS[arma.tier]||'#555';
+  const dps=efectivoDPS(arma).toFixed(1);
+  const ttk=fmtTTK(calcTTK(arma));
+  const balasStat=(arma.balas_por_disparo!=null)?`<div class="stat"><span class="stat-label">Balas/disparo</span><span class="stat-value">${arma.balas_por_disparo}</span></div>`:'';
+  const selCls=compareSlots.includes(`${catKey}::${arma.nombre}`)?'selected-compare':'';
+  const safe=arma.nombre.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  return`<div class="arma ${selCls}" style="--tier-color:${tc}" onclick="toggleCompare('${catKey}','${safe}')">
     <div class="arma-nombre">${arma.nombre}</div>
     <div class="badges">${badgeTier(arma.tier)}${badgeRareza(arma.rareza)}</div>
     <div class="stats">
@@ -630,176 +427,400 @@ function renderArma(arma, catKey) {
       <div class="stat"><span class="stat-label">Cadencia</span><span class="stat-value">${arma.cadencia} rpm</span></div>
       <div class="stat"><span class="stat-label">Difusión</span><span class="stat-value">${arma.difusion}</span></div>
       ${balasStat}
-      <div class="stat"><span class="stat-label">DPS</span><span class="stat-value highlight">${dps}</span></div>
-      <div class="stat"><span class="stat-label">TTK (100hp)</span><span class="stat-value highlight">${ttk}</span></div>
+      <div class="stat"><span class="stat-label">DPS</span><span class="stat-value hi">${dps}</span></div>
+      <div class="stat"><span class="stat-label">TTK (100hp)</span><span class="stat-value hi">${ttk}</span></div>
       <div class="stat"><span class="stat-label">Cargador</span><span class="stat-value">${arma.cargador}</span></div>
       <div class="stat"><span class="stat-label">Reserva</span><span class="stat-value">${arma.reserva_maxima}</span></div>
-      <div class="stat stat-recoil">
-        <div style="width:100%">
-          <span class="stat-label">Recoil</span>
-          ${recoilBar('X',arma.recoil.x)}
-          ${recoilBar('Y',arma.recoil.y)}
-        </div>
+      <div class="stat stat-recoil"><div style="width:100%"><span class="stat-label">Recoil</span>${recoilBar('X',arma.recoil.x)}${recoilBar('Y',arma.recoil.y)}</div></div>
+    </div>
+  </div>`;
+}
+
+// ── ARSENAL ──
+function renderArsenalView(){
+  const cont=document.getElementById('contenedor');
+  cont.innerHTML='';
+  const q=searchQuery.toLowerCase();
+  for(const cat in ARMAS){
+    if(currentCat!=='all'&&cat!==currentCat)continue;
+    let armas=ARMAS[cat].filter(a=>{
+      return(!q||a.nombre.toLowerCase().includes(q))&&
+             (currentRareza==='all'||a.rareza===currentRareza)&&
+             (currentTier==='all'||String(a.tier)===currentTier);
+    });
+    if(!armas.length)continue;
+    if(currentSort!=='default'){
+      armas=[...armas].sort((a,b)=>{
+        if(currentSort==='dps_desc')return efectivoDPS(b)-efectivoDPS(a);
+        if(currentSort==='dps_asc')return efectivoDPS(a)-efectivoDPS(b);
+        if(currentSort==='ttk_asc')return(calcTTK(a)??999999)-(calcTTK(b)??999999);
+        if(currentSort==='dano_desc')return b.dano_cuerpo-a.dano_cuerpo;
+        if(currentSort==='cadencia_desc')return b.cadencia-a.cadencia;
+        return 0;
+      });
+    }
+    const div=document.createElement('div');div.className='categoria';
+    div.innerHTML=`<div class="categoria-header"><h2>${CAT_LABELS(cat)}</h2><span class="count">${armas.length} ${lang==='en'?'weapons':'armas'}</span></div><div class="grid">${armas.map(a=>renderArma(a,cat)).join('')}</div>`;
+    cont.appendChild(div);
+  }
+  if(!cont.children.length)cont.innerHTML=`<div class="no-results">// NO SE ENCONTRARON ARMAS</div>`;
+}
+
+// ── DISPONIBILIDAD ──
+// rareza: comun=6, poco_comun=5, inusual=4, rara=3, muy_rara=2, N/A=1, TBA=1
+// tier: I=4, II=3, III=2, IV=1 — combinado y normalizado a 0-100
+const RAREZA_SCORE={comun:6,poco_comun:5,inusual:4,rara:3,muy_rara:2,'N/A':1,TBA:1};
+function scoreDisponibilidad(a){
+  const r=RAREZA_SCORE[a.rareza]||1; // 1-6
+  const t=5-a.tier; // tier I=4, IV=1
+  return (r/6)*70 + (t/4)*30;
+}
+
+// ── MODOS ──
+const RANK_MODES={
+  dps:      {label:'DPS Real',       desc:'DPS efectivo — escopetas con 40% de impacto de pellets.',               scoreFn:efectivoDPS,         labelFn:a=>efectivoDPS(a).toFixed(1)+' DPS',          filter:null},
+  ttk:      {label:'TTK',            desc:'Time-To-Kill vs 100 HP. Menos tiempo = mejor posición.',                scoreFn:a=>{const t=calcTTK(a);return t!==null?1/(t+1)*10000:0;}, labelFn:a=>fmtTTK(calcTTK(a)), filter:null},
+  sostenido:{label:'DPS Sostenido',  desc:'DPS real + tiempo de recarga estimado (2.5s). Para peleas largas.',     scoreFn:calcDPSSostenido,    labelFn:a=>calcDPSSostenido(a).toFixed(1)+' DPS',     filter:null},
+  lejos:    {label:'Largo Alcance',  desc:'Poca difusión + buen daño. Ideal para disparar desde lejos.',           scoreFn:scoreLejos,          labelFn:a=>scoreLejos(a).toFixed(1)+' pts',           filter:null},
+  cercano:  {label:'Combate Cercano',desc:'Daño alto a corta distancia — escopetas y armas con difusión alta.',    scoreFn:scoreCercano,        labelFn:a=>scoreCercano(a).toFixed(1)+' pts',         filter:null},
+  largo:    {label:'Batalla Larga',  desc:'DPS sostenido + reserva. Para peleas prolongadas humano vs humano.',       scoreFn:scoreLargo,          labelFn:a=>scoreLargo(a).toFixed(1)+' pts',           filter:null},
+  spc:      {label:'vs SPCs',        desc:'Daño por bala muy alto + reserva decente. SCPs tienen mucha vida — cada bala cuenta. Armas con menos de 20 de reserva excluidas.',  scoreFn:scoreVsSPC, labelFn:a=>scoreVsSPC(a).toFixed(1)+' pts', filter:a=>a.reserva_maxima>=20},
+  casual:   {label:'Uso Casual',     desc:'Solo Tier I-II, rareza accesible. Para partidas normales.',              scoreFn:scoreCasual,         labelFn:a=>scoreCasual(a).toFixed(1)+' pts',          filter:a=>a.tier<=2&&['comun','poco_comun','inusual'].includes(a.rareza)},
+  disp_rareza:{label:'Disponibilidad (Rareza)', desc:'Armas más fáciles de conseguir según rareza.',              scoreFn:a=>(RAREZA_SCORE[a.rareza]||1)/6*100, labelFn:a=>`${a.rareza.replace(/_/g,' ')}`, filter:null},
+  disp_tier:  {label:'Disponibilidad (Tier)',   desc:'Armas más accesibles según tier — Tier I es el más fácil.', scoreFn:a=>(5-a.tier)/4*100,  labelFn:a=>`Tier ${TIER_ROMAN[a.tier]||a.tier}`,      filter:null},
+};
+
+// estado de checkboxes activos
+let activeRankModes=new Set(['dps']);
+
+// normaliza scores de 0-1 para cada modo
+function normalizeScores(list,scoreFn){
+  const scores=list.map(a=>scoreFn(a));
+  const max=Math.max(...scores)||1;
+  const min=Math.min(...scores);
+  return list.map((a,i)=>({a,norm:max===min?1:(scores[i]-min)/(max-min)}));
+}
+
+function renderInicio(){
+  const panel=document.getElementById('inicioPanel');
+  const es=lang==='es';
+  panel.innerHTML=`
+  <div class="inicio-disclaimer">
+    <strong>// DISCLAIMER — v1.0</strong>
+    ${es
+      ? `Esta página es una recopilación no oficial de estadísticas de <strong class="inline" style="color:var(--accent)">SPC Retro Breach</strong>, videojuego de Roblox. Los datos fueron extraídos de la wiki oficial y directamente del juego, y pueden contener errores, valores desactualizados o información incompleta. Los cálculos de DPS, TTK y rankings son aproximaciones — no reflejan necesariamente el comportamiento exacto dentro del juego. Con el tiempo se irán corrigiendo y mejorando. Créditos a <strong class="inline" style="color:var(--accent)">JKBO27</strong> por la recopilación original.`
+      : `This is an unofficial stats compilation for <strong class="inline" style="color:var(--accent)">SPC Retro Breach</strong>, a Roblox game. Data was gathered from the official wiki and in-game, and may contain errors, outdated values or incomplete information. DPS, TTK and ranking calculations are approximations — they may not reflect the exact in-game behavior. This will be corrected and improved over time. Credits to <strong class="inline" style="color:var(--accent)">JKBO27</strong> for the original data.`
+    }
+  </div>
+
+  <div class="inicio-section">
+    <div class="inicio-section-title">// ${es?'¿Qué es esta página?':'What is this page?'}</div>
+    <div class="inicio-intro">
+      ${es
+        ? `Una base de datos de armas del juego <strong style="color:var(--text)">SPC Retro Breach</strong> en Roblox. Acá puedes ver las estadísticas de cada arma, comparar dos armas entre sí, simular enfrentamientos y ver rankings por distintos criterios — desde cuál hace más DPS hasta cuál es más fácil de conseguir.`
+        : `A weapon database for the Roblox game <strong style="color:var(--text)">SPC Retro Breach</strong>. Here you can view each weapon's stats, compare two weapons side by side, simulate fights and view rankings by different criteria — from highest DPS to easiest to obtain.`
+      }
+    </div>
+  </div>
+
+  <div class="inicio-section">
+    <div class="inicio-section-title">// ${es?'Estadísticas de cada arma':'Weapon Stats'}</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-card-nombre">${es?'Cadencia de disparo':'Fire Rate'}</div>
+        <div class="stat-card-desc">${es?'Cuántas balas puede disparar el arma por minuto (RPM). Más alto = dispara más rápido.':'How many bullets the weapon fires per minute (RPM). Higher = shoots faster.'}</div>
+      </div>
+      <div class="stat-card accent2">
+        <div class="stat-card-nombre">${es?'Difusión':'Spread'}</div>
+        <div class="stat-card-desc">${es?'Cuánto se dispersan las balas al disparar — define la precisión del arma.':'How much bullets spread when fired — defines weapon accuracy.'}</div>
+        <div class="stat-card-nota">${es?'~1 = Buena precisión · ~2 = Dispersión notable · 3+ = Mucha dispersión':'~1 = Good accuracy · ~2 = Notable spread · 3+ = High spread'}</div>
+      </div>
+      <div class="stat-card accent3">
+        <div class="stat-card-nombre">${es?'Rebote (X / Y)':'Recoil (X / Y)'}</div>
+        <div class="stat-card-desc">${es?'Cuánto se mueve la cámara al disparar. X = horizontal, Y = vertical. Entre más alto, más salta la mira.':'How much the camera moves when firing. X = horizontal, Y = vertical. Higher = more camera kick.'}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-nombre">${es?'Daño de cabeza':'Headshot Damage'}</div>
+        <div class="stat-card-desc">${es?'Daño que hace el arma al impactar en la cabeza del objetivo.':'Damage dealt when hitting the target\'s head.'}</div>
+      </div>
+      <div class="stat-card accent2">
+        <div class="stat-card-nombre">${es?'Daño corporal':'Body Damage'}</div>
+        <div class="stat-card-desc">${es?'Daño al impactar en el cuerpo. Es el valor base para los cálculos de DPS y TTK.':'Damage when hitting the body. This is the base value used for DPS and TTK calculations.'}</div>
+      </div>
+      <div class="stat-card accent3">
+        <div class="stat-card-nombre">${es?'Capacidad de munición':'Magazine Capacity'}</div>
+        <div class="stat-card-desc">${es?'Cuántas balas entran en el cargador antes de tener que recargar.':'How many bullets fit in the magazine before needing to reload.'}</div>
+      </div>
+      <div class="stat-card accent4">
+        <div class="stat-card-nombre">${es?'Capacidad de reserva':'Reserve Capacity'}</div>
+        <div class="stat-card-desc">${es?'Cuántas balas extra llevas contigo además del cargador. Importante en peleas largas o contra SPCs.':'Extra bullets you carry besides the magazine. Important in long fights or against SPCs.'}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-nombre">DPS <span style="color:var(--text-dim);font-size:.7rem">(${es?'calculado':'calculated'})</span></div>
+        <div class="stat-card-desc">${es?'Daño por segundo efectivo. Para escopetas se asume un 40% de impacto de pellets para ser más realista.':'Effective damage per second. For shotguns, 40% pellet hit rate is assumed for realism.'}</div>
+        <div class="stat-card-nota">${es?'Fórmula: daño × (cadencia / 60)':'Formula: damage × (fire rate / 60)'}</div>
+      </div>
+      <div class="stat-card accent2">
+        <div class="stat-card-nombre">TTK <span style="color:var(--text-dim);font-size:.7rem">(${es?'calculado':'calculated'})</span></div>
+        <div class="stat-card-desc">${es?'Time-To-Kill — tiempo en milisegundos para matar a un objetivo con 100 HP asumiendo que todos los disparos impactan.':'Time-To-Kill — milliseconds to kill a target with 100 HP assuming all shots hit.'}</div>
+        <div class="stat-card-nota">${es?'Fórmula: (ceil(HP / daño) − 1) × (60000 / cadencia)':'Formula: (ceil(HP / damage) − 1) × (60000 / fire rate)'}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="inicio-section">
+    <div class="inicio-section-title">// ${es?'Sistema de Tiers y Rareza':'Tier & Rarity System'}</div>
+    <div class="inicio-intro">${es?'Los tiers indican qué tan potente es un arma en general. La rareza indica qué tan difícil es conseguirla en el juego.':'Tiers indicate how powerful a weapon is overall. Rarity indicates how hard it is to obtain in-game.'}</div>
+    <div class="tier-legend">
+      <span class="tier-pill" style="background:rgba(91,163,224,.15);color:var(--tier1);border:1px solid rgba(91,163,224,.3)">Tier I — ${es?'Básico':'Basic'}</span>
+      <span class="tier-pill" style="background:rgba(120,201,122,.15);color:var(--tier2);border:1px solid rgba(120,201,122,.3)">Tier II — ${es?'Intermedio':'Intermediate'}</span>
+      <span class="tier-pill" style="background:rgba(200,168,75,.15);color:var(--tier3);border:1px solid rgba(200,168,75,.3)">Tier III — ${es?'Avanzado':'Advanced'}</span>
+      <span class="tier-pill" style="background:rgba(201,122,212,.15);color:var(--tier4);border:1px solid rgba(201,122,212,.3)">Tier IV — Elite</span>
+    </div>
+  </div>
+
+  <div class="inicio-section">
+    <div class="inicio-section-title">// ${es?'Funciones de la página':'Page Features'}</div>
+    <div class="features-list">
+      <div class="feature-item">
+        <span class="feature-icon">▶</span>
+        <div class="feature-text"><strong>${es?'Arsenal':'Arsenal'}</strong>${es?'Todas las armas del juego con sus estadísticas. Filtra por categoría, tier, rareza u ordena por DPS, TTK y más.':'All weapons with their stats. Filter by category, tier, rarity or sort by DPS, TTK and more.'}</div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">▶</span>
+        <div class="feature-text"><strong>Rankings</strong>${es?'Selecciona uno o varios modos a la vez — DPS, TTK, largo alcance, vs SPCs, disponibilidad y más. El score se combina automáticamente.':'Select one or multiple modes at once — DPS, TTK, long range, vs SPCs, availability and more. Scores are combined automatically.'}</div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">▶</span>
+        <div class="feature-text"><strong>${es?'Comparador — Stats':'Comparator — Stats'}</strong>${es?'Selecciona dos armas desde el Arsenal y compara sus estadísticas lado a lado. Verde gana, rojo pierde.':'Select two weapons from Arsenal and compare stats side by side. Green wins, red loses.'}</div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">▶</span>
+        <div class="feature-text"><strong>${es?'Comparador — Prueba de Disparo':'Comparator — Combat Test'}</strong>${es?'Simulación matemática de un enfrentamiento entre dos armas. HP configurable — útil para simular contra SPCs.':'Mathematical simulation of a fight between two weapons. Configurable HP — useful for simulating against SPCs.'}</div>
       </div>
     </div>
   </div>`;
 }
 
-function renderArsenalView() {
-  const contenedor = document.getElementById('contenedor');
-  contenedor.innerHTML = '';
-  const q = searchQuery.toLowerCase();
+function renderRanking(){
+  const panel=document.getElementById('rankingPanel');
 
-  for(const cat in ARMAS) {
-    if(currentCat!=='all' && cat!==currentCat) continue;
-    let armas = ARMAS[cat].filter(a => {
-      const ms = !q || a.nombre.toLowerCase().includes(q);
-      const mr = currentRareza==='all' || a.rareza===currentRareza;
-      return ms && mr;
-    });
-    if(!armas.length) continue;
-    if(currentSort!=='default') {
-      armas=[...armas].sort((a,b)=>{
-        if(currentSort==='dps_desc')      return calcDPS(b)-calcDPS(a);
-        if(currentSort==='dps_asc')       return calcDPS(a)-calcDPS(b);
-        if(currentSort==='ttk_asc')       return (calcTTK(a)??999999)-(calcTTK(b)??999999);
-        if(currentSort==='dano_desc')     return b.dano_cuerpo-a.dano_cuerpo;
-        if(currentSort==='cadencia_desc') return b.cadencia-a.cadencia;
-        return 0;
-      });
-    }
-    const div=document.createElement('div');
-    div.className='categoria';
-    div.innerHTML=`
-      <div class="categoria-header">
-        <h2>${CAT_LABELS[cat]||cat.replace(/_/g,' ')}</h2>
-        <span class="count">${armas.length} armas</span>
-      </div>
-      <div class="grid">${armas.map(a=>renderArma(a,cat)).join('')}</div>`;
-    contenedor.appendChild(div);
+  // checkboxes
+  const checks=Object.entries(RANK_MODES).map(([k,v])=>{
+    const on=activeRankModes.has(k);
+    return`<button class="rank-check-label${on?' checked':''}" onclick="toggleRankMode('${k}')">
+      <span class="rank-check-dot"></span>${v.label}
+    </button>`;
+  }).join('');
+
+  if(!activeRankModes.size){
+    panel.innerHTML=`<div class="rank-checks">${checks}</div><div class="rank-no-sel">// Selecciona al menos un modo</div>`;
+    return;
   }
 
-  if(!contenedor.children.length)
-    contenedor.innerHTML=`<div class="no-results">// NO SE ENCONTRARON ARMAS</div>`;
-}
+  // descripcion de modos activos
+  const desc=[...activeRankModes].map(k=>RANK_MODES[k].desc).join(' · ');
 
-function renderRanking() {
-  const panel=document.getElementById('rankingPanel');
-  const list=allArmas().map(a=>({...a,dps:calcDPS(a)})).sort((a,b)=>b.dps-a.dps);
-  const maxDPS=list[0].dps;
-  const rows=list.map((a,i)=>{
+  // score combinado: normalizar cada modo y sumar
+  const activeModes=[...activeRankModes];
+  let candidates=allArmas();
+  // si casual está activo, filtrar esos
+  if(activeRankModes.has('casual')) candidates=candidates.filter(a=>a.tier<=2&&['comun','poco_comun','inusual'].includes(a.rareza));
+
+  // para cada modo activo, normalizar scores
+  const perMode=activeModes.map(k=>{
+    const fn=RANK_MODES[k].scoreFn;
+    const vals=candidates.map(a=>fn(a));
+    const max=Math.max(...vals)||1, min=Math.min(...vals);
+    return candidates.map((_,i)=>max===min?1:(vals[i]-min)/(max-min));
+  });
+
+  const combined=candidates.map((a,ci)=>{
+    const s=activeModes.reduce((acc,_,mi)=>acc+perMode[mi][ci],0)/activeModes.length;
+    return{...a,_score:s};
+  }).sort((a,b)=>b._score-a._score);
+
+  const maxScore=combined[0]?._score||1;
+
+  const rows=combined.map((a,i)=>{
     const tc=TIER_COLORS[a.tier]||'#555';
-    const pct=((a.dps/maxDPS)*100).toFixed(1);
     const pc=i===0?'gold':i===1?'silver':i===2?'bronze':'';
-    return `<div class="ranking-row" style="--tier-color:${tc}">
+    const pct=(a._score/maxScore*100).toFixed(1);
+    const scoreDisp=activeModes.length===1
+      ?RANK_MODES[activeModes[0]].labelFn(a)
+      :(a._score*100).toFixed(1)+' pts';
+    return`<div class="ranking-row" style="--tier-color:${tc}">
       <span class="ranking-pos ${pc}">#${i+1}</span>
       <span class="ranking-nombre">${a.nombre}</span>
-      <span class="ranking-cat">${CAT_LABELS[a._cat]||a._cat}</span>
+      <span class="ranking-cat">${CAT_LABELS(a._cat)}</span>
       <div class="ranking-bar-bg"><div class="ranking-bar-fill" style="width:${pct}%"></div></div>
-      <span class="ranking-dps">${a.dps.toFixed(1)}</span>
+      <span class="ranking-score">${scoreDisp}</span>
     </div>`;
   }).join('');
-  panel.innerHTML=`<div class="ranking-title">// Ranking por DPS — daño por segundo (cuerpo)</div>${rows}`;
+
+  const title=activeModes.length===1?RANK_MODES[activeModes[0]].label:`Score Combinado (${activeModes.length} modos)`;
+  panel.innerHTML=`<div class="rank-checks">${checks}</div><div class="rank-active-desc">${desc}</div><div class="ranking-title">// ${title}</div>${rows}`;
 }
 
-function renderComparador() {
-  const panel=document.getElementById('comparadorPanel');
-  const slot1=compareSlots[0]||null, slot2=compareSlots[1]||null;
+function toggleRankMode(k){
+  if(activeRankModes.has(k)) activeRankModes.delete(k);
+  else activeRankModes.add(k);
+  renderRanking();
+}
 
-  let a1=null,a2=null;
-  if(slot1){const[c,n]=slot1.split('::');a1=findArma(c,n);}
-  if(slot2){const[c,n]=slot2.split('::');a2=findArma(c,n);}
+// ── COMPARADOR STATS ──
+function compColHTML(a,rival){
+  if(!a)return`<div class="comp-placeholder">// Selecciona un arma desde Arsenal</div>`;
+  const tc=TIER_COLORS[a.tier]||'#555';
+  const dps=efectivoDPS(a),ttk=calcTTK(a);
+  const rdps=rival?efectivoDPS(rival):null,rttk=rival?calcTTK(rival):null;
+  function cls(val,rval,hib=true){if(rval===null||rval===undefined)return'';const v=parseFloat(val)||0,r=parseFloat(rval)||0;if(v===r)return'';return(hib?(v>r):(v<r))?'win':'lose';}
+  const rows=[
+    ['Tier',`Tier ${TIER_ROMAN[a.tier]||a.tier}`,null,true],
+    ['Dmg cabeza',a.dano_cabeza,rival?.dano_cabeza,true],
+    ['Dmg cuerpo',a.dano_cuerpo,rival?.dano_cuerpo,true],
+    ['Cadencia',a.cadencia,rival?.cadencia,true],
+    ['Difusión',a.difusion,rival?.difusion,false],
+    ['DPS',dps.toFixed(1),rdps?.toFixed(1),true],
+    ['DPS Sostenido',calcDPSSostenido(a).toFixed(1),rival?calcDPSSostenido(rival).toFixed(1):null,true],
+    ['TTK (100hp)',fmtTTK(ttk),rttk!==null?fmtTTK(rttk):null,false],
+    ['Cargador',a.cargador,rival?.cargador,true],
+    ['Reserva',a.reserva_maxima,rival?.reserva_maxima,true],
+    ['Recoil X',a.recoil.x,rival?.recoil.x,false],
+    ['Recoil Y',a.recoil.y,rival?.recoil.y,false],
+  ];
+  if(a.balas_por_disparo!=null)rows.splice(3,0,['Balas/disparo',a.balas_por_disparo,null,true]);
+  const rowsHTML=rows.map(([lbl,val,rval,hib])=>`<div class="comp-stat-row"><span class="comp-stat-label">${lbl}</span><span class="comp-stat-val ${cls(val,rval,hib)}">${val}</span></div>`).join('');
+  return`<div class="comp-col" style="--tier-color:${tc}"><div class="comp-col-nombre">${a.nombre}</div><div class="badges" style="margin-bottom:10px">${badgeTier(a.tier)}${badgeRareza(a.rareza)}</div>${rowsHTML}</div>`;
+}
 
-  function colHTML(a,rival) {
-    if(!a) return `<div class="comp-placeholder">// Selecciona un arma desde Arsenal</div>`;
-    const tc=TIER_COLORS[a.tier]||'#555';
-    const dps=calcDPS(a), ttk=calcTTK(a);
-    const rdps=rival?calcDPS(rival):null, rttk=rival?calcTTK(rival):null;
-
-    function cls(val,rval,hib=true) {
-      if(rval===null||rval===undefined) return '';
-      const v=parseFloat(val)||0, r=parseFloat(rval)||0;
-      if(v===r) return '';
-      return (hib?(v>r):(v<r)) ? 'win' : 'lose';
-    }
-
-    const rows=[
-      ['Tier',`Tier ${TIER_ROMAN[a.tier]||a.tier}`,null,true],
-      ['Dmg cabeza',a.dano_cabeza,rival?.dano_cabeza,true],
-      ['Dmg cuerpo',a.dano_cuerpo,rival?.dano_cuerpo,true],
-      ['Cadencia',a.cadencia,rival?.cadencia,true],
-      ['Difusión',a.difusion,rival?.difusion,false],
-      ['DPS',dps.toFixed(1),rdps?.toFixed(1),true],
-      ['TTK (100hp)',fmtTTK(ttk),rttk!==null?fmtTTK(rttk):null,false],
-      ['Cargador',a.cargador,rival?.cargador,true],
-      ['Reserva',a.reserva_maxima,rival?.reserva_maxima,true],
-      ['Recoil X',a.recoil.x,rival?.recoil.x,false],
-      ['Recoil Y',a.recoil.y,rival?.recoil.y,false],
-    ];
-    if(a.balas_por_disparo!=null) rows.splice(3,0,['Balas/disparo',a.balas_por_disparo,null,true]);
-
-    const rowsHTML=rows.map(([lbl,val,rval,hib])=>`
-      <div class="comp-stat-row">
-        <span class="comp-stat-label">${lbl}</span>
-        <span class="comp-stat-val ${cls(val,rval,hib)}">${val}</span>
-      </div>`).join('');
-
-    return `<div class="comp-col" style="--tier-color:${tc}">
-      <div class="comp-col-nombre">${a.nombre}</div>
-      <div class="badges" style="margin-bottom:12px">${badgeTier(a.tier)}${badgeRareza(a.rareza)}</div>
-      ${rowsHTML}
-    </div>`;
+// ── SIMULACIÓN ──
+function simularCombate(a,b,hp){
+  hp=hp||HP;
+  let hpA=hp,hpB=hp;
+  let tickA=0,tickB=0;
+  const msPerBalaA=60000/a.cadencia;
+  const msPerBalaB=60000/b.cadencia;
+  const dmgA=(a.balas_por_disparo&&a.balas_por_disparo!=='TBA')?a.dano_cuerpo*a.balas_por_disparo*0.4:a.dano_cuerpo;
+  const dmgB=(b.balas_por_disparo&&b.balas_por_disparo!=='TBA')?b.dano_cuerpo*b.balas_por_disparo*0.4:b.dano_cuerpo;
+  const log=[];
+  let t=0;
+  const maxT=30000;
+  while(hpA>0&&hpB>0&&t<maxT){
+    let next=Math.min(tickA<=t?t:tickA,tickB<=t?t:tickB);
+    t=Math.max(t,next);
+    if(tickA<=t){hpB=Math.max(0,hpB-dmgA);log.push({t,who:'A',dmg:dmgA,hpA,hpB});tickA=t+msPerBalaA;if(hpB<=0)break;}
+    if(tickB<=t&&hpA>0&&hpB>0){hpA=Math.max(0,hpA-dmgB);log.push({t,who:'B',dmg:dmgB,hpA,hpB});tickB=t+msPerBalaB;if(hpA<=0)break;}
   }
-
-  const hint=compareSlots.length===0?'Haz click en dos armas para comparar':compareSlots.length===1?'Selecciona una segunda arma':'';
-  panel.innerHTML=`
-    <div class="comp-title">// Comparador <span class="comp-hint">${hint}</span></div>
-    <div class="comp-grid">
-      ${colHTML(a1,a2)}
-      <div class="comp-mid"><span class="comp-vs">VS</span></div>
-      ${colHTML(a2,a1)}
-    </div>`;
+  return{log,hpA:Math.max(0,hpA),hpB:Math.max(0,hpB),timeMs:t};
 }
 
-function setView(v) {
+function renderSimHTML(a,b){
+  if(!a||!b)return`<div class="comp-placeholder" style="grid-column:1/-1">// Selecciona 2 armas para simular</div>`;
+  const res=simularCombate(a,b,simHP);
+  const winner=res.hpA>0&&res.hpB<=0?'A':res.hpB>0&&res.hpA<=0?'B':'DRAW';
+  const hpAp=(res.hpA/simHP*100).toFixed(0);
+  const hpBp=(res.hpB/simHP*100).toFixed(0);
+  const hpAcol=res.hpA>simHP*0.5?'#78c97a':res.hpA>simHP*0.25?'#c8a84b':'#e0845b';
+  const hpBcol=res.hpB>simHP*0.5?'#78c97a':res.hpB>simHP*0.25?'#c8a84b':'#e0845b';
+  const logLines=res.log.slice(-40).map(l=>{
+    const who=l.who==='A'?a.nombre:b.nombre;
+    const cls=l.who==='A'?'hit-a':'hit-b';
+    return`<div class="sim-log-line ${cls}">[${(l.t/1000).toFixed(2)}s] ${who} → -${l.dmg.toFixed(1)} | HP A:${l.hpA.toFixed(0)} HP B:${l.hpB.toFixed(0)}</div>`;
+  }).join('');
+  const resClass=winner==='A'?'win-a':winner==='B'?'win-b':'draw';
+  const resText=winner==='A'?`▶ GANADOR: ${a.nombre}`:winner==='B'?`▶ GANADOR: ${b.nombre}`:'▶ EMPATE';
+  const tcA=TIER_COLORS[a.tier]||'#555', tcB=TIER_COLORS[b.tier]||'#555';
+  const hpOpts=[100,200,500,1000,2000].map(v=>`<option value="${v}"${v===simHP?' selected':''}>${v} HP</option>`).join('');
+  return`
+  <div class="sim-controls">
+    <select class="select-styled" onchange="simHP=parseInt(this.value);rerenderSim()">${hpOpts}</select>
+    <button class="sim-btn" onclick="rerenderSim()">↺ Volver a simular</button>
+  </div>
+  <div class="sim-note">HP del objetivo configurable — 40% impacto pellets escopetas, sin esquivar</div>
+  <div class="sim-side" style="--tier-color:${tcA}">
+    <div class="sim-name">${a.nombre}</div>
+    <div class="sim-hp-bar-bg"><div class="sim-hp-bar" style="width:${hpAp}%;background:${hpAcol}"></div></div>
+    <div class="sim-hp-text">${res.hpA.toFixed(0)} / ${simHP} HP</div>
+    <div class="sim-stat-mini"><span class="sim-stat-lbl">DPS efect.</span><span class="sim-stat-val">${efectivoDPS(a).toFixed(1)}</span></div>
+    <div class="sim-stat-mini"><span class="sim-stat-lbl">TTK (${simHP}hp)</span><span class="sim-stat-val">${fmtTTK(calcTTK(a,simHP))}</span></div>
+  </div>
+  <div class="sim-side" style="--tier-color:${tcB}">
+    <div class="sim-name">${b.nombre}</div>
+    <div class="sim-hp-bar-bg"><div class="sim-hp-bar" style="width:${hpBp}%;background:${hpBcol}"></div></div>
+    <div class="sim-hp-text">${res.hpB.toFixed(0)} / ${simHP} HP</div>
+    <div class="sim-stat-mini"><span class="sim-stat-lbl">DPS efect.</span><span class="sim-stat-val">${efectivoDPS(b).toFixed(1)}</span></div>
+    <div class="sim-stat-mini"><span class="sim-stat-lbl">TTK (${simHP}hp)</span><span class="sim-stat-val">${fmtTTK(calcTTK(b,simHP))}</span></div>
+  </div>
+  <div class="sim-log">${logLines||'<span style="color:#555">// sin disparos registrados</span>'}</div>
+  <div class="sim-result ${resClass}">${resText} — ${(res.timeMs/1000).toFixed(2)}s</div>`;
+}
+
+function rerenderSim(){
+  const [s1,s2]=compareSlots;
+  let a1=null,a2=null;
+  if(s1){const[c,n]=s1.split('::');a1=findArma(c,n);}
+  if(s2){const[c,n]=s2.split('::');a2=findArma(c,n);}
+  document.getElementById('simContent').innerHTML=renderSimHTML(a1,a2);
+}
+
+function renderComparador(){
+  const panel=document.getElementById('comparadorPanel');
+  const [s1,s2]=compareSlots;
+  let a1=null,a2=null;
+  if(s1){const[c,n]=s1.split('::');a1=findArma(c,n);}
+  if(s2){const[c,n]=s2.split('::');a2=findArma(c,n);}
+  const hint=compareSlots.length===0?'Selecciona 2 armas desde Arsenal':compareSlots.length===1?'Selecciona una segunda arma':'';
+  const modeTabs=`<div class="comp-mode-tabs">
+    <button class="comp-mode-tab${compMode==='stats'?' active':''}" onclick="setCompMode('stats')">Stats</button>
+    <button class="comp-mode-tab${compMode==='sim'?' active':''}" onclick="setCompMode('sim')">Prueba de Disparo</button>
+  </div>`;
+  let content='';
+  if(compMode==='stats'){
+    content=`<div class="comp-grid">${compColHTML(a1,a2)}<div class="comp-mid"><span class="comp-vs">VS</span></div>${compColHTML(a2,a1)}</div>`;
+  } else {
+    content=`<div class="sim-wrap" id="simContent">${renderSimHTML(a1,a2)}</div>`;
+  }
+  panel.innerHTML=`<div class="comp-title">// Comparador <span class="comp-hint">${hint}</span></div>${modeTabs}${content}`;
+}
+
+function setCompMode(m){compMode=m;renderComparador();}
+
+// ── VIEWS ──
+function setView(v){
   currentView=v;
   document.querySelectorAll('.view-tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));
-  document.getElementById('contenedor').style.display       = v==='armas'      ? '':'none';
-  document.getElementById('rankingPanel').style.display     = v==='ranking'    ? 'block':'none';
-  document.getElementById('comparadorPanel').style.display  = v==='comparador' ? 'block':'none';
-  document.querySelector('.toolbar').style.display          = v==='armas' ? '':'none';
-  document.querySelector('.searchbar-wrap').style.display   = v==='armas' ? '':'none';
-  if(v==='ranking')    renderRanking();
-  if(v==='comparador') renderComparador();
-  if(v==='armas')      renderArsenalView();
+  document.getElementById('contenedor').style.display=v==='armas'?'':'none';
+  document.getElementById('inicioPanel').style.display=v==='inicio'?'block':'none';
+  document.getElementById('rankingPanel').style.display=v==='ranking'?'block':'none';
+  document.getElementById('comparadorPanel').style.display=v==='comparador'?'block':'none';
+  document.getElementById('toolbar').style.display=v==='armas'?'':'none';
+  document.getElementById('searchbarWrap').style.display=v==='armas'?'':'none';
+  if(v==='inicio')    renderInicio();
+  if(v==='ranking')   renderRanking();
+  if(v==='comparador')renderComparador();
+  if(v==='armas')     renderArsenalView();
 }
 
-// build category toolbar
+// ── BUILD TOOLBAR ──
 const toolbar=document.getElementById('toolbar');
 for(const cat in ARMAS){
-  const btn=document.createElement('button');
-  btn.className='filter-btn';
-  btn.dataset.filter=cat;
-  btn.textContent=CAT_LABELS[cat]||cat;
-  toolbar.appendChild(btn);
+  const btn=document.createElement('button');btn.className='filter-btn';btn.dataset.filter=cat;btn.textContent=CAT_LABELS(cat);toolbar.appendChild(btn);
 }
-
 toolbar.addEventListener('click',e=>{
-  const btn=e.target.closest('.filter-btn');
-  if(!btn) return;
+  const btn=e.target.closest('.filter-btn');if(!btn)return;
   toolbar.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  currentCat=btn.dataset.filter;
-  renderArsenalView();
+  btn.classList.add('active');currentCat=btn.dataset.filter;renderArsenalView();
 });
 
 document.getElementById('searchInput').addEventListener('input',e=>{searchQuery=e.target.value;renderArsenalView();});
 document.getElementById('rarezaFilter').addEventListener('change',e=>{currentRareza=e.target.value;renderArsenalView();});
+document.getElementById('tierFilter').addEventListener('change',e=>{currentTier=e.target.value;renderArsenalView();});
 document.getElementById('sortFilter').addEventListener('change',e=>{currentSort=e.target.value;renderArsenalView();});
 document.getElementById('btnComparar').addEventListener('click',()=>setView('comparador'));
 document.querySelectorAll('.view-tab').forEach(t=>t.addEventListener('click',()=>setView(t.dataset.view)));
 
-setView('armas');
+setView('inicio');
 </script>
 </body>
 </html>
