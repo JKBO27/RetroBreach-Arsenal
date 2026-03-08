@@ -1,636 +1,635 @@
-RBreach Armas Recopilación 07-03-2026
-Creditos a JKB_O27
-
-Esta recopilación fue extraida del apartado de armas que se encuentra en el lobby del juego
-
----
-PISTOLAS
----
-
-- MP443 
-Candencia de disparo: 425
-Difusion: 1.4
-Rebote:
-X 0.6
-Y 1.2
-Daño de Cabeza: 11.25
-Daño corporal: 9 
-Capacidad de municion: 15
-Capacidad de Reserva: 15
-
-- G17
-Candencia de disparo: 425
-Difusion: 1.2
-Rebote:
-X 0.6
-Y 1.2
-Daño de Cabeza: 11.875
-Daño corporal: 9.5
-Capacidad de municion: 17
-Capacidad de Reserva: 17
-
-- Beretta M9
-Candencia de disparo: 425
-Difusion: 14 
-Rebote:
-X 0.6
-Y 1.2
-Daño de Cabeza: 13.75
-Daño corporal: 11
-Capacidad de municion: 15
-Capacidad de Reserva: 15
-
-- Makarov
-Candencia de disparo: 425
-Difusion: 1.4
-Rebote: 
-X 0.6
-Y 1.2
-Daño de Cabeza: 15.625
-Daño corporal: 12.5
-Capacidad de municion: 8
-Capacidad de Reserva: 8
-
-
-- Five-Seven
-Candencia de disparo: 550
-Difusion: 1.5
-Rebote:
-X 1
-Y 1
-Daño de Cabeza: 12.5
-Daño corporal: 10
-Capacidad de municion: 20
-Capacidad de Reserva: 20
-
-- M1911
-Candencia de disparo: 400
-Difusion: 1.6
-Rebote:
-X 0.8
-Y 1.4
-Daño de Cabeza: 17.5
-Daño corporal: 14
-Capacidad de municion: 8
-Capacidad de Reserva: 8
-
-- USP
-Candencia de disparo: 425
-Difusion: 1.3
-Rebote:
-X 1
-Y 0.8
-Daño de Cabeza: 13.125
-Daño corporal: 10.5
-Capacidad de municion: 12
-Capacidad de Reserva: 12
-
-- Beretta 93R
-Esta arma no la he visto en mi vida, nunca
-
-Candencia de disparo: 700
-Difusion: 1.4
-Rebote:
-X 0.6
-Y 1.2
-Daño de Cabeza: 12.5
-Daño corporal: 10
-Capacidad de municion: 21 
-Capacidad de Reserva: 21
-
-- Uzi micro
-Arma malísima que no se la recomiendo a nadie 
-
-Candencia de disparo: 1500
-Difusion: 4 
-Rebote:
-X 1 
-Y 2 
-Daño de Cabeza: 10
-Daño corporal: 8 
-Capacidad de municion: 20
-Capacidad de Reserva: 20
-
-- RSH-12 
-Candencia de disparo: 150
-Difusion: 1
-Rebote:
-X 4
-Y 5
-Daño de Cabeza: 42.5
-Daño corporal: 34
-Capacidad de municion: 5
-Capacidad de Reserva: 5
-
-- Desert Eagle
-Candencia de disparo: 300
-Difusion: 1.5
-Rebote:
-X 1.5
-Y 2.5
-Daño de Cabeza: 37.5
-Daño corporal: 30
-Capacidad de municion: 7
-Capacidad de Reserva: 7
-
----
-ARMAS SUB-MACHINAS
----
-
-- P90
-Candencia de disparo: 950
-Difusion: 1.75
-Rebote:
-X 1.2
-Y 1.3
-Daño de Cabeza: 11.875
-Daño corporal: 9.5
-Capacidad de municion: 50
-Capacidad de Reserva: 50
-
-- MP5 
-Candencia de disparo: 800
-Difusion: 1.9
-Rebote:
-X 1.3
-Y 1.1
-Daño de Cabeza: 13.75
-Daño corporal: 11
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- MAC-10
-Todos sabemos que las tipo uzi son malísimas
-
-Candencia de disparo: 1000
-Difusion: 3
-Rebote:
-X 1
-Y 1.2
-Daño de Cabeza: 7.5
-Daño corporal: 6
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- Bizon
-Candencia de disparo: 700
-Difusion: 1.5
-Rebote:
-X 1.6
-Y 1.1
-Daño de Cabeza: 10
-Daño corporal: 8
-Capacidad de municion: 64
-Capacidad de Reserva: 64
-
-- MP5SD
-Candencia de disparo: 800
-Difusion: 1.9
-Rebote:
-X 1.3
-Y 1.1
-Daño de Cabeza: 13.75
-Daño corporal: 11
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- Uzi
-"Normal" ( es Tier I )
-
-Candencia de disparo: 720
-Difusion: 1.3
-Rebote:
-X 1.25
-Y 0.85
-Daño de Cabeza: 11.25
-Daño corporal: 9
-Capacidad de municion: 20
-Capacidad de Reserva: 20
-
-- UMP-45
-Candencia de disparo: 650
-Difusion: 1.4
-Rebote:
-X 1.1
-Y 1.2
-Daño de Cabeza: 16.25
-Daño corporal: 13
-Capacidad de municion: 25
-Capacidad de Reserva: 25
-
-- MP7A1
-Candencia de disparo: 1000
-Difusion: 2.2
-Rebote:
-X 1.2
-Y 1.1
-Daño de Cabeza: 13.75
-Daño corporal: 11
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- Kriss Vector
-Por el nombre de una la arma no la vi buena personalmente
-
-Candencia de disparo: 1200 
-Difusion: 2.4
-Rebote:
-X 1.5
-Y 1.5
-Daño de Cabeza: 9.375
-Daño corporal: 7.5
-Capacidad de municion: 32
-Capacidad de Reserva: 32
-
-- MP9
-Candencia de disparo: 1000
-Difusion: 1.5
-Rebote:
-X 1.2
-Y 1.1
-Daño de Cabeza: 12.5
-Daño corporal: 10
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
----
-ESCOPETAS
----
-ojo, el daño es por bala
-
-- Barril Doble
-Candencia de disparo: 425
-Difusion: 4
-Rebote:
-X 2 
-Y 4.5
-Balas: 9
-Daño de Cabeza: 12.5
-Daño corporal: 10
-Capacidad de municion: 2
-Capacidad de Reserva: 2
-
-- Mossberg
-Candencia de disparo: 100
-Difusion: 3
-Rebote:
-X 2
-Y 2.2
-Balas: 8
-Daño de Cabeza: 11.25
-Daño corporal: 9
-Capacidad de municion: 7
-Capacidad de Reserva: 6
-
-- M4 Super 90
-Candencia de disparo: 225
-Difusion: 5
-Rebote:
-X 1.4
-Y 2.5
-Balas: 10
-Daño de Cabeza: 10
-Daño corporal: 8
-Capacidad de municion: 8
-Capacidad de Reserva: 8
-
-- UTS-15
-Candencia de disparo: 100
-Difusion: 3.5
-Rebote:
-X 3
-Y 3
-Balas: 8
-Daño de Cabeza: 15.625
-Daño corporal: 12.5
-Capacidad de municion: 7
-Capacidad de Reserva: 7
-
-- Saiga-12
-Candencia de disparo: 250
-Difusion: 4
-Rebote:
-X 2
-Y 4
-Balas: TBA
-Daño de Cabeza: 8.125
-Daño corporal: 6.5
-Capacidad de municion: 8
-Capacidad de Reserva: 8
-
-- KS-23M
-Candencia de disparo: 80
-Difusion: 5
-Rebote:
-X 3
-Y 4 
-Balas: 9
-Daño de Cabeza: 13.125
-Daño corporal: 10.5
-Capacidad de municion: 4 
-Capacidad de Reserva: 4
-
-- SPAS-12
-Candencia de disparo: 320
-Difusion:  5
-Rebote:
-X 3.5
-Y 2.2 
-Balas: 11
-Daño de Cabeza: 10
-Daño corporal: 8
-Capacidad de municion: 8
-Capacidad de Reserva: 8
-
-- AA-12
-Candencia de disparo: 350
-Difusion: 4
-Rebote:
-X 1.7
-Y 2
-Balas: 8
-Daño de Cabeza: 6.25
-Daño corporal: 5
-Capacidad de municion: 8
-Capacidad de Reserva: 8
-
-- USAS-12
-Candencia de disparo: 450
-Difusion: 5 
-Rebote:
-X 2.3
-Y 2.8
-Balas: 8 
-Daño de Cabeza: 7.5
-Daño corporal: 6
-Capacidad de municion: 10
-Capacidad de Reserva: 10
-
----
-FUSILES DE ASALTO
----
-
-- Scar-L
-Me gusta la arma, es de las que mas uso, pero no me gusta mucho su cadencia ni mucho menos su rebote
-
-Candencia de disparo: 625
-Difusion: 0.9
-Rebote:
-X 2.5
-Y 1.5
-Daño de Cabeza: 14.375
-Daño corporal: 11.5
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- AKS-74U
-Candencia de disparo: 700
-Difusion: 1.1
-Rebote:
-X 1
-Y 2 
-Daño de Cabeza: 13.75
-Daño corporal: 11
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- G36
-Candencia de disparo: 750
-Difusion: 1.3
-Rebote: 
-X 1.8
-Y 1.2 
-Daño de Cabeza: 14.375
-Daño corporal: 11
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- SG-552
-Candencia de disparo: 650
-Difusion: 1
-Rebote:
-X 1.8
-Y 1.6
-Daño de Cabeza: 14.375
-Daño corporal: 11.5
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- M16
-Me esperaba mas de esta arma
-
-Candencia de disparo: 800
-Difusion: 0.8 
-Rebote:
-X 1.7
-Y 1.4
-Daño de Cabeza: 9.375
-Daño corporal: 7.5
-Capacidad de municion: 20
-Capacidad de Reserva: 20
-
-- M4A1
-Candencia de disparo: 750
-Difusion: 1
-Rebote:
-X 1.3
-Y 1.5
-Daño de Cabeza: 13.125
-Daño corporal: 10.5
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- L85A2
-que nombre mas raro
-
-Candencia de disparo: 700
-Difusion: 1.25
-Rebote:
-X 1.2
-Y 1.6
-Daño de Cabeza: 17.5
-Daño corporal: 14
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- Honey Badger
-No se, es mid-good
-
-Candencia de disparo: 800
-Difusion: 1 
-Rebote: 
-X 1.95
-Y 2.15
-Daño de Cabeza: 16.25
-Daño corporal: 13
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- AK-74
-No era ak-47???
-
-Candencia de disparo: 700
-Difusion: 1
-Rebote:
-X 1
-Y 1.75
-Daño de Cabeza: 15
-Daño corporal: 12
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- FAMAS
-la que mas 'fama' tiene xddd
-
-Candencia de disparo: 900
-Difusion: 1 
-Rebote:
-X 1.5
-Y 1.45 
-Daño de Cabeza: 13.75
-Daño corporal: 11
-Capacidad de municion: 25
-Capacidad de Reserva: 25
-
-- AUG
-No la he probado mucho, pero sueño con tenerla
-
-Candencia de disparo: 800
-Difusion: 0.75
-Rebote:
-X 1.2
-Y 1.6
-Daño de Cabeza: 15
-Daño corporal: 12
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- F2000
-Candencia de disparo: 1000
-Difusion: 1.25
-Rebote:
-X 1.9
-Y 1.9
-Daño de Cabeza: 13.75
-Daño corporal: 11
-Capacidad de municion: 30
-Capacidad de Reserva: 30 
-
-- AS VAL
-No la conozco ni la he visto
-
-Candencia de disparo: 800
-Difusion: 1.1
-Rebote:
-X 1.5
-Y 1.75
-Daño de Cabeza: 13.75 
-Daño corporal: 11
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- AKM
-que horrible rebote, a quien le va a gustar esta arma
-
-Candencia de disparo: 650
-Difusion: 0.95
-Rebote:
-X 2
-Y 3
-Daño de Cabeza: 18.125
-Daño corporal: 14.5
-Capacidad de municion: 30
-Capacidad de Reserva: 30 
-
-- HK416
-Cuando la probe por primera vez, me encanto
-
-Candencia de disparo: 850
-Difusion: 1 
-Rebote:
-X 1.4
-Y 1.3
-Daño de Cabeza: 13.125
-Daño corporal: 10
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
-- XM8
-que es esta arma tan rara, ni siquiera se como se consigue :,vvv
-
-Candencia de disparo: 800
-Difusion: 1.75
-Rebote:
-X 1.4
-Y 1.6
-Daño de Cabeza: 17.5
-Daño corporal: 14
-Capacidad de municion: 30
-Capacidad de Reserva: 30
-
----
-Fusiles de combate
----
-
-- Scar-H
-Candencia de disparo: 550
-Difusion: 0.8
-Rebote:
-X 2.5 
-Y 2.3
-Daño de Cabeza: 25
-Daño corporal: 20
-Capacidad de municion: 20
-Capacidad de Reserva: 20
-
-- ASH-12
-Candencia de disparo: 600
-Difusion: 1.25
-Rebote:
-X 3.4
-Y 4 
-Daño de Cabeza: 28.75 
-Daño corporal: 23
-Capacidad de municion: 20
-Capacidad de Reserva: 20
-
-- Mk14 EBR
-Esta arma tampoco la conozco
-
-Candencia de disparo: 600
-Difusion: 1
-Rebote:
-X 2
-Y 2 
-Daño de Cabeza: 22.5
-Daño corporal: 18 
-Capacidad de municion: 20
-Capacidad de Reserva: 20
-
----
-Armas ligeras
----
-
-- RPK
-Candencia de disparo: 650 
-Difusion: 0.85 
-Rebote: 
-X 1.9 
-Y 2.8
-Daño de Cabeza: 18.75
-Daño corporal: 15
-Capacidad de municion: 45
-Capacidad de Reserva: 45
-
-- M249
-te juro que cuando la tuve me sentí imponente por lo grande que era
-
-Candencia de disparo:
-Difusion:
-Rebote:
-X
-Y
-Daño de Cabeza:
-Daño corporal:
-Capacidad de municion:
-Capacidad de Reserva:
+{
+  "pistolas": [
+    {
+      "nombre": "MP443",
+      "cadencia": 425,
+      "difusion": 1.4,
+      "recoil": { "x": 0.6, "y": 1.2 },
+      "dano_cabeza": 11.25,
+      "dano_cuerpo": 9,
+      "cargador": 15,
+      "reserva_maxima": 60,
+      "tier": 1,
+      "rareza": "poco_comun"
+    },
+    {
+      "nombre": "G17",
+      "cadencia": 425,
+      "difusion": 1.2,
+      "recoil": { "x": 0.6, "y": 1.2 },
+      "dano_cabeza": 11.875,
+      "dano_cuerpo": 9.5,
+      "cargador": 17,
+      "reserva_maxima": 68,
+      "tier": 1,
+      "rareza": "comun"
+    },
+    {
+      "nombre": "Beretta M9",
+      "cadencia": 425,
+      "difusion": 1.4,
+      "recoil": { "x": 0.6, "y": 1.2 },
+      "dano_cabeza": 13.75,
+      "dano_cuerpo": 11,
+      "cargador": 15,
+      "reserva_maxima": 60,
+      "tier": 1,
+      "rareza": "comun"
+    },
+    {
+      "nombre": "Makarov",
+      "cadencia": 425,
+      "difusion": 1.4,
+      "recoil": { "x": 0.6, "y": 1.2 },
+      "dano_cabeza": 15.625,
+      "dano_cuerpo": 12.5,
+      "cargador": 8,
+      "reserva_maxima": 32,
+      "tier": 1,
+      "rareza": "N/A"
+    },
+    {
+      "nombre": "Five-Seven",
+      "cadencia": 550,
+      "difusion": 1.5,
+      "recoil": { "x": 1.0, "y": 1.0 },
+      "dano_cabeza": 12.5,
+      "dano_cuerpo": 10,
+      "cargador": 20,
+      "reserva_maxima": 80,
+      "tier": 2,
+      "rareza": "comun"
+    },
+    {
+      "nombre": "M1911",
+      "cadencia": 400,
+      "difusion": 1.6,
+      "recoil": { "x": 0.8, "y": 1.4 },
+      "dano_cabeza": 17.5,
+      "dano_cuerpo": 14,
+      "cargador": 8,
+      "reserva_maxima": 32,
+      "tier": 2,
+      "rareza": "comun"
+    },
+    {
+      "nombre": "USP",
+      "cadencia": 425,
+      "difusion": 1.3,
+      "recoil": { "x": 1.0, "y": 0.8 },
+      "dano_cabeza": 13.125,
+      "dano_cuerpo": 10.5,
+      "cargador": 12,
+      "reserva_maxima": 48,
+      "tier": 2,
+      "rareza": "comun"
+    },
+    {
+      "nombre": "Beretta 93R",
+      "cadencia": 700,
+      "difusion": 1.4,
+      "recoil": { "x": 0.6, "y": 1.2 },
+      "dano_cabeza": 12.5,
+      "dano_cuerpo": 10,
+      "cargador": 21,
+      "reserva_maxima": 60,
+      "tier": 3,
+      "rareza": "N/A"
+    },
+    {
+      "nombre": "Uzi Micro",
+      "cadencia": 1500,
+      "difusion": 4.0,
+      "recoil": { "x": 1.0, "y": 2.0 },
+      "dano_cabeza": 10,
+      "dano_cuerpo": 8,
+      "cargador": 20,
+      "reserva_maxima": 60,
+      "tier": 3,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "RSH-12",
+      "cadencia": 150,
+      "difusion": 1.0,
+      "recoil": { "x": 4.0, "y": 5.0 },
+      "dano_cabeza": 42.5,
+      "dano_cuerpo": 34,
+      "cargador": 5,
+      "reserva_maxima": 20,
+      "tier": 3,
+      "rareza": "rara"
+    },
+    {
+      "nombre": "Desert Eagle",
+      "cadencia": 300,
+      "difusion": 1.5,
+      "recoil": { "x": 1.5, "y": 2.5 },
+      "dano_cabeza": 37.5,
+      "dano_cuerpo": 30,
+      "cargador": 7,
+      "reserva_maxima": 28,
+      "tier": 3,
+      "rareza": "inusual"
+    }
+  ],
+  "submachine_guns": [
+    {
+      "nombre": "P90",
+      "cadencia": 950,
+      "difusion": 1.75,
+      "recoil": { "x": 1.2, "y": 1.3 },
+      "dano_cabeza": 11.875,
+      "dano_cuerpo": 9.5,
+      "cargador": 50,
+      "reserva_maxima": 150,
+      "tier": 2,
+      "rareza": "rara"
+    },
+    {
+      "nombre": "MP5",
+      "cadencia": 800,
+      "difusion": 1.9,
+      "recoil": { "x": 1.3, "y": 1.1 },
+      "dano_cabeza": 13.75,
+      "dano_cuerpo": 11,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 2,
+      "rareza": "inusual"
+    },
+    {
+      "nombre": "MAC-10",
+      "cadencia": 1000,
+      "difusion": 3.0,
+      "recoil": { "x": 1.0, "y": 1.2 },
+      "dano_cabeza": 7.5,
+      "dano_cuerpo": 6,
+      "cargador": 30,
+      "reserva_maxima": 80,
+      "tier": 1,
+      "rareza": "N/A"
+    },
+    {
+      "nombre": "Bizon",
+      "cadencia": 700,
+      "difusion": 1.5,
+      "recoil": { "x": 1.6, "y": 1.1 },
+      "dano_cabeza": 10,
+      "dano_cuerpo": 8,
+      "cargador": 64,
+      "reserva_maxima": 128,
+      "tier": 2,
+      "rareza": "rara"
+    },
+    {
+      "nombre": "MP5SD",
+      "cadencia": 800,
+      "difusion": 1.9,
+      "recoil": { "x": 1.3, "y": 1.1 },
+      "dano_cabeza": 13.75,
+      "dano_cuerpo": 11,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 3,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "Uzi",
+      "cadencia": 720,
+      "difusion": 1.3,
+      "recoil": { "x": 1.25, "y": 0.85 },
+      "dano_cabeza": 11.25,
+      "dano_cuerpo": 9,
+      "cargador": 20,
+      "reserva_maxima": 80,
+      "tier": 1,
+      "rareza": "inusual"
+    },
+    {
+      "nombre": "UMP-45",
+      "cadencia": 650,
+      "difusion": 1.4,
+      "recoil": { "x": 1.1, "y": 1.2 },
+      "dano_cabeza": 16.25,
+      "dano_cuerpo": 13,
+      "cargador": 25,
+      "reserva_maxima": 120,
+      "tier": 2,
+      "rareza": "poco_comun"
+    },
+    {
+      "nombre": "MP7A1",
+      "cadencia": 1000,
+      "difusion": 2.2,
+      "recoil": { "x": 1.2, "y": 1.1 },
+      "dano_cabeza": 13.75,
+      "dano_cuerpo": 11,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 2,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "Kriss Vector",
+      "cadencia": 1200,
+      "difusion": 2.4,
+      "recoil": { "x": 1.5, "y": 1.5 },
+      "dano_cabeza": 9.375,
+      "dano_cuerpo": 7.5,
+      "cargador": 32,
+      "reserva_maxima": 100,
+      "tier": 2,
+      "rareza": "inusual"
+    },
+    {
+      "nombre": "MP9",
+      "cadencia": 1000,
+      "difusion": 1.5,
+      "recoil": { "x": 1.2, "y": 1.1 },
+      "dano_cabeza": 12.5,
+      "dano_cuerpo": 10,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 2,
+      "rareza": "inusual"
+    }
+  ],
+  "escopetas": [
+    {
+      "nombre": "Barril Doble",
+      "cadencia": 425,
+      "difusion": 4.0,
+      "recoil": { "x": 2.0, "y": 4.5 },
+      "balas_por_disparo": 9,
+      "dano_cabeza": 12.5,
+      "dano_cuerpo": 10,
+      "cargador": 2,
+      "reserva_maxima": 8,
+      "tier": 1,
+      "rareza": "N/A"
+    },
+    {
+      "nombre": "Mossberg",
+      "cadencia": 100,
+      "difusion": 3.0,
+      "recoil": { "x": 2.0, "y": 2.2 },
+      "balas_por_disparo": 8,
+      "dano_cabeza": 11.25,
+      "dano_cuerpo": 9,
+      "cargador": 7,
+      "reserva_maxima": 28,
+      "tier": 2,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "M4 Super 90",
+      "cadencia": 225,
+      "difusion": 5.0,
+      "recoil": { "x": 1.4, "y": 2.5 },
+      "balas_por_disparo": 10,
+      "dano_cabeza": 10,
+      "dano_cuerpo": 8,
+      "cargador": 8,
+      "reserva_maxima": 32,
+      "tier": 3,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "UTS-15",
+      "cadencia": 100,
+      "difusion": 3.5,
+      "recoil": { "x": 3.0, "y": 3.0 },
+      "balas_por_disparo": 8,
+      "dano_cabeza": 15.625,
+      "dano_cuerpo": 12.5,
+      "cargador": 7,
+      "reserva_maxima": 28,
+      "tier": 4,
+      "rareza": "N/A"
+    },
+    {
+      "nombre": "Saiga-12",
+      "cadencia": 250,
+      "difusion": 4.0,
+      "recoil": { "x": 2.0, "y": 4.0 },
+      "balas_por_disparo": "TBA",
+      "dano_cabeza": 8.125,
+      "dano_cuerpo": 6.5,
+      "cargador": 8,
+      "reserva_maxima": 32,
+      "tier": 3,
+      "rareza": "N/A"
+    },
+    {
+      "nombre": "KS-23M",
+      "cadencia": 80,
+      "difusion": 5.0,
+      "recoil": { "x": 3.0, "y": 4.0 },
+      "balas_por_disparo": 9,
+      "dano_cabeza": 13.125,
+      "dano_cuerpo": 10.5,
+      "cargador": 4,
+      "reserva_maxima": 16,
+      "tier": 4,
+      "rareza": "N/A"
+    },
+    {
+      "nombre": "SPAS-12",
+      "cadencia": 320,
+      "difusion": 5.0,
+      "recoil": { "x": 3.5, "y": 2.2 },
+      "balas_por_disparo": 11,
+      "dano_cabeza": 10,
+      "dano_cuerpo": 8,
+      "cargador": 8,
+      "reserva_maxima": 32,
+      "tier": 4,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "AA-12",
+      "cadencia": 350,
+      "difusion": 4.0,
+      "recoil": { "x": 1.7, "y": 2.0 },
+      "balas_por_disparo": 8,
+      "dano_cabeza": 6.25,
+      "dano_cuerpo": 5,
+      "cargador": 8,
+      "reserva_maxima": 32,
+      "tier": 4,
+      "rareza": "N/A"
+    },
+    {
+      "nombre": "USAS-12",
+      "cadencia": 450,
+      "difusion": 5.0,
+      "recoil": { "x": 2.3, "y": 2.8 },
+      "balas_por_disparo": 8,
+      "dano_cabeza": 7.5,
+      "dano_cuerpo": 6,
+      "cargador": 10,
+      "reserva_maxima": 10,
+      "tier": 4,
+      "rareza": "N/A"
+    }
+  ],
+  "fusiles_asalto": [
+    {
+      "nombre": "Scar-L",
+      "cadencia": 625,
+      "difusion": 0.9,
+      "recoil": { "x": 2.5, "y": 1.5 },
+      "dano_cabeza": 14.375,
+      "dano_cuerpo": 11.5,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 3,
+      "rareza": "inusual"
+    },
+    {
+      "nombre": "AKS-74U",
+      "cadencia": 700,
+      "difusion": 1.1,
+      "recoil": { "x": 1.0, "y": 2.0 },
+      "dano_cabeza": 13.75,
+      "dano_cuerpo": 11,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 1,
+      "rareza": "TBA"
+    },
+    {
+      "nombre": "G36",
+      "cadencia": 750,
+      "difusion": 1.3,
+      "recoil": { "x": 1.8, "y": 1.2 },
+      "dano_cabeza": 14.375,
+      "dano_cuerpo": 11,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 2,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "SG-552",
+      "cadencia": 650,
+      "difusion": 1.0,
+      "recoil": { "x": 1.8, "y": 1.6 },
+      "dano_cabeza": 14.375,
+      "dano_cuerpo": 11.5,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 2,
+      "rareza": "rara"
+    },
+    {
+      "nombre": "M16",
+      "cadencia": 800,
+      "difusion": 0.8,
+      "recoil": { "x": 1.7, "y": 1.4 },
+      "dano_cabeza": 9.375,
+      "dano_cuerpo": 7.5,
+      "cargador": 20,
+      "reserva_maxima": 80,
+      "tier": 1,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "M4A1",
+      "cadencia": 750,
+      "difusion": 1.0,
+      "recoil": { "x": 1.3, "y": 1.5 },
+      "dano_cabeza": 13.125,
+      "dano_cuerpo": 10.5,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 2,
+      "rareza": "inusual"
+    },
+    {
+      "nombre": "L85A2",
+      "cadencia": 700,
+      "difusion": 1.25,
+      "recoil": { "x": 1.2, "y": 1.6 },
+      "dano_cabeza": 17.5,
+      "dano_cuerpo": 14,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 3,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "Honey Badger",
+      "cadencia": 800,
+      "difusion": 1.0,
+      "recoil": { "x": 1.95, "y": 2.15 },
+      "dano_cabeza": 16.25,
+      "dano_cuerpo": 13,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 4,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "AK-74",
+      "cadencia": 700,
+      "difusion": 1.0,
+      "recoil": { "x": 1.0, "y": 1.75 },
+      "dano_cabeza": 15,
+      "dano_cuerpo": 12,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 2,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "FAMAS",
+      "cadencia": 900,
+      "difusion": 1.0,
+      "recoil": { "x": 1.5, "y": 1.45 },
+      "dano_cabeza": 13.75,
+      "dano_cuerpo": 11,
+      "cargador": 25,
+      "reserva_maxima": 100,
+      "tier": 2,
+      "rareza": "rara"
+    },
+    {
+      "nombre": "AUG",
+      "cadencia": 800,
+      "difusion": 0.75,
+      "recoil": { "x": 1.2, "y": 1.6 },
+      "dano_cabeza": 15,
+      "dano_cuerpo": 12,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 4,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "F2000",
+      "cadencia": 1000,
+      "difusion": 1.25,
+      "recoil": { "x": 1.9, "y": 1.9 },
+      "dano_cabeza": 13.75,
+      "dano_cuerpo": 11,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 3,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "AS VAL",
+      "cadencia": 800,
+      "difusion": 1.1,
+      "recoil": { "x": 1.5, "y": 1.75 },
+      "dano_cabeza": 13.75,
+      "dano_cuerpo": 11,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 4,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "AKM",
+      "cadencia": 650,
+      "difusion": 0.95,
+      "recoil": { "x": 2.0, "y": 3.0 },
+      "dano_cabeza": 18.125,
+      "dano_cuerpo": 14.5,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 3,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "HK416",
+      "cadencia": 850,
+      "difusion": 1.0,
+      "recoil": { "x": 1.4, "y": 1.3 },
+      "dano_cabeza": 13.125,
+      "dano_cuerpo": 10,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 2,
+      "rareza": "inusual"
+    },
+    {
+      "nombre": "XM8",
+      "cadencia": 800,
+      "difusion": 1.75,
+      "recoil": { "x": 1.4, "y": 1.6 },
+      "dano_cabeza": 17.5,
+      "dano_cuerpo": 14,
+      "cargador": 30,
+      "reserva_maxima": 120,
+      "tier": 3,
+      "rareza": "N/A"
+    }
+  ],
+  "fusiles_combate": [
+    {
+      "nombre": "Scar-H",
+      "cadencia": 550,
+      "difusion": 0.8,
+      "recoil": { "x": 2.5, "y": 2.3 },
+      "dano_cabeza": 25,
+      "dano_cuerpo": 20,
+      "cargador": 20,
+      "reserva_maxima": 80,
+      "tier": 4,
+      "rareza": "rara"
+    },
+    {
+      "nombre": "ASH-12",
+      "cadencia": 600,
+      "difusion": 1.25,
+      "recoil": { "x": 3.4, "y": 4.0 },
+      "dano_cabeza": 28.75,
+      "dano_cuerpo": 23,
+      "cargador": 20,
+      "reserva_maxima": 80,
+      "tier": 4,
+      "rareza": "TBA"
+    },
+    {
+      "nombre": "Mk14 EBR",
+      "cadencia": 600,
+      "difusion": 1.0,
+      "recoil": { "x": 2.0, "y": 2.0 },
+      "dano_cabeza": 22.5,
+      "dano_cuerpo": 18,
+      "cargador": 20,
+      "reserva_maxima": 80,
+      "tier": 4,
+      "rareza": "TBA"
+    }
+  ],
+  "armas_ligeras": [
+    {
+      "nombre": "RPK",
+      "cadencia": 650,
+      "difusion": 0.85,
+      "recoil": { "x": 1.9, "y": 2.8 },
+      "dano_cabeza": 18.75,
+      "dano_cuerpo": 15,
+      "cargador": 45,
+      "reserva_maxima": 135,
+      "tier": 3,
+      "rareza": "muy_rara"
+    },
+    {
+      "nombre": "M249",
+      "cadencia": 700,
+      "difusion": 0.9,
+      "recoil": { "x": 2.7, "y": 2.4 },
+      "dano_cabeza": 15.625,
+      "dano_cuerpo": 12.5,
+      "cargador": 100,
+      "reserva_maxima": 100,
+      "tier": 4,
+      "rareza": "N/A"
+    }
+  ]
+}
