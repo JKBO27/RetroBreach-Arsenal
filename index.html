@@ -3,80 +3,803 @@
 <head>
 <meta charset="UTF-8">
 <title>RBreach Weapons Database</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-body{
-  background:#2f2f2f;
-  color:white;
-  font-family:Arial;
-  padding:20px;
-}
-
-h1{
-  text-align:center;
-}
-
-.categoria{
-  margin-top:40px;
-}
-
-.arma{
-  background:#3b3b3b;
-  padding:10px;
-  margin:8px 0;
-  border-radius:6px;
-}
-</style>
-</head>
-
-<body>
-
-<h1>RBreach Weapons Database</h1>
-
-<div id="contenedor"></div>
-
-<script>
-
-fetch("armas.json")
-.then(res => res.json())
-.then(data => {
-
-  const contenedor = document.getElementById("contenedor")
-
-  for (const categoria in data){
-
-    const divCategoria = document.createElement("div")
-    divCategoria.className = "categoria"
-
-    const titulo = document.createElement("h2")
-    titulo.textContent = categoria.replace("_"," ").toUpperCase()
-
-    divCategoria.appendChild(titulo)
-
-    data[categoria].forEach(arma => {
-
-      const divArma = document.createElement("div")
-      divArma.className = "arma"
-
-      divArma.innerHTML = `
-      <b>${arma.nombre}</b><br>
-      Tier: ${arma.tier} | Rareza: ${arma.rareza}<br>
-      Daño cabeza: ${arma.dano_cabeza} | Daño cuerpo: ${arma.dano_cuerpo}<br>
-      Cadencia: ${arma.cadencia}<br>
-      Cargador: ${arma.cargador} | Reserva: ${arma.reserva_maxima}
-      `
-
-      divCategoria.appendChild(divArma)
-
-    })
-
-    contenedor.appendChild(divCategoria)
-
+  :root {
+    --bg: #1a1a1a;
+    --surface: #242424;
+    --surface2: #2e2e2e;
+    --border: #3a3a3a;
+    --accent: #c8a84b;
+    --accent2: #e8c86a;
+    --text: #d4d4d4;
+    --text-dim: #777;
+    --tier1: #5ba3e0;
+    --tier2: #78c97a;
+    --tier3: #c8a84b;
+    --tier4: #c97ad4;
+    --comun: #aaa;
+    --poco_comun: #78c97a;
+    --inusual: #5ba3e0;
+    --rara: #c97ad4;
+    --muy_rara: #e0845b;
   }
 
-})
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--accent);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+
+  header h1 {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.4rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    flex: 1;
+  }
+
+  header span {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  .view-tabs {
+    display: flex;
+    padding: 0 40px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .view-tab {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 10px 20px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  .view-tab:hover { color: var(--text); }
+  .view-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .toolbar {
+    padding: 10px 40px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .toolbar-sep { width: 1px; height: 22px; background: var(--border); margin: 0 4px; }
+
+  .filter-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 4px 12px;
+    border-radius: 2px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(200,168,75,0.07);
+  }
+
+  .searchbar-wrap {
+    padding: 10px 40px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  #searchInput {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 14px;
+    border-radius: 2px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82rem;
+    width: 260px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  #searchInput:focus { border-color: var(--accent); }
+  #searchInput::placeholder { color: var(--text-dim); }
+
+  .select-styled {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 6px 12px;
+    border-radius: 2px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    outline: none;
+    text-transform: uppercase;
+  }
+
+  .select-styled:focus { border-color: var(--accent); color: var(--accent); }
+
+  .btn-action {
+    background: rgba(200,168,75,0.1);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 5px 14px;
+    border-radius: 2px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.15s;
+  }
+
+  .btn-action:hover { background: rgba(200,168,75,0.2); }
+
+  main {
+    padding: 30px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .categoria { margin-bottom: 48px; animation: fadeIn 0.35s ease both; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .categoria-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .categoria-header h2 {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .categoria-header .count {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    background: var(--surface2);
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+  }
+
+  .arma {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    border-radius: 3px;
+    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .arma::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--tier-color, var(--border));
+    opacity: 0.85;
+  }
+
+  .arma:hover { border-color: #555; transform: translateY(-1px); }
+
+  .arma.selected-compare {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  .arma-nombre {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    color: #eee;
+    margin-bottom: 10px;
+    padding-left: 10px;
+  }
+
+  .badges {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    padding-left: 10px;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .badge-tier1 { background: rgba(91,163,224,0.15);  color: var(--tier1); border: 1px solid rgba(91,163,224,0.3); }
+  .badge-tier2 { background: rgba(120,201,122,0.15); color: var(--tier2); border: 1px solid rgba(120,201,122,0.3); }
+  .badge-tier3 { background: rgba(200,168,75,0.15);  color: var(--tier3); border: 1px solid rgba(200,168,75,0.3); }
+  .badge-tier4 { background: rgba(201,122,212,0.15); color: var(--tier4); border: 1px solid rgba(201,122,212,0.3); }
+
+  .badge-comun      { background: rgba(170,170,170,0.1); color: var(--comun);      border: 1px solid rgba(170,170,170,0.2); }
+  .badge-poco_comun { background: rgba(120,201,122,0.1); color: var(--poco_comun); border: 1px solid rgba(120,201,122,0.2); }
+  .badge-inusual    { background: rgba(91,163,224,0.1);  color: var(--inusual);    border: 1px solid rgba(91,163,224,0.2); }
+  .badge-rara       { background: rgba(201,122,212,0.1); color: var(--rara);       border: 1px solid rgba(201,122,212,0.2); }
+  .badge-muy_rara   { background: rgba(224,132,91,0.1);  color: var(--muy_rara);   border: 1px solid rgba(224,132,91,0.2); }
+  .badge-na         { background: rgba(80,80,80,0.2);    color: #666;              border: 1px solid #444; }
+  .badge-tba        { background: rgba(80,80,80,0.2);    color: #888;              border: 1px solid #555; }
+
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px 12px;
+    padding-left: 10px;
+  }
+
+  .stat {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .stat-label { color: var(--text-dim); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-value { font-family: 'Share Tech Mono', monospace; color: #ccc; font-size: 0.82rem; }
+  .stat-value.highlight { color: var(--accent2); }
+  .stat-recoil { grid-column: 1 / -1; }
+
+  .recoil-bar-wrap { display: flex; gap: 6px; align-items: center; margin-top: 2px; }
+  .recoil-label { font-size: 0.68rem; color: var(--text-dim); width: 10px; }
+  .recoil-bar-bg { flex: 1; height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+  .recoil-bar-fill { height: 100%; border-radius: 2px; background: var(--accent); opacity: 0.7; }
+  .recoil-val { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: #888; width: 28px; text-align: right; }
+
+  /* RANKING */
+  #rankingPanel {
+    display: none;
+    padding: 30px 40px;
+    max-width: 900px;
+    margin: 0 auto;
+    animation: fadeIn 0.3s ease both;
+  }
+
+  .ranking-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ranking-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    border-left: 3px solid var(--tier-color, #555);
+  }
+
+  .ranking-pos { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: var(--text-dim); width: 28px; text-align: right; }
+  .ranking-pos.gold   { color: #ffd700; }
+  .ranking-pos.silver { color: #c0c0c0; }
+  .ranking-pos.bronze { color: #cd7f32; }
+  .ranking-nombre { font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; color: #ddd; flex: 1; }
+  .ranking-cat { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .ranking-dps { font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; color: var(--accent2); width: 80px; text-align: right; }
+  .ranking-bar-bg { width: 140px; height: 5px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+  .ranking-bar-fill { height: 100%; background: var(--accent); opacity: 0.75; border-radius: 2px; }
+
+  /* COMPARADOR */
+  #comparadorPanel {
+    display: none;
+    padding: 30px 40px;
+    max-width: 960px;
+    margin: 0 auto;
+    animation: fadeIn 0.3s ease both;
+  }
+
+  .comp-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .comp-hint {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-transform: none;
+  }
+
+  .comp-grid {
+    display: grid;
+    grid-template-columns: 1fr 50px 1fr;
+    gap: 0;
+  }
+
+  .comp-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 16px;
+    border-left: 3px solid var(--tier-color, #555);
+  }
+
+  .comp-col-nombre {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    color: #eee;
+    margin-bottom: 8px;
+  }
+
+  .comp-mid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+  }
+
+  .comp-vs {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  .comp-stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.82rem;
+    gap: 6px;
+  }
+
+  .comp-stat-label { color: var(--text-dim); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .comp-stat-val { font-family: 'Share Tech Mono', monospace; color: #ccc; }
+  .comp-stat-val.win  { color: #78c97a; }
+  .comp-stat-val.lose { color: #e0845b; }
+
+  .comp-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    color: var(--text-dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    border: 1px dashed var(--border);
+    border-radius: 3px;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    border-top: 1px solid var(--border);
+    letter-spacing: 0.1em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>&#9632; RBreach // Arsenal</h1>
+  <span>v2.0 — 08-03-2026</span>
+</header>
+
+<div class="view-tabs">
+  <button class="view-tab active" data-view="armas">Arsenal</button>
+  <button class="view-tab" data-view="ranking">Ranking DPS</button>
+  <button class="view-tab" data-view="comparador">Comparador</button>
+</div>
+
+<div class="toolbar" id="toolbar">
+  <button class="filter-btn active" data-filter="all">Todas</button>
+  <div class="toolbar-sep"></div>
+</div>
+
+<div class="searchbar-wrap">
+  <input type="text" id="searchInput" placeholder="Buscar arma..." autocomplete="off">
+  <select class="select-styled" id="rarezaFilter">
+    <option value="all">Rareza: Todas</option>
+    <option value="comun">Común</option>
+    <option value="poco_comun">Poco común</option>
+    <option value="inusual">Inusual</option>
+    <option value="rara">Rara</option>
+    <option value="muy_rara">Muy rara</option>
+    <option value="N/A">N/A</option>
+    <option value="TBA">TBA</option>
+  </select>
+  <select class="select-styled" id="sortFilter">
+    <option value="default">Orden: Default</option>
+    <option value="dps_desc">DPS ↓</option>
+    <option value="dps_asc">DPS ↑</option>
+    <option value="ttk_asc">TTK más rápido</option>
+    <option value="dano_desc">Daño ↓</option>
+    <option value="cadencia_desc">Cadencia ↓</option>
+  </select>
+  <button class="btn-action" id="btnComparar" style="display:none">▶ Comparar seleccionadas</button>
+</div>
+
+<main id="contenedor"></main>
+<div id="rankingPanel"></div>
+<div id="comparadorPanel"></div>
+
+<footer>DATABASE BY JKBO27 &mdash; RBreach Weapons Compendium</footer>
+
+<script>
+const ARMAS = {"pistolas":[{"nombre":"MP443","cadencia":425,"difusion":1.4,"recoil":{"x":0.6,"y":1.2},"dano_cabeza":11.25,"dano_cuerpo":9,"cargador":15,"reserva_maxima":60,"tier":1,"rareza":"poco_comun"},{"nombre":"G17","cadencia":425,"difusion":1.2,"recoil":{"x":0.6,"y":1.2},"dano_cabeza":11.875,"dano_cuerpo":9.5,"cargador":17,"reserva_maxima":68,"tier":1,"rareza":"comun"},{"nombre":"Beretta M9","cadencia":425,"difusion":1.4,"recoil":{"x":0.6,"y":1.2},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":15,"reserva_maxima":60,"tier":1,"rareza":"comun"},{"nombre":"Makarov","cadencia":425,"difusion":1.4,"recoil":{"x":0.6,"y":1.2},"dano_cabeza":15.625,"dano_cuerpo":12.5,"cargador":8,"reserva_maxima":32,"tier":1,"rareza":"N/A"},{"nombre":"Five-Seven","cadencia":550,"difusion":1.5,"recoil":{"x":1.0,"y":1.0},"dano_cabeza":12.5,"dano_cuerpo":10,"cargador":20,"reserva_maxima":80,"tier":2,"rareza":"comun"},{"nombre":"M1911","cadencia":400,"difusion":1.6,"recoil":{"x":0.8,"y":1.4},"dano_cabeza":17.5,"dano_cuerpo":14,"cargador":8,"reserva_maxima":32,"tier":2,"rareza":"comun"},{"nombre":"USP","cadencia":425,"difusion":1.3,"recoil":{"x":1.0,"y":0.8},"dano_cabeza":13.125,"dano_cuerpo":10.5,"cargador":12,"reserva_maxima":48,"tier":2,"rareza":"comun"},{"nombre":"Beretta 93R","cadencia":700,"difusion":1.4,"recoil":{"x":0.6,"y":1.2},"dano_cabeza":12.5,"dano_cuerpo":10,"cargador":21,"reserva_maxima":60,"tier":3,"rareza":"N/A"},{"nombre":"Uzi Micro","cadencia":1500,"difusion":4.0,"recoil":{"x":1.0,"y":2.0},"dano_cabeza":10,"dano_cuerpo":8,"cargador":20,"reserva_maxima":60,"tier":3,"rareza":"muy_rara"},{"nombre":"RSH-12","cadencia":150,"difusion":1.0,"recoil":{"x":4.0,"y":5.0},"dano_cabeza":42.5,"dano_cuerpo":34,"cargador":5,"reserva_maxima":20,"tier":3,"rareza":"rara"},{"nombre":"Desert Eagle","cadencia":300,"difusion":1.5,"recoil":{"x":1.5,"y":2.5},"dano_cabeza":37.5,"dano_cuerpo":30,"cargador":7,"reserva_maxima":28,"tier":3,"rareza":"inusual"}],"submachine_guns":[{"nombre":"P90","cadencia":950,"difusion":1.75,"recoil":{"x":1.2,"y":1.3},"dano_cabeza":11.875,"dano_cuerpo":9.5,"cargador":50,"reserva_maxima":150,"tier":2,"rareza":"rara"},{"nombre":"MP5","cadencia":800,"difusion":1.9,"recoil":{"x":1.3,"y":1.1},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"inusual"},{"nombre":"MAC-10","cadencia":1000,"difusion":3.0,"recoil":{"x":1.0,"y":1.2},"dano_cabeza":7.5,"dano_cuerpo":6,"cargador":30,"reserva_maxima":80,"tier":1,"rareza":"N/A"},{"nombre":"Bizon","cadencia":700,"difusion":1.5,"recoil":{"x":1.6,"y":1.1},"dano_cabeza":10,"dano_cuerpo":8,"cargador":64,"reserva_maxima":128,"tier":2,"rareza":"rara"},{"nombre":"MP5SD","cadencia":800,"difusion":1.9,"recoil":{"x":1.3,"y":1.1},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":3,"rareza":"muy_rara"},{"nombre":"Uzi","cadencia":720,"difusion":1.3,"recoil":{"x":1.25,"y":0.85},"dano_cabeza":11.25,"dano_cuerpo":9,"cargador":20,"reserva_maxima":80,"tier":1,"rareza":"inusual"},{"nombre":"UMP-45","cadencia":650,"difusion":1.4,"recoil":{"x":1.1,"y":1.2},"dano_cabeza":16.25,"dano_cuerpo":13,"cargador":25,"reserva_maxima":120,"tier":2,"rareza":"poco_comun"},{"nombre":"MP7A1","cadencia":1000,"difusion":2.2,"recoil":{"x":1.2,"y":1.1},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"muy_rara"},{"nombre":"Kriss Vector","cadencia":1200,"difusion":2.4,"recoil":{"x":1.5,"y":1.5},"dano_cabeza":9.375,"dano_cuerpo":7.5,"cargador":32,"reserva_maxima":100,"tier":2,"rareza":"inusual"},{"nombre":"MP9","cadencia":1000,"difusion":1.5,"recoil":{"x":1.2,"y":1.1},"dano_cabeza":12.5,"dano_cuerpo":10,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"inusual"}],"escopetas":[{"nombre":"Barril Doble","cadencia":425,"difusion":4.0,"recoil":{"x":2.0,"y":4.5},"balas_por_disparo":9,"dano_cabeza":12.5,"dano_cuerpo":10,"cargador":2,"reserva_maxima":8,"tier":1,"rareza":"N/A"},{"nombre":"Mossberg","cadencia":100,"difusion":3.0,"recoil":{"x":2.0,"y":2.2},"balas_por_disparo":8,"dano_cabeza":11.25,"dano_cuerpo":9,"cargador":7,"reserva_maxima":28,"tier":2,"rareza":"muy_rara"},{"nombre":"M4 Super 90","cadencia":225,"difusion":5.0,"recoil":{"x":1.4,"y":2.5},"balas_por_disparo":10,"dano_cabeza":10,"dano_cuerpo":8,"cargador":8,"reserva_maxima":32,"tier":3,"rareza":"muy_rara"},{"nombre":"UTS-15","cadencia":100,"difusion":3.5,"recoil":{"x":3.0,"y":3.0},"balas_por_disparo":8,"dano_cabeza":15.625,"dano_cuerpo":12.5,"cargador":7,"reserva_maxima":28,"tier":4,"rareza":"N/A"},{"nombre":"Saiga-12","cadencia":250,"difusion":4.0,"recoil":{"x":2.0,"y":4.0},"balas_por_disparo":null,"dano_cabeza":8.125,"dano_cuerpo":6.5,"cargador":8,"reserva_maxima":32,"tier":3,"rareza":"N/A"},{"nombre":"KS-23M","cadencia":80,"difusion":5.0,"recoil":{"x":3.0,"y":4.0},"balas_por_disparo":9,"dano_cabeza":13.125,"dano_cuerpo":10.5,"cargador":4,"reserva_maxima":16,"tier":4,"rareza":"N/A"},{"nombre":"SPAS-12","cadencia":320,"difusion":5.0,"recoil":{"x":3.5,"y":2.2},"balas_por_disparo":11,"dano_cabeza":10,"dano_cuerpo":8,"cargador":8,"reserva_maxima":32,"tier":4,"rareza":"muy_rara"},{"nombre":"AA-12","cadencia":350,"difusion":4.0,"recoil":{"x":1.7,"y":2.0},"balas_por_disparo":8,"dano_cabeza":6.25,"dano_cuerpo":5,"cargador":8,"reserva_maxima":32,"tier":4,"rareza":"N/A"},{"nombre":"USAS-12","cadencia":450,"difusion":5.0,"recoil":{"x":2.3,"y":2.8},"balas_por_disparo":8,"dano_cabeza":7.5,"dano_cuerpo":6,"cargador":10,"reserva_maxima":10,"tier":4,"rareza":"N/A"}],"fusiles_asalto":[{"nombre":"Scar-L","cadencia":625,"difusion":0.9,"recoil":{"x":2.5,"y":1.5},"dano_cabeza":14.375,"dano_cuerpo":11.5,"cargador":30,"reserva_maxima":120,"tier":3,"rareza":"inusual"},{"nombre":"AKS-74U","cadencia":700,"difusion":1.1,"recoil":{"x":1.0,"y":2.0},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":1,"rareza":"TBA"},{"nombre":"G36","cadencia":750,"difusion":1.3,"recoil":{"x":1.8,"y":1.2},"dano_cabeza":14.375,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"muy_rara"},{"nombre":"SG-552","cadencia":650,"difusion":1.0,"recoil":{"x":1.8,"y":1.6},"dano_cabeza":14.375,"dano_cuerpo":11.5,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"rara"},{"nombre":"M16","cadencia":800,"difusion":0.8,"recoil":{"x":1.7,"y":1.4},"dano_cabeza":9.375,"dano_cuerpo":7.5,"cargador":20,"reserva_maxima":80,"tier":1,"rareza":"muy_rara"},{"nombre":"M4A1","cadencia":750,"difusion":1.0,"recoil":{"x":1.3,"y":1.5},"dano_cabeza":13.125,"dano_cuerpo":10.5,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"inusual"},{"nombre":"L85A2","cadencia":700,"difusion":1.25,"recoil":{"x":1.2,"y":1.6},"dano_cabeza":17.5,"dano_cuerpo":14,"cargador":30,"reserva_maxima":120,"tier":3,"rareza":"muy_rara"},{"nombre":"Honey Badger","cadencia":800,"difusion":1.0,"recoil":{"x":1.95,"y":2.15},"dano_cabeza":16.25,"dano_cuerpo":13,"cargador":30,"reserva_maxima":120,"tier":4,"rareza":"muy_rara"},{"nombre":"AK-74","cadencia":700,"difusion":1.0,"recoil":{"x":1.0,"y":1.75},"dano_cabeza":15,"dano_cuerpo":12,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"muy_rara"},{"nombre":"FAMAS","cadencia":900,"difusion":1.0,"recoil":{"x":1.5,"y":1.45},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":25,"reserva_maxima":100,"tier":2,"rareza":"rara"},{"nombre":"AUG","cadencia":800,"difusion":0.75,"recoil":{"x":1.2,"y":1.6},"dano_cabeza":15,"dano_cuerpo":12,"cargador":30,"reserva_maxima":120,"tier":4,"rareza":"muy_rara"},{"nombre":"F2000","cadencia":1000,"difusion":1.25,"recoil":{"x":1.9,"y":1.9},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":3,"rareza":"muy_rara"},{"nombre":"AS VAL","cadencia":800,"difusion":1.1,"recoil":{"x":1.5,"y":1.75},"dano_cabeza":13.75,"dano_cuerpo":11,"cargador":30,"reserva_maxima":120,"tier":4,"rareza":"muy_rara"},{"nombre":"AKM","cadencia":650,"difusion":0.95,"recoil":{"x":2.0,"y":3.0},"dano_cabeza":18.125,"dano_cuerpo":14.5,"cargador":30,"reserva_maxima":120,"tier":3,"rareza":"muy_rara"},{"nombre":"HK416","cadencia":850,"difusion":1.0,"recoil":{"x":1.4,"y":1.3},"dano_cabeza":13.125,"dano_cuerpo":10,"cargador":30,"reserva_maxima":120,"tier":2,"rareza":"inusual"},{"nombre":"XM8","cadencia":800,"difusion":1.75,"recoil":{"x":1.4,"y":1.6},"dano_cabeza":17.5,"dano_cuerpo":14,"cargador":30,"reserva_maxima":120,"tier":3,"rareza":"N/A"}],"fusiles_combate":[{"nombre":"Scar-H","cadencia":550,"difusion":0.8,"recoil":{"x":2.5,"y":2.3},"dano_cabeza":25,"dano_cuerpo":20,"cargador":20,"reserva_maxima":80,"tier":4,"rareza":"rara"},{"nombre":"ASH-12","cadencia":600,"difusion":1.25,"recoil":{"x":3.4,"y":4.0},"dano_cabeza":28.75,"dano_cuerpo":23,"cargador":20,"reserva_maxima":80,"tier":4,"rareza":"TBA"},{"nombre":"Mk14 EBR","cadencia":600,"difusion":1.0,"recoil":{"x":2.0,"y":2.0},"dano_cabeza":22.5,"dano_cuerpo":18,"cargador":20,"reserva_maxima":80,"tier":4,"rareza":"TBA"}],"armas_ligeras":[{"nombre":"RPK","cadencia":650,"difusion":0.85,"recoil":{"x":1.9,"y":2.8},"dano_cabeza":18.75,"dano_cuerpo":15,"cargador":45,"reserva_maxima":135,"tier":3,"rareza":"muy_rara"},{"nombre":"M249","cadencia":700,"difusion":0.9,"recoil":{"x":2.7,"y":2.4},"dano_cabeza":15.625,"dano_cuerpo":12.5,"cargador":100,"reserva_maxima":100,"tier":4,"rareza":"N/A"}]};
+
+const TIER_COLORS = { 1: '#5ba3e0', 2: '#78c97a', 3: '#c8a84b', 4: '#c97ad4' };
+const TIER_ROMAN  = { 1: 'I', 2: 'II', 3: 'III', 4: 'IV' };
+const CAT_LABELS  = {
+  pistolas:'Pistolas', submachine_guns:'Sub-Machine Guns',
+  escopetas:'Escopetas', fusiles_asalto:'Fusiles de Asalto',
+  fusiles_combate:'Fusiles de Combate', armas_ligeras:'Armas Ligeras'
+};
+const MAX_RECOIL = 6;
+const HP = 100;
+
+function calcDPS(a) {
+  const dmg = (a.balas_por_disparo && a.balas_por_disparo !== 'TBA')
+    ? a.dano_cuerpo * a.balas_por_disparo : a.dano_cuerpo;
+  return dmg * (a.cadencia / 60);
+}
+
+function calcTTK(a) {
+  const dmg = (a.balas_por_disparo && a.balas_por_disparo !== 'TBA')
+    ? a.dano_cuerpo * a.balas_por_disparo : a.dano_cuerpo;
+  if (!dmg || dmg <= 0) return null;
+  const balas = Math.ceil(HP / dmg);
+  return (balas - 1) * (60000 / a.cadencia);
+}
+
+function fmtTTK(ms) {
+  if (ms === null) return 'N/A';
+  if (ms === 0) return '0 ms';
+  return ms < 1000 ? `${Math.round(ms)} ms` : `${(ms/1000).toFixed(2)} s`;
+}
+
+function badgeTier(t) {
+  return `<span class="badge badge-tier${t}">Tier ${TIER_ROMAN[t]||t}</span>`;
+}
+
+function badgeRareza(r) {
+  const key = (r||'N/A').toLowerCase().replace(/ /g,'_');
+  if (key==='n/a') return `<span class="badge badge-na">N/A</span>`;
+  if (key==='tba') return `<span class="badge badge-tba">TBA</span>`;
+  return `<span class="badge badge-${key}">${r.replace(/_/g,' ')}</span>`;
+}
+
+function recoilBar(label, val) {
+  const pct = Math.min((val/MAX_RECOIL)*100,100).toFixed(1);
+  return `<div class="recoil-bar-wrap">
+    <span class="recoil-label">${label}</span>
+    <div class="recoil-bar-bg"><div class="recoil-bar-fill" style="width:${pct}%"></div></div>
+    <span class="recoil-val">${val}</span>
+  </div>`;
+}
+
+// state
+let currentView='armas', currentCat='all', currentRareza='all', currentSort='default', searchQuery='';
+let compareSlots=[];
+
+function allArmas() {
+  const list=[];
+  for(const cat in ARMAS) ARMAS[cat].forEach(a=>list.push({...a,_cat:cat}));
+  return list;
+}
+
+function findArma(catKey,nombre) {
+  return (ARMAS[catKey]||[]).find(a=>a.nombre===nombre);
+}
+
+function toggleCompare(cat,nombre) {
+  if(currentView!=='armas') return;
+  const id=`${cat}::${nombre}`;
+  const idx=compareSlots.indexOf(id);
+  if(idx>=0) compareSlots.splice(idx,1);
+  else { if(compareSlots.length>=2) compareSlots.shift(); compareSlots.push(id); }
+  document.getElementById('btnComparar').style.display = compareSlots.length===2 ? '' : 'none';
+  renderArsenalView();
+}
+
+function renderArma(arma, catKey) {
+  const tc  = TIER_COLORS[arma.tier]||'#555';
+  const dps = calcDPS(arma).toFixed(1);
+  const ttk = fmtTTK(calcTTK(arma));
+  const balasStat = (arma.balas_por_disparo!=null)
+    ? `<div class="stat"><span class="stat-label">Balas/disparo</span><span class="stat-value">${arma.balas_por_disparo}</span></div>` : '';
+  const selCls = compareSlots.includes(`${catKey}::${arma.nombre}`) ? 'selected-compare' : '';
+  const safeName = arma.nombre.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+
+  return `
+  <div class="arma ${selCls}" style="--tier-color:${tc}" onclick="toggleCompare('${catKey}','${safeName}')">
+    <div class="arma-nombre">${arma.nombre}</div>
+    <div class="badges">${badgeTier(arma.tier)}${badgeRareza(arma.rareza)}</div>
+    <div class="stats">
+      <div class="stat"><span class="stat-label">Dmg cabeza</span><span class="stat-value">${arma.dano_cabeza}</span></div>
+      <div class="stat"><span class="stat-label">Dmg cuerpo</span><span class="stat-value">${arma.dano_cuerpo}</span></div>
+      <div class="stat"><span class="stat-label">Cadencia</span><span class="stat-value">${arma.cadencia} rpm</span></div>
+      <div class="stat"><span class="stat-label">Difusión</span><span class="stat-value">${arma.difusion}</span></div>
+      ${balasStat}
+      <div class="stat"><span class="stat-label">DPS</span><span class="stat-value highlight">${dps}</span></div>
+      <div class="stat"><span class="stat-label">TTK (100hp)</span><span class="stat-value highlight">${ttk}</span></div>
+      <div class="stat"><span class="stat-label">Cargador</span><span class="stat-value">${arma.cargador}</span></div>
+      <div class="stat"><span class="stat-label">Reserva</span><span class="stat-value">${arma.reserva_maxima}</span></div>
+      <div class="stat stat-recoil">
+        <div style="width:100%">
+          <span class="stat-label">Recoil</span>
+          ${recoilBar('X',arma.recoil.x)}
+          ${recoilBar('Y',arma.recoil.y)}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderArsenalView() {
+  const contenedor = document.getElementById('contenedor');
+  contenedor.innerHTML = '';
+  const q = searchQuery.toLowerCase();
+
+  for(const cat in ARMAS) {
+    if(currentCat!=='all' && cat!==currentCat) continue;
+    let armas = ARMAS[cat].filter(a => {
+      const ms = !q || a.nombre.toLowerCase().includes(q);
+      const mr = currentRareza==='all' || a.rareza===currentRareza;
+      return ms && mr;
+    });
+    if(!armas.length) continue;
+    if(currentSort!=='default') {
+      armas=[...armas].sort((a,b)=>{
+        if(currentSort==='dps_desc')      return calcDPS(b)-calcDPS(a);
+        if(currentSort==='dps_asc')       return calcDPS(a)-calcDPS(b);
+        if(currentSort==='ttk_asc')       return (calcTTK(a)??999999)-(calcTTK(b)??999999);
+        if(currentSort==='dano_desc')     return b.dano_cuerpo-a.dano_cuerpo;
+        if(currentSort==='cadencia_desc') return b.cadencia-a.cadencia;
+        return 0;
+      });
+    }
+    const div=document.createElement('div');
+    div.className='categoria';
+    div.innerHTML=`
+      <div class="categoria-header">
+        <h2>${CAT_LABELS[cat]||cat.replace(/_/g,' ')}</h2>
+        <span class="count">${armas.length} armas</span>
+      </div>
+      <div class="grid">${armas.map(a=>renderArma(a,cat)).join('')}</div>`;
+    contenedor.appendChild(div);
+  }
+
+  if(!contenedor.children.length)
+    contenedor.innerHTML=`<div class="no-results">// NO SE ENCONTRARON ARMAS</div>`;
+}
+
+function renderRanking() {
+  const panel=document.getElementById('rankingPanel');
+  const list=allArmas().map(a=>({...a,dps:calcDPS(a)})).sort((a,b)=>b.dps-a.dps);
+  const maxDPS=list[0].dps;
+  const rows=list.map((a,i)=>{
+    const tc=TIER_COLORS[a.tier]||'#555';
+    const pct=((a.dps/maxDPS)*100).toFixed(1);
+    const pc=i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    return `<div class="ranking-row" style="--tier-color:${tc}">
+      <span class="ranking-pos ${pc}">#${i+1}</span>
+      <span class="ranking-nombre">${a.nombre}</span>
+      <span class="ranking-cat">${CAT_LABELS[a._cat]||a._cat}</span>
+      <div class="ranking-bar-bg"><div class="ranking-bar-fill" style="width:${pct}%"></div></div>
+      <span class="ranking-dps">${a.dps.toFixed(1)}</span>
+    </div>`;
+  }).join('');
+  panel.innerHTML=`<div class="ranking-title">// Ranking por DPS — daño por segundo (cuerpo)</div>${rows}`;
+}
+
+function renderComparador() {
+  const panel=document.getElementById('comparadorPanel');
+  const slot1=compareSlots[0]||null, slot2=compareSlots[1]||null;
+
+  let a1=null,a2=null;
+  if(slot1){const[c,n]=slot1.split('::');a1=findArma(c,n);}
+  if(slot2){const[c,n]=slot2.split('::');a2=findArma(c,n);}
+
+  function colHTML(a,rival) {
+    if(!a) return `<div class="comp-placeholder">// Selecciona un arma desde Arsenal</div>`;
+    const tc=TIER_COLORS[a.tier]||'#555';
+    const dps=calcDPS(a), ttk=calcTTK(a);
+    const rdps=rival?calcDPS(rival):null, rttk=rival?calcTTK(rival):null;
+
+    function cls(val,rval,hib=true) {
+      if(rval===null||rval===undefined) return '';
+      const v=parseFloat(val)||0, r=parseFloat(rval)||0;
+      if(v===r) return '';
+      return (hib?(v>r):(v<r)) ? 'win' : 'lose';
+    }
+
+    const rows=[
+      ['Tier',`Tier ${TIER_ROMAN[a.tier]||a.tier}`,null,true],
+      ['Dmg cabeza',a.dano_cabeza,rival?.dano_cabeza,true],
+      ['Dmg cuerpo',a.dano_cuerpo,rival?.dano_cuerpo,true],
+      ['Cadencia',a.cadencia,rival?.cadencia,true],
+      ['Difusión',a.difusion,rival?.difusion,false],
+      ['DPS',dps.toFixed(1),rdps?.toFixed(1),true],
+      ['TTK (100hp)',fmtTTK(ttk),rttk!==null?fmtTTK(rttk):null,false],
+      ['Cargador',a.cargador,rival?.cargador,true],
+      ['Reserva',a.reserva_maxima,rival?.reserva_maxima,true],
+      ['Recoil X',a.recoil.x,rival?.recoil.x,false],
+      ['Recoil Y',a.recoil.y,rival?.recoil.y,false],
+    ];
+    if(a.balas_por_disparo!=null) rows.splice(3,0,['Balas/disparo',a.balas_por_disparo,null,true]);
+
+    const rowsHTML=rows.map(([lbl,val,rval,hib])=>`
+      <div class="comp-stat-row">
+        <span class="comp-stat-label">${lbl}</span>
+        <span class="comp-stat-val ${cls(val,rval,hib)}">${val}</span>
+      </div>`).join('');
+
+    return `<div class="comp-col" style="--tier-color:${tc}">
+      <div class="comp-col-nombre">${a.nombre}</div>
+      <div class="badges" style="margin-bottom:12px">${badgeTier(a.tier)}${badgeRareza(a.rareza)}</div>
+      ${rowsHTML}
+    </div>`;
+  }
+
+  const hint=compareSlots.length===0?'Haz click en dos armas para comparar':compareSlots.length===1?'Selecciona una segunda arma':'';
+  panel.innerHTML=`
+    <div class="comp-title">// Comparador <span class="comp-hint">${hint}</span></div>
+    <div class="comp-grid">
+      ${colHTML(a1,a2)}
+      <div class="comp-mid"><span class="comp-vs">VS</span></div>
+      ${colHTML(a2,a1)}
+    </div>`;
+}
+
+function setView(v) {
+  currentView=v;
+  document.querySelectorAll('.view-tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));
+  document.getElementById('contenedor').style.display       = v==='armas'      ? '':'none';
+  document.getElementById('rankingPanel').style.display     = v==='ranking'    ? 'block':'none';
+  document.getElementById('comparadorPanel').style.display  = v==='comparador' ? 'block':'none';
+  document.querySelector('.toolbar').style.display          = v==='armas' ? '':'none';
+  document.querySelector('.searchbar-wrap').style.display   = v==='armas' ? '':'none';
+  if(v==='ranking')    renderRanking();
+  if(v==='comparador') renderComparador();
+  if(v==='armas')      renderArsenalView();
+}
+
+// build category toolbar
+const toolbar=document.getElementById('toolbar');
+for(const cat in ARMAS){
+  const btn=document.createElement('button');
+  btn.className='filter-btn';
+  btn.dataset.filter=cat;
+  btn.textContent=CAT_LABELS[cat]||cat;
+  toolbar.appendChild(btn);
+}
+
+toolbar.addEventListener('click',e=>{
+  const btn=e.target.closest('.filter-btn');
+  if(!btn) return;
+  toolbar.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCat=btn.dataset.filter;
+  renderArsenalView();
+});
+
+document.getElementById('searchInput').addEventListener('input',e=>{searchQuery=e.target.value;renderArsenalView();});
+document.getElementById('rarezaFilter').addEventListener('change',e=>{currentRareza=e.target.value;renderArsenalView();});
+document.getElementById('sortFilter').addEventListener('change',e=>{currentSort=e.target.value;renderArsenalView();});
+document.getElementById('btnComparar').addEventListener('click',()=>setView('comparador'));
+document.querySelectorAll('.view-tab').forEach(t=>t.addEventListener('click',()=>setView(t.dataset.view)));
+
+setView('armas');
 </script>
-
 </body>
 </html>
