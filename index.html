@@ -39,7 +39,7 @@
     color: var(--text);
     font-family: 'PressStart2P', monospace;
     min-height: 100vh;
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.8;
     image-rendering: pixelated;
     background-image: url('https://media.discordapp.net/attachments/1473017512437219580/1480329663611142224/Background.png?ex=69af47ef&is=69adf66f&hm=8f7ae3bfcb39b35454954a125997c6452f048f7f086f754d5a3f1afe1a1b56fc&=&format=webp&quality=lossless');
@@ -397,7 +397,7 @@
     background:var(--surface); border:2px solid #000;
     padding:10px 14px; box-shadow:3px 3px 0 #000;
     border-left:4px solid var(--tier-color,#333);
-    background-image:var(--tex2); background-size:300px; background-blend-mode:overlay;
+    background-image:var(--tex1); background-size:180px; background-blend-mode:overlay;
     transition:transform .1s,box-shadow .1s;
   }
   .rank-row:hover, .ranking-row:hover { transform:translate(-2px,-2px); box-shadow:5px 5px 0 #000; }
@@ -492,7 +492,7 @@
   /* ── INICIO ── */
   #inicioPanel { display:none; padding:24px 32px; max-width:900px; margin:0 auto; animation:fadeIn .3s ease both; }
   .inicio-disclaimer {
-    background:rgba(138,155,168,.06); border:2px solid #000;
+    background:var(--surface); border:2px solid #000;
     border-left:4px solid var(--accent);
     padding:12px 16px; margin-bottom:24px;
     font-family:'PressStart2P',monospace; font-size:.42rem; color:var(--text-dim); line-height:2;
@@ -1320,3 +1320,4 @@ setView('inicio');
 </script>
 </body>
 </html>
+
