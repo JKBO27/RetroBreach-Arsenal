@@ -1,118 +1,82 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="es">
 <head>
-
 <meta charset="UTF-8">
-
 <title>RBreach Weapons Database</title>
 
 <style>
-
 body{
-font-family:Arial;
-background:#111;
-color:white;
-margin:40px;
+  background:#2f2f2f;
+  color:white;
+  font-family:Arial;
+  padding:20px;
 }
 
 h1{
-text-align:center;
-margin-bottom:40px;
+  text-align:center;
 }
 
-.category{
-margin-top:40px;
+.categoria{
+  margin-top:40px;
 }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-gap:20px;
+.arma{
+  background:#3b3b3b;
+  padding:10px;
+  margin:8px 0;
+  border-radius:6px;
 }
-
-.weapon{
-background:#1b1b1b;
-padding:15px;
-border:1px solid #444;
-}
-
-.weapon h3{
-margin-top:0;
-}
-
-.stat{
-font-size:14px;
-margin:2px 0;
-}
-
 </style>
-
 </head>
 
 <body>
 
 <h1>RBreach Weapons Database</h1>
 
-<div id="content"></div>
+<div id="contenedor"></div>
 
 <script>
 
 fetch("armas.json")
-
-.then(response => response.json())
-
+.then(res => res.json())
 .then(data => {
 
-const container = document.getElementById("content")
+  const contenedor = document.getElementById("contenedor")
 
-Object.keys(data).forEach(category => {
+  for (const categoria in data){
 
-let section = document.createElement("div")
-section.className = "category"
+    const divCategoria = document.createElement("div")
+    divCategoria.className = "categoria"
 
-let title = document.createElement("h2")
-title.textContent = category
+    const titulo = document.createElement("h2")
+    titulo.textContent = categoria.replace("_"," ").toUpperCase()
 
-let grid = document.createElement("div")
-grid.className = "grid"
+    divCategoria.appendChild(titulo)
 
-data[category].forEach(weapon => {
+    data[categoria].forEach(arma => {
 
-let card = document.createElement("div")
-card.className = "weapon"
+      const divArma = document.createElement("div")
+      divArma.className = "arma"
 
-card.innerHTML = `
-<h3>${weapon.nombre}</h3>
+      divArma.innerHTML = `
+      <b>${arma.nombre}</b><br>
+      Tier: ${arma.tier} | Rareza: ${arma.rareza}<br>
+      Daño cabeza: ${arma.dano_cabeza} | Daño cuerpo: ${arma.dano_cuerpo}<br>
+      Cadencia: ${arma.cadencia}<br>
+      Cargador: ${arma.cargador} | Reserva: ${arma.reserva_maxima}
+      `
 
-<div class="stat">Cadencia: ${weapon.cadencia}</div>
-<div class="stat">Difusión: ${weapon.difusion}</div>
-<div class="stat">Recoil X: ${weapon.recoil.x}</div>
-<div class="stat">Recoil Y: ${weapon.recoil.y}</div>
-<div class="stat">Daño cabeza: ${weapon.dano_cabeza}</div>
-<div class="stat">Daño cuerpo: ${weapon.dano_cuerpo}</div>
-<div class="stat">Cargador: ${weapon.cargador}</div>
-<div class="stat">Reserva: ${weapon.reserva_maxima}</div>
-<div class="stat">Tier: ${weapon.tier}</div>
-<div class="stat">Rareza: ${weapon.rareza}</div>
-`
+      divCategoria.appendChild(divArma)
 
-grid.appendChild(card)
+    })
 
-})
+    contenedor.appendChild(divCategoria)
 
-section.appendChild(title)
-section.appendChild(grid)
-
-container.appendChild(section)
-
-})
+  }
 
 })
 
 </script>
 
 </body>
-
 </html>
