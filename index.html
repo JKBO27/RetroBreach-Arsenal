@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>RBreach Weapons Database</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#111;
+color:white;
+margin:40px;
+}
+
+h1{
+text-align:center;
+margin-bottom:40px;
+}
+
+.category{
+margin-top:40px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:20px;
+}
+
+.weapon{
+background:#1b1b1b;
+padding:15px;
+border:1px solid #444;
+}
+
+.weapon h3{
+margin-top:0;
+}
+
+.stat{
+font-size:14px;
+margin:2px 0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>RBreach Weapons Database</h1>
+
+<div id="content"></div>
+
+<script>
+
+fetch("armas.json")
+
+.then(response => response.json())
+
+.then(data => {
+
+const container = document.getElementById("content")
+
+Object.keys(data).forEach(category => {
+
+let section = document.createElement("div")
+section.className = "category"
+
+let title = document.createElement("h2")
+title.textContent = category
+
+let grid = document.createElement("div")
+grid.className = "grid"
+
+data[category].forEach(weapon => {
+
+let card = document.createElement("div")
+card.className = "weapon"
+
+card.innerHTML = `
+<h3>${weapon.nombre}</h3>
+
+<div class="stat">Cadencia: ${weapon.cadencia}</div>
+<div class="stat">Difusión: ${weapon.difusion}</div>
+<div class="stat">Recoil X: ${weapon.recoil.x}</div>
+<div class="stat">Recoil Y: ${weapon.recoil.y}</div>
+<div class="stat">Daño cabeza: ${weapon.dano_cabeza}</div>
+<div class="stat">Daño cuerpo: ${weapon.dano_cuerpo}</div>
+<div class="stat">Cargador: ${weapon.cargador}</div>
+<div class="stat">Reserva: ${weapon.reserva_maxima}</div>
+<div class="stat">Tier: ${weapon.tier}</div>
+<div class="stat">Rareza: ${weapon.rareza}</div>
+`
+
+grid.appendChild(card)
+
+})
+
+section.appendChild(title)
+section.appendChild(grid)
+
+container.appendChild(section)
+
+})
+
+})
+
+</script>
+
+</body>
+
+</html>
