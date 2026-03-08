@@ -602,6 +602,36 @@ function renderInicio(){
   </div>
 
   <div class="inicio-section">
+    <div class="inicio-section-title">// ${es?'Rarezas':'Rarities'}</div>
+    <div class="stats-grid">
+      <div class="stat-card" style="border-left-color:var(--comun)">
+        <div class="stat-card-nombre" style="color:var(--comun)">${es?'Común':'Common'}</div>
+        <div class="stat-card-desc">${es?'Aparecen en cualquier lugar del mapa.':'Spawn anywhere on the map.'}</div>
+      </div>
+      <div class="stat-card" style="border-left-color:var(--poco_comun)">
+        <div class="stat-card-nombre" style="color:var(--poco_comun)">${es?'Poco común':'Uncommon'}</div>
+        <div class="stat-card-desc">${es?'No son escasas, pero aparecen en menos lugares que las comunes.':'Not scarce, but spawn in fewer places than common weapons.'}</div>
+      </div>
+      <div class="stat-card" style="border-left-color:var(--inusual)">
+        <div class="stat-card-nombre" style="color:var(--inusual)">${es?'Inusual':'Unusual'}</div>
+        <div class="stat-card-desc">${es?'Punto intermedio — ni fáciles ni difíciles de encontrar.':'Middle ground — not easy, not hard to find.'}</div>
+      </div>
+      <div class="stat-card" style="border-left-color:var(--rara)">
+        <div class="stat-card-nombre" style="color:var(--rara)">${es?'Rara':'Rare'}</div>
+        <div class="stat-card-desc">${es?'Solo se consiguen con ciertos personajes o hay muy pocas dispersas en el mapa.':'Only obtainable through certain characters, or very few scattered across the map.'}</div>
+      </div>
+      <div class="stat-card" style="border-left-color:var(--muy_rara)">
+        <div class="stat-card-nombre" style="color:var(--muy_rara)">${es?'Muy rara':'Very Rare'}</div>
+        <div class="stat-card-desc">${es?'Solo con personajes específicos o prácticamente inexistentes en el mapa.':'Only through specific characters or practically nonexistent on the map.'}</div>
+      </div>
+      <div class="stat-card" style="border-left-color:#555">
+        <div class="stat-card-nombre" style="color:#aaa">N/A</div>
+        <div class="stat-card-desc">${es?'No obtenibles por medios normales — solo a través del SPC 914 u otros métodos especiales.':'Not obtainable through normal means — only through SPC 914 or other special methods.'}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="inicio-section">
     <div class="inicio-section-title">// ${es?'Funciones de la página':'Page Features'}</div>
     <div class="features-list">
       <div class="feature-item">
@@ -618,7 +648,7 @@ function renderInicio(){
       </div>
       <div class="feature-item">
         <span class="feature-icon">▶</span>
-        <div class="feature-text"><strong>${es?'Comparador — Prueba de Disparo':'Comparator — Combat Test'}</strong>${es?'Simulación matemática de un enfrentamiento entre dos armas. HP configurable — útil para simular contra SPCs.':'Mathematical simulation of a fight between two weapons. Configurable HP — useful for simulating against SPCs.'}</div>
+        <div class="feature-text"><strong>${es?'Comparador — Prueba de Disparo':'Comparator — Combat Test'}</strong>${es?'Simulación matemática de un enfrentamiento entre dos armas. HP configurable.':'Mathematical simulation of a fight between two weapons. Configurable HP.'}</div>
       </div>
     </div>
   </div>`;
