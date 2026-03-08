@@ -142,7 +142,7 @@
   .sim-log-line.hit-a{color:#88ccff;} .sim-log-line.hit-b{color:#ffcc66;} .sim-log-line.kill{color:var(--win);font-weight:bold;}
   .sim-result{grid-column:1/-1;text-align:center;padding:16px;font-family:'Share Tech Mono',monospace;font-size:1rem;letter-spacing:.1em;border:1px solid var(--border);border-radius:3px;background:var(--surface);}
   .sim-result.win-a{border-color:#88ccff;color:#88ccff;} .sim-result.win-b{border-color:#ffcc66;color:#ffcc66;} .sim-result.draw{border-color:var(--text-dim);color:var(--text-dim);}
-  .sim-controls{grid-column:1/-1;display:flex;gap:10px;justify-content:center;margin-bottom:4px;}
+  .sim-log-line.miss{color:#555;font-style:italic;}
   .sim-btn{background:rgba(200,168,75,.1);border:1px solid var(--accent);color:var(--accent);padding:7px 20px;border-radius:2px;font-family:'Share Tech Mono',monospace;font-size:.75rem;letter-spacing:.1em;cursor:pointer;text-transform:uppercase;transition:background .15s;}
   .sim-btn:hover{background:rgba(200,168,75,.2);}
   .sim-note{grid-column:1/-1;text-align:center;font-size:.72rem;color:var(--text-dim);font-family:'Share Tech Mono',monospace;}
@@ -172,6 +172,12 @@
   .feature-text strong{color:var(--text);display:block;margin-bottom:2px;}
   .tier-legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
   .tier-pill{font-family:'Share Tech Mono',monospace;font-size:.72rem;padding:4px 12px;border-radius:2px;letter-spacing:.06em;}
+  .header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .btn-lang{background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.08em;padding:4px 10px;border-radius:2px;cursor:pointer;transition:all .15s;}
+  .btn-lang:hover{border-color:var(--accent);color:var(--accent);}
+  .btn-lang.active{border-color:var(--accent);color:var(--accent);background:rgba(200,168,75,.1);}
+  .btn-discord{background:rgba(88,101,242,.15);border:1px solid rgba(88,101,242,.4);color:#8891f2;font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.08em;padding:4px 12px;border-radius:2px;cursor:pointer;text-decoration:none;transition:all .15s;}
+  .btn-discord:hover{background:rgba(88,101,242,.25);border-color:#8891f2;}
   footer{text-align:center;padding:28px;color:var(--text-dim);font-family:'Share Tech Mono',monospace;font-size:.7rem;border-top:1px solid var(--border);letter-spacing:.1em;margin-top:20px;}
 </style>
 </head>
@@ -397,7 +403,8 @@ function recoilBar(label,val){const pct=Math.min((val/MAX_RECOIL)*100,100).toFix
 let currentView='armas',currentCat='all',currentRareza='all',currentTier='all',currentSort='default',searchQuery='';
 let compareSlots=[];
 let compMode='stats';
-let simHP=100; // configurable
+let simHP=100;
+let simDist='medio';
 
 
 function toggleCompare(cat,nombre){
@@ -415,22 +422,23 @@ function renderArma(arma,catKey){
   const tc=TIER_COLORS[arma.tier]||'#555';
   const dps=efectivoDPS(arma).toFixed(1);
   const ttk=fmtTTK(calcTTK(arma));
-  const balasStat=(arma.balas_por_disparo!=null)?`<div class="stat"><span class="stat-label">Balas/disparo</span><span class="stat-value">${arma.balas_por_disparo}</span></div>`:'';
+  const en=lang==='en';
+  const balasStat=(arma.balas_por_disparo!=null)?`<div class="stat"><span class="stat-label">${en?'Pellets/shot':'Balas/disparo'}</span><span class="stat-value">${arma.balas_por_disparo}</span></div>`:'';
   const selCls=compareSlots.includes(`${catKey}::${arma.nombre}`)?'selected-compare':'';
   const safe=arma.nombre.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   return`<div class="arma ${selCls}" style="--tier-color:${tc}" onclick="toggleCompare('${catKey}','${safe}')">
     <div class="arma-nombre">${arma.nombre}</div>
     <div class="badges">${badgeTier(arma.tier)}${badgeRareza(arma.rareza)}</div>
     <div class="stats">
-      <div class="stat"><span class="stat-label">Dmg cabeza</span><span class="stat-value">${arma.dano_cabeza}</span></div>
-      <div class="stat"><span class="stat-label">Dmg cuerpo</span><span class="stat-value">${arma.dano_cuerpo}</span></div>
-      <div class="stat"><span class="stat-label">Cadencia</span><span class="stat-value">${arma.cadencia} rpm</span></div>
-      <div class="stat"><span class="stat-label">Difusión</span><span class="stat-value">${arma.difusion}</span></div>
+      <div class="stat"><span class="stat-label">${en?'Head dmg':'Dmg cabeza'}</span><span class="stat-value">${arma.dano_cabeza}</span></div>
+      <div class="stat"><span class="stat-label">${en?'Body dmg':'Dmg cuerpo'}</span><span class="stat-value">${arma.dano_cuerpo}</span></div>
+      <div class="stat"><span class="stat-label">${en?'Fire Rate':'Cadencia'}</span><span class="stat-value">${arma.cadencia} rpm</span></div>
+      <div class="stat"><span class="stat-label">${en?'Spread':'Difusión'}</span><span class="stat-value">${arma.difusion}</span></div>
       ${balasStat}
       <div class="stat"><span class="stat-label">DPS</span><span class="stat-value hi">${dps}</span></div>
       <div class="stat"><span class="stat-label">TTK (100hp)</span><span class="stat-value hi">${ttk}</span></div>
-      <div class="stat"><span class="stat-label">Cargador</span><span class="stat-value">${arma.cargador}</span></div>
-      <div class="stat"><span class="stat-label">Reserva</span><span class="stat-value">${arma.reserva_maxima}</span></div>
+      <div class="stat"><span class="stat-label">${en?'Magazine':'Cargador'}</span><span class="stat-value">${arma.cargador}</span></div>
+      <div class="stat"><span class="stat-label">${en?'Reserve':'Reserva'}</span><span class="stat-value">${arma.reserva_maxima}</span></div>
       <div class="stat stat-recoil"><div style="width:100%"><span class="stat-label">Recoil</span>${recoilBar('X',arma.recoil.x)}${recoilBar('Y',arma.recoil.y)}</div></div>
     </div>
   </div>`;
@@ -463,7 +471,7 @@ function renderArsenalView(){
     div.innerHTML=`<div class="categoria-header"><h2>${CAT_LABELS(cat)}</h2><span class="count">${armas.length} ${lang==='en'?'weapons':'armas'}</span></div><div class="grid">${armas.map(a=>renderArma(a,cat)).join('')}</div>`;
     cont.appendChild(div);
   }
-  if(!cont.children.length)cont.innerHTML=`<div class="no-results">// NO SE ENCONTRARON ARMAS</div>`;
+  if(!cont.children.length)cont.innerHTML=`<div class="no-results">// ${lang==='en'?'NO WEAPONS FOUND':'NO SE ENCONTRARON ARMAS'}</div>`;
 }
 
 // ── DISPONIBILIDAD ──
@@ -476,22 +484,35 @@ function scoreDisponibilidad(a){
   return (r/6)*70 + (t/4)*30;
 }
 
+// penalización para armas sin rareza definida
+const RAREZA_PENALIZADA=new Set(['N/A','TBA']);
+function penalizacion(a){return RAREZA_PENALIZADA.has(a.rareza)?0.7:1.0;}
+
+// score balanceado: DPS sostenido + tier como multiplicador + penalización N/A/TBA
+function scoreBalanceado(a){
+  const dps=calcDPSSostenido(a);
+  const tierMult={1:0.7,2:0.85,3:1.0,4:1.2}[a.tier]||1.0;
+  return dps * tierMult * penalizacion(a);
+}
+
 // ── MODOS ──
 const RANK_MODES={
-  dps:      {label:'DPS Real',       desc:'DPS efectivo — escopetas con 40% de impacto de pellets.',               scoreFn:efectivoDPS,         labelFn:a=>efectivoDPS(a).toFixed(1)+' DPS',          filter:null},
-  ttk:      {label:'TTK',            desc:'Time-To-Kill vs 100 HP. Menos tiempo = mejor posición.',                scoreFn:a=>{const t=calcTTK(a);return t!==null?1/(t+1)*10000:0;}, labelFn:a=>fmtTTK(calcTTK(a)), filter:null},
-  sostenido:{label:'DPS Sostenido',  desc:'DPS real + tiempo de recarga estimado (2.5s). Para peleas largas.',     scoreFn:calcDPSSostenido,    labelFn:a=>calcDPSSostenido(a).toFixed(1)+' DPS',     filter:null},
-  lejos:    {label:'Largo Alcance',  desc:'Poca difusión + buen daño. Ideal para disparar desde lejos.',           scoreFn:scoreLejos,          labelFn:a=>scoreLejos(a).toFixed(1)+' pts',           filter:null},
-  cercano:  {label:'Combate Cercano',desc:'Daño alto a corta distancia — escopetas y armas con difusión alta.',    scoreFn:scoreCercano,        labelFn:a=>scoreCercano(a).toFixed(1)+' pts',         filter:null},
-  largo:    {label:'Batalla Larga',  desc:'DPS sostenido + reserva. Para peleas prolongadas humano vs humano.',       scoreFn:scoreLargo,          labelFn:a=>scoreLargo(a).toFixed(1)+' pts',           filter:null},
-  spc:      {label:'vs SPCs',        desc:'Daño por bala muy alto + reserva decente. SCPs tienen mucha vida — cada bala cuenta. Armas con menos de 20 de reserva excluidas.',  scoreFn:scoreVsSPC, labelFn:a=>scoreVsSPC(a).toFixed(1)+' pts', filter:a=>a.reserva_maxima>=20},
-  casual:   {label:'Uso Casual',     desc:'Solo Tier I-II, rareza accesible. Para partidas normales.',              scoreFn:scoreCasual,         labelFn:a=>scoreCasual(a).toFixed(1)+' pts',          filter:a=>a.tier<=2&&['comun','poco_comun','inusual'].includes(a.rareza)},
-  disp_rareza:{label:'Disponibilidad (Rareza)', desc:'Armas más fáciles de conseguir según rareza.',              scoreFn:a=>(RAREZA_SCORE[a.rareza]||1)/6*100, labelFn:a=>`${a.rareza.replace(/_/g,' ')}`, filter:null},
-  disp_tier:  {label:'Disponibilidad (Tier)',   desc:'Armas más accesibles según tier — Tier I es el más fácil.', scoreFn:a=>(5-a.tier)/4*100,  labelFn:a=>`Tier ${TIER_ROMAN[a.tier]||a.tier}`,      filter:null},
+  balanceado:{label:()=>lang==='en'?'⭐ Balanced':'⭐ Balanceado', desc:()=>lang==='en'?'Sustained DPS × tier multiplier. Tier IV outweighs Tier I even at similar DPS. N/A and TBA penalized.':'DPS sostenido × multiplicador de tier. Tier IV vale más que Tier I aunque tengan DPS similar. Armas N/A y TBA penalizadas.',scoreFn:scoreBalanceado,labelFn:a=>scoreBalanceado(a).toFixed(1)+' pts',filter:null},
+  dps:      {label:()=>lang==='en'?'Real DPS':'DPS Real',       desc:()=>lang==='en'?'Effective DPS — shotguns use 40% pellet impact.':'DPS efectivo — escopetas con 40% de impacto de pellets. Sin penalización por tier.',               scoreFn:a=>efectivoDPS(a)*penalizacion(a),         labelFn:a=>efectivoDPS(a).toFixed(1)+' DPS',          filter:null},
+  ttk:      {label:()=>'TTK',            desc:()=>lang==='en'?'Time-To-Kill vs 100 HP. Less time = better rank.':'Time-To-Kill vs 100 HP. Menos tiempo = mejor posición.',                scoreFn:a=>{const tk=calcTTK(a);return tk!==null?(1/(tk+1)*10000)*penalizacion(a):0;}, labelFn:a=>fmtTTK(calcTTK(a)), filter:null},
+  sostenido:{label:()=>lang==='en'?'Sustained DPS':'DPS Sostenido',  desc:()=>lang==='en'?'Real DPS including estimated reload time (2.5s).':'DPS real + tiempo de recarga estimado (2.5s). Para peleas largas.',     scoreFn:a=>calcDPSSostenido(a)*penalizacion(a),    labelFn:a=>calcDPSSostenido(a).toFixed(1)+' DPS',     filter:null},
+  lejos:    {label:()=>lang==='en'?'Long Range':'Largo Alcance',  desc:()=>lang==='en'?'Low spread + good damage. Excludes spread >2.5.':'Poca difusión + buen daño. Ideal para disparar desde lejos. Excluye difusión >2.5.',           scoreFn:a=>scoreLejos(a)*penalizacion(a),          labelFn:a=>scoreLejos(a).toFixed(1)+' pts',           filter:null},
+  cercano:  {label:()=>lang==='en'?'Close Combat':'Combate Cercano',desc:()=>lang==='en'?'High burst damage at close range — shotguns and high spread weapons.':'Daño alto a corta distancia — escopetas y armas con difusión alta.',    scoreFn:a=>scoreCercano(a)*penalizacion(a),        labelFn:a=>scoreCercano(a).toFixed(1)+' pts',         filter:null},
+  largo:    {label:()=>lang==='en'?'Long Fight':'Batalla Larga',  desc:()=>lang==='en'?'Sustained DPS + reserve. For prolonged human vs human fights.':'DPS sostenido + reserva. Para peleas prolongadas humano vs humano.',       scoreFn:a=>scoreLargo(a)*penalizacion(a),          labelFn:a=>scoreLargo(a).toFixed(1)+' pts',           filter:null},
+  spc:      {label:()=>lang==='en'?'vs SPCs':'vs SPCs',        desc:()=>lang==='en'?'High damage per bullet + decent reserve. SPCs have a lot of health. Weapons with less than 20 reserve excluded.':'Daño por bala muy alto + reserva decente. Armas con menos de 20 de reserva excluidas.',  scoreFn:a=>scoreVsSPC(a)*penalizacion(a), labelFn:a=>scoreVsSPC(a).toFixed(1)+' pts', filter:a=>a.reserva_maxima>=20},
+  casual:   {label:()=>lang==='en'?'Casual Use':'Uso Casual',     desc:()=>lang==='en'?'Tier I-II only, accessible rarity. For normal matches.':'Solo Tier I-II, rareza accesible. Para partidas normales.',              scoreFn:scoreCasual,         labelFn:a=>scoreCasual(a).toFixed(1)+' pts',          filter:a=>a.tier<=2&&['comun','poco_comun','inusual'].includes(a.rareza)},
+  disp_rareza:{label:()=>lang==='en'?'Availability (Rarity)':'Disponibilidad (Rareza)', desc:()=>lang==='en'?'Easiest weapons to obtain by rarity.':'Armas más fáciles de conseguir según rareza.',              scoreFn:a=>(RAREZA_SCORE[a.rareza]||1)/6*100, labelFn:a=>`${a.rareza.replace(/_/g,' ')}`, filter:null},
+  disp_tier:  {label:()=>lang==='en'?'Availability (Tier)':'Disponibilidad (Tier)',   desc:()=>lang==='en'?'Most accessible by tier — Tier I is the easiest.':'Armas más accesibles según tier — Tier I es el más fácil.', scoreFn:a=>(5-a.tier)/4*100,  labelFn:a=>`Tier ${TIER_ROMAN[a.tier]||a.tier}`,      filter:null},
 };
 
-// estado de checkboxes activos
-let activeRankModes=new Set(['dps']);
+// estado de checkboxes activos + toggle de N/A y TBA
+let activeRankModes=new Set(['balanceado']);
+let rankShowNA=false;
 
 // normaliza scores de 0-1 para cada modo
 function normalizeScores(list,scoreFn){
@@ -605,32 +626,36 @@ function renderInicio(){
 function renderRanking(){
   const panel=document.getElementById('rankingPanel');
 
-  // checkboxes
+  // checkboxes de modos
   const checks=Object.entries(RANK_MODES).map(([k,v])=>{
     const on=activeRankModes.has(k);
     return`<button class="rank-check-label${on?' checked':''}" onclick="toggleRankMode('${k}')">
-      <span class="rank-check-dot"></span>${v.label}
+      <span class="rank-check-dot"></span>${v.label()}
     </button>`;
   }).join('');
 
+  // toggle N/A y TBA
+  const toggleNA=`<button class="rank-check-label${rankShowNA?' checked':''}" onclick="rankShowNA=!rankShowNA;renderRanking()">
+    <span class="rank-check-dot"></span>${lang==='es'?'Incluir N/A y TBA':'Include N/A & TBA'}
+  </button>`;
+
   if(!activeRankModes.size){
-    panel.innerHTML=`<div class="rank-checks">${checks}</div><div class="rank-no-sel">// Selecciona al menos un modo</div>`;
+    panel.innerHTML=`<div class="rank-checks">${checks}<div style="width:1px;height:22px;background:var(--border);margin:0 4px;align-self:center"></div>${toggleNA}</div><div class="rank-no-sel">// ${lang==='es'?'Selecciona al menos un modo':'Select at least one mode'}</div>`;
     return;
   }
 
-  // descripcion de modos activos
-  const desc=[...activeRankModes].map(k=>RANK_MODES[k].desc).join(' · ');
-
-  // score combinado: normalizar cada modo y sumar
+  const desc=[...activeRankModes].map(k=>RANK_MODES[k].desc()).join(' · ');
   const activeModes=[...activeRankModes];
-  let candidates=allArmas();
-  // si casual está activo, filtrar esos
-  if(activeRankModes.has('casual')) candidates=candidates.filter(a=>a.tier<=2&&['comun','poco_comun','inusual'].includes(a.rareza));
 
-  // para cada modo activo, normalizar scores
+  // candidatos: filtrar N/A y TBA si el toggle está off
+  let candidates=allArmas();
+  if(!rankShowNA) candidates=candidates.filter(a=>!RAREZA_PENALIZADA.has(a.rareza));
+  if(activeRankModes.has('casual')) candidates=candidates.filter(a=>a.tier<=2&&['comun','poco_comun','inusual'].includes(a.rareza));
+  if(activeRankModes.has('spc')) candidates=candidates.filter(a=>a.reserva_maxima>=20);
+
   const perMode=activeModes.map(k=>{
     const fn=RANK_MODES[k].scoreFn;
-    const vals=candidates.map(a=>fn(a));
+    const vals=candidates.map(a=>Math.max(0,fn(a)));
     const max=Math.max(...vals)||1, min=Math.min(...vals);
     return candidates.map((_,i)=>max===min?1:(vals[i]-min)/(max-min));
   });
@@ -649,17 +674,18 @@ function renderRanking(){
     const scoreDisp=activeModes.length===1
       ?RANK_MODES[activeModes[0]].labelFn(a)
       :(a._score*100).toFixed(1)+' pts';
+    const naTag=RAREZA_PENALIZADA.has(a.rareza)?`<span style="font-family:'Share Tech Mono',monospace;font-size:.62rem;color:#666;margin-left:4px">${a.rareza}</span>`:'';
     return`<div class="ranking-row" style="--tier-color:${tc}">
       <span class="ranking-pos ${pc}">#${i+1}</span>
-      <span class="ranking-nombre">${a.nombre}</span>
+      <span class="ranking-nombre">${a.nombre}${naTag}</span>
       <span class="ranking-cat">${CAT_LABELS(a._cat)}</span>
       <div class="ranking-bar-bg"><div class="ranking-bar-fill" style="width:${pct}%"></div></div>
       <span class="ranking-score">${scoreDisp}</span>
     </div>`;
   }).join('');
 
-  const title=activeModes.length===1?RANK_MODES[activeModes[0]].label:`Score Combinado (${activeModes.length} modos)`;
-  panel.innerHTML=`<div class="rank-checks">${checks}</div><div class="rank-active-desc">${desc}</div><div class="ranking-title">// ${title}</div>${rows}`;
+  const title=activeModes.length===1?RANK_MODES[activeModes[0]].label():(lang==='en'?`Combined Score (${activeModes.length} modes)`:`Score Combinado (${activeModes.length} modos)`);
+  panel.innerHTML=`<div class="rank-checks">${checks}<div style="width:1px;height:22px;background:var(--border);margin:0 4px;align-self:center"></div>${toggleNA}</div><div class="rank-active-desc">${desc}</div><div class="ranking-title">// ${title}</div>${rows}`;
 }
 
 function toggleRankMode(k){
@@ -670,90 +696,152 @@ function toggleRankMode(k){
 
 // ── COMPARADOR STATS ──
 function compColHTML(a,rival){
-  if(!a)return`<div class="comp-placeholder">// Selecciona un arma desde Arsenal</div>`;
+  if(!a)return`<div class="comp-placeholder">// ${lang==='en'?'Select a weapon from Arsenal':'Selecciona un arma desde Arsenal'}</div>`;
   const tc=TIER_COLORS[a.tier]||'#555';
+  const en=lang==='en';
   const dps=efectivoDPS(a),ttk=calcTTK(a);
   const rdps=rival?efectivoDPS(rival):null,rttk=rival?calcTTK(rival):null;
   function cls(val,rval,hib=true){if(rval===null||rval===undefined)return'';const v=parseFloat(val)||0,r=parseFloat(rval)||0;if(v===r)return'';return(hib?(v>r):(v<r))?'win':'lose';}
   const rows=[
     ['Tier',`Tier ${TIER_ROMAN[a.tier]||a.tier}`,null,true],
-    ['Dmg cabeza',a.dano_cabeza,rival?.dano_cabeza,true],
-    ['Dmg cuerpo',a.dano_cuerpo,rival?.dano_cuerpo,true],
-    ['Cadencia',a.cadencia,rival?.cadencia,true],
-    ['Difusión',a.difusion,rival?.difusion,false],
+    [en?'Head dmg':'Dmg cabeza',a.dano_cabeza,rival?.dano_cabeza,true],
+    [en?'Body dmg':'Dmg cuerpo',a.dano_cuerpo,rival?.dano_cuerpo,true],
+    [en?'Fire Rate':'Cadencia',a.cadencia,rival?.cadencia,true],
+    [en?'Spread':'Difusión',a.difusion,rival?.difusion,false],
     ['DPS',dps.toFixed(1),rdps?.toFixed(1),true],
-    ['DPS Sostenido',calcDPSSostenido(a).toFixed(1),rival?calcDPSSostenido(rival).toFixed(1):null,true],
+    [en?'Sustained DPS':'DPS Sostenido',calcDPSSostenido(a).toFixed(1),rival?calcDPSSostenido(rival).toFixed(1):null,true],
     ['TTK (100hp)',fmtTTK(ttk),rttk!==null?fmtTTK(rttk):null,false],
-    ['Cargador',a.cargador,rival?.cargador,true],
-    ['Reserva',a.reserva_maxima,rival?.reserva_maxima,true],
+    [en?'Magazine':'Cargador',a.cargador,rival?.cargador,true],
+    [en?'Reserve':'Reserva',a.reserva_maxima,rival?.reserva_maxima,true],
     ['Recoil X',a.recoil.x,rival?.recoil.x,false],
     ['Recoil Y',a.recoil.y,rival?.recoil.y,false],
   ];
-  if(a.balas_por_disparo!=null)rows.splice(3,0,['Balas/disparo',a.balas_por_disparo,null,true]);
+  if(a.balas_por_disparo!=null)rows.splice(3,0,[en?'Pellets/shot':'Balas/disparo',a.balas_por_disparo,null,true]);
   const rowsHTML=rows.map(([lbl,val,rval,hib])=>`<div class="comp-stat-row"><span class="comp-stat-label">${lbl}</span><span class="comp-stat-val ${cls(val,rval,hib)}">${val}</span></div>`).join('');
   return`<div class="comp-col" style="--tier-color:${tc}"><div class="comp-col-nombre">${a.nombre}</div><div class="badges" style="margin-bottom:10px">${badgeTier(a.tier)}${badgeRareza(a.rareza)}</div>${rowsHTML}</div>`;
 }
 
 // ── SIMULACIÓN ──
-function simularCombate(a,b,hp){
+// ── DISTANCIAS ──
+// distMult: cuánto amplifica la difusión el chance de fallo
+// recoilMult: cuánto pesa el recoil acumulado
+const DIST_MODES={
+  cerca: {label:()=>lang==='en'?'Close (CQB)':'Cerca (CQB)',  distMult:0.4, recoilMult:0.3, desc:()=>lang==='en'?'Spread barely matters, recoil almost irrelevant.':'Poca difusión importa, el recoil casi no pesa.'},
+  medio: {label:()=>lang==='en'?'Medium':'Medio',              distMult:1.0, recoilMult:0.7, desc:()=>lang==='en'?'Balanced — spread and recoil both matter.':'Balance entre difusión y control del recoil.'},
+  lejos: {label:()=>lang==='en'?'Long Range':'Lejos',          distMult:2.2, recoilMult:1.2, desc:()=>lang==='en'?'Spread heavily penalized, accumulated recoil hurts.':'Difusión penaliza fuerte, recoil acumulado duele.'},
+};
+
+// chance de fallar un disparo:
+function calcMissChance(arma, recoilAcum, dist){
+  const dm=DIST_MODES[dist];
+  const difFactor = arma.difusion * dm.distMult * 0.06;  // difusion 1 a distancia media = 6%
+  const recoilFactor = recoilAcum * dm.recoilMult * 0.018;
+  return Math.min(0.65, difFactor + recoilFactor);
+}
+
+// recoil acumulado sube con cada disparo, decae con el tiempo entre disparos
+function tickRecoil(recoilAcum, arma, msSinceLastShot){
+  const kickY = arma.recoil.y;
+  const kickX = arma.recoil.x;
+  const kick = (kickY * 0.7 + kickX * 0.3);  // Y pesa más que X
+  const decay = msSinceLastShot * 0.003;       // recuperación ~333ms para 1 punto
+  return Math.max(0, recoilAcum - decay) + kick;
+}
+
+function simularCombate(a,b,hp,dist){
   hp=hp||HP;
+  dist=dist||simDist;
   let hpA=hp,hpB=hp;
   let tickA=0,tickB=0;
+  let lastShotA=0,lastShotB=0;
+  let recoilAcumA=0,recoilAcumB=0;
   const msPerBalaA=60000/a.cadencia;
   const msPerBalaB=60000/b.cadencia;
-  const dmgA=(a.balas_por_disparo&&a.balas_por_disparo!=='TBA')?a.dano_cuerpo*a.balas_por_disparo*0.4:a.dano_cuerpo;
-  const dmgB=(b.balas_por_disparo&&b.balas_por_disparo!=='TBA')?b.dano_cuerpo*b.balas_por_disparo*0.4:b.dano_cuerpo;
+  // daño base por disparo
+  const dmgBaseA=(a.balas_por_disparo&&a.balas_por_disparo!=='TBA')?a.dano_cuerpo*a.balas_por_disparo*0.4:a.dano_cuerpo;
+  const dmgBaseB=(b.balas_por_disparo&&b.balas_por_disparo!=='TBA')?b.dano_cuerpo*b.balas_por_disparo*0.4:b.dano_cuerpo;
   const log=[];
   let t=0;
   const maxT=30000;
+  let hitsA=0,missA=0,hitsB=0,missB=0;
   while(hpA>0&&hpB>0&&t<maxT){
-    let next=Math.min(tickA<=t?t:tickA,tickB<=t?t:tickB);
+    const next=Math.min(tickA<=t?t:tickA,tickB<=t?t:tickB);
     t=Math.max(t,next);
-    if(tickA<=t){hpB=Math.max(0,hpB-dmgA);log.push({t,who:'A',dmg:dmgA,hpA,hpB});tickA=t+msPerBalaA;if(hpB<=0)break;}
-    if(tickB<=t&&hpA>0&&hpB>0){hpA=Math.max(0,hpA-dmgB);log.push({t,who:'B',dmg:dmgB,hpA,hpB});tickB=t+msPerBalaB;if(hpA<=0)break;}
+    if(tickA<=t){
+      recoilAcumA=tickRecoil(recoilAcumA,a,t-lastShotA);
+      lastShotA=t;
+      const miss=Math.random()<calcMissChance(a,recoilAcumA,dist);
+      if(miss){missA++;log.push({t,who:'A',miss:true,hpA,hpB,recoil:recoilAcumA.toFixed(1)});}
+      else{hitsA++;hpB=Math.max(0,hpB-dmgBaseA);log.push({t,who:'A',miss:false,dmg:dmgBaseA,hpA,hpB,recoil:recoilAcumA.toFixed(1)});}
+      tickA=t+msPerBalaA;
+      if(hpB<=0)break;
+    }
+    if(tickB<=t&&hpA>0&&hpB>0){
+      recoilAcumB=tickRecoil(recoilAcumB,b,t-lastShotB);
+      lastShotB=t;
+      const miss=Math.random()<calcMissChance(b,recoilAcumB,dist);
+      if(miss){missB++;log.push({t,who:'B',miss:true,hpA,hpB,recoil:recoilAcumB.toFixed(1)});}
+      else{hitsB++;hpA=Math.max(0,hpA-dmgBaseB);log.push({t,who:'B',miss:false,dmg:dmgBaseB,hpA,hpB,recoil:recoilAcumB.toFixed(1)});}
+      tickB=t+msPerBalaB;
+      if(hpA<=0)break;
+    }
   }
-  return{log,hpA:Math.max(0,hpA),hpB:Math.max(0,hpB),timeMs:t};
+  const totalA=hitsA+missA,totalB=hitsB+missB;
+  const accA=totalA?((hitsA/totalA)*100).toFixed(0):100;
+  const accB=totalB?((hitsB/totalB)*100).toFixed(0):100;
+  return{log,hpA:Math.max(0,hpA),hpB:Math.max(0,hpB),timeMs:t,accA,accB,hitsA,missA,hitsB,missB};
 }
 
 function renderSimHTML(a,b){
   if(!a||!b)return`<div class="comp-placeholder" style="grid-column:1/-1">// Selecciona 2 armas para simular</div>`;
-  const res=simularCombate(a,b,simHP);
+  const res=simularCombate(a,b,simHP,simDist);
   const winner=res.hpA>0&&res.hpB<=0?'A':res.hpB>0&&res.hpA<=0?'B':'DRAW';
   const hpAp=(res.hpA/simHP*100).toFixed(0);
   const hpBp=(res.hpB/simHP*100).toFixed(0);
   const hpAcol=res.hpA>simHP*0.5?'#78c97a':res.hpA>simHP*0.25?'#c8a84b':'#e0845b';
   const hpBcol=res.hpB>simHP*0.5?'#78c97a':res.hpB>simHP*0.25?'#c8a84b':'#e0845b';
-  const logLines=res.log.slice(-40).map(l=>{
+  const logLines=res.log.slice(-50).map(l=>{
     const who=l.who==='A'?a.nombre:b.nombre;
     const cls=l.who==='A'?'hit-a':'hit-b';
-    return`<div class="sim-log-line ${cls}">[${(l.t/1000).toFixed(2)}s] ${who} → -${l.dmg.toFixed(1)} | HP A:${l.hpA.toFixed(0)} HP B:${l.hpB.toFixed(0)}</div>`;
+    if(l.miss) return`<div class="sim-log-line ${cls} miss">[${(l.t/1000).toFixed(2)}s] ${who} → ${lang==='en'?'MISS':'FALLO'} (recoil:${l.recoil}) | HP A:${l.hpA.toFixed(0)} HP B:${l.hpB.toFixed(0)}</div>`;
+    return`<div class="sim-log-line ${cls}">[${(l.t/1000).toFixed(2)}s] ${who} → -${l.dmg.toFixed(1)} (recoil:${l.recoil}) | HP A:${l.hpA.toFixed(0)} HP B:${l.hpB.toFixed(0)}</div>`;
   }).join('');
   const resClass=winner==='A'?'win-a':winner==='B'?'win-b':'draw';
   const resText=winner==='A'?`▶ GANADOR: ${a.nombre}`:winner==='B'?`▶ GANADOR: ${b.nombre}`:'▶ EMPATE';
   const tcA=TIER_COLORS[a.tier]||'#555', tcB=TIER_COLORS[b.tier]||'#555';
   const hpOpts=[100,200,500,1000,2000].map(v=>`<option value="${v}"${v===simHP?' selected':''}>${v} HP</option>`).join('');
+  const distOpts=Object.entries(DIST_MODES).map(([k,v])=>`<option value="${k}"${k===simDist?' selected':''}>${v.label()}</option>`).join('');
+  const distInfo=DIST_MODES[simDist];
+  const en=lang==='en';
+  // chance de fallo aproximado a 0 recoil para mostrar info
+  const baseMissA=(calcMissChance(a,0,simDist)*100).toFixed(0);
+  const baseMissB=(calcMissChance(b,0,simDist)*100).toFixed(0);
+  const ganador=winner==='A'?`▶ ${en?'WINNER':'GANADOR'}: ${a.nombre}`:winner==='B'?`▶ ${en?'WINNER':'GANADOR'}: ${b.nombre}`:`▶ ${en?'DRAW':'EMPATE'}`;
   return`
   <div class="sim-controls">
     <select class="select-styled" onchange="simHP=parseInt(this.value);rerenderSim()">${hpOpts}</select>
-    <button class="sim-btn" onclick="rerenderSim()">↺ Volver a simular</button>
+    <select class="select-styled" onchange="simDist=this.value;rerenderSim()">${distOpts}</select>
+    <button class="sim-btn" onclick="rerenderSim()">↺ ${en?'Simulate':'Simular'}</button>
   </div>
-  <div class="sim-note">HP del objetivo configurable — 40% impacto pellets escopetas, sin esquivar</div>
+  <div class="sim-note">${distInfo.desc()} — ${en?'Spread and recoil affect accuracy. Results vary each simulation.':'Difusión y recoil afectan precisión. Los resultados varían cada simulación.'}</div>
   <div class="sim-side" style="--tier-color:${tcA}">
     <div class="sim-name">${a.nombre}</div>
     <div class="sim-hp-bar-bg"><div class="sim-hp-bar" style="width:${hpAp}%;background:${hpAcol}"></div></div>
     <div class="sim-hp-text">${res.hpA.toFixed(0)} / ${simHP} HP</div>
-    <div class="sim-stat-mini"><span class="sim-stat-lbl">DPS efect.</span><span class="sim-stat-val">${efectivoDPS(a).toFixed(1)}</span></div>
-    <div class="sim-stat-mini"><span class="sim-stat-lbl">TTK (${simHP}hp)</span><span class="sim-stat-val">${fmtTTK(calcTTK(a,simHP))}</span></div>
+    <div class="sim-stat-mini"><span class="sim-stat-lbl">${en?'Accuracy':'Precisión'}</span><span class="sim-stat-val" style="color:${parseInt(res.accA)>70?'#78c97a':parseInt(res.accA)>50?'#c8a84b':'#e0845b'}">${res.accA}%</span></div>
+    <div class="sim-stat-mini"><span class="sim-stat-lbl">${en?'Hits':'Impactos'}</span><span class="sim-stat-val">${res.hitsA} / ${res.hitsA+res.missA}</span></div>
+    <div class="sim-stat-mini"><span class="sim-stat-lbl">${en?'Base miss':'Fallo base'}</span><span class="sim-stat-val">${baseMissA}%</span></div>
   </div>
   <div class="sim-side" style="--tier-color:${tcB}">
     <div class="sim-name">${b.nombre}</div>
     <div class="sim-hp-bar-bg"><div class="sim-hp-bar" style="width:${hpBp}%;background:${hpBcol}"></div></div>
     <div class="sim-hp-text">${res.hpB.toFixed(0)} / ${simHP} HP</div>
-    <div class="sim-stat-mini"><span class="sim-stat-lbl">DPS efect.</span><span class="sim-stat-val">${efectivoDPS(b).toFixed(1)}</span></div>
-    <div class="sim-stat-mini"><span class="sim-stat-lbl">TTK (${simHP}hp)</span><span class="sim-stat-val">${fmtTTK(calcTTK(b,simHP))}</span></div>
+    <div class="sim-stat-mini"><span class="sim-stat-lbl">${en?'Accuracy':'Precisión'}</span><span class="sim-stat-val" style="color:${parseInt(res.accB)>70?'#78c97a':parseInt(res.accB)>50?'#c8a84b':'#e0845b'}">${res.accB}%</span></div>
+    <div class="sim-stat-mini"><span class="sim-stat-lbl">${en?'Hits':'Impactos'}</span><span class="sim-stat-val">${res.hitsB} / ${res.hitsB+res.missB}</span></div>
+    <div class="sim-stat-mini"><span class="sim-stat-lbl">${en?'Base miss':'Fallo base'}</span><span class="sim-stat-val">${baseMissB}%</span></div>
   </div>
-  <div class="sim-log">${logLines||'<span style="color:#555">// sin disparos registrados</span>'}</div>
-  <div class="sim-result ${resClass}">${resText} — ${(res.timeMs/1000).toFixed(2)}s</div>`;
+  <div class="sim-log">${logLines||`<span style="color:#555">// ${en?'no shots recorded':'sin disparos registrados'}</span>`}</div>
+  <div class="sim-result ${resClass}">${ganador} — ${(res.timeMs/1000).toFixed(2)}s</div>`;
 }
 
 function rerenderSim(){
@@ -770,10 +858,11 @@ function renderComparador(){
   let a1=null,a2=null;
   if(s1){const[c,n]=s1.split('::');a1=findArma(c,n);}
   if(s2){const[c,n]=s2.split('::');a2=findArma(c,n);}
-  const hint=compareSlots.length===0?'Selecciona 2 armas desde Arsenal':compareSlots.length===1?'Selecciona una segunda arma':'';
+  const en=lang==='en';
+  const hint=compareSlots.length===0?(en?'Select 2 weapons from Arsenal':'Selecciona 2 armas desde Arsenal'):compareSlots.length===1?(en?'Select a second weapon':'Selecciona una segunda arma'):'';
   const modeTabs=`<div class="comp-mode-tabs">
     <button class="comp-mode-tab${compMode==='stats'?' active':''}" onclick="setCompMode('stats')">Stats</button>
-    <button class="comp-mode-tab${compMode==='sim'?' active':''}" onclick="setCompMode('sim')">Prueba de Disparo</button>
+    <button class="comp-mode-tab${compMode==='sim'?' active':''}" onclick="setCompMode('sim')">${en?'Combat Test':'Prueba de Disparo'}</button>
   </div>`;
   let content='';
   if(compMode==='stats'){
@@ -781,7 +870,7 @@ function renderComparador(){
   } else {
     content=`<div class="sim-wrap" id="simContent">${renderSimHTML(a1,a2)}</div>`;
   }
-  panel.innerHTML=`<div class="comp-title">// Comparador <span class="comp-hint">${hint}</span></div>${modeTabs}${content}`;
+  panel.innerHTML=`<div class="comp-title">// ${lang==='en'?'Comparator':'Comparador'} <span class="comp-hint">${hint}</span></div>${modeTabs}${content}`;
 }
 
 function setCompMode(m){compMode=m;renderComparador();}
