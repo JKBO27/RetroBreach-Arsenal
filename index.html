@@ -176,6 +176,9 @@
     background: var(--surface2);
     border-bottom: 3px solid #000;
     box-shadow: 0 3px 0 #000;
+    position: sticky;
+    top: 0;
+    z-index: 190;
   }
 
   .view-tab {
@@ -202,6 +205,9 @@
     border-bottom: 2px solid #000;
     display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
     box-shadow: 0 2px 0 #000;
+    position: sticky;
+    top: 46px;
+    z-index: 180;
   }
   .toolbar-sep { width: 2px; height: 18px; background: #000; margin: 0 4px; }
 
@@ -226,6 +232,9 @@
     background: var(--surface);
     border-bottom: 2px solid #000;
     display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    position: sticky;
+    top: 84px;
+    z-index: 170;
   }
 
   #searchInput {
@@ -541,19 +550,61 @@
   }
 
   footer {
-    text-align:center; padding:24px;
+    text-align:center; padding:12px 24px;
     color:var(--text-dim); font-family:'PressStart2P',monospace;
     font-size:.4rem; border-top:2px solid #000;
-    letter-spacing:.08em; margin-top:16px;
+    letter-spacing:.08em;
     background:var(--surface);
     box-shadow:0 -2px 0 #000;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 195;
   }
+  /* espacio para que el footer fijo no tape contenido */
+  body { padding-bottom: 48px; }
 
   /* scrollbar */
   ::-webkit-scrollbar { width:6px; height:6px; }
   ::-webkit-scrollbar-track { background:#000; }
   ::-webkit-scrollbar-thumb { background:var(--metal-dark); border:1px solid #000; }
   ::-webkit-scrollbar-thumb:hover { background:var(--metal-light); }
+
+  /* ── TORNEO ── */
+  .torneo-wrap { display:flex; flex-direction:column; gap:14px; }
+  .torneo-config {
+    background:var(--surface); border:2px solid #000; padding:14px 16px;
+    box-shadow:3px 3px 0 #000; display:flex; flex-direction:column; gap:10px;
+  }
+  .torneo-config-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .torneo-config-label { font-family:'PressStart2P',monospace; font-size:.42rem; color:var(--text-dim); white-space:nowrap; }
+  .torneo-arma-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:6px; max-height:240px; overflow-y:auto; background:var(--surface2); border:2px solid #000; padding:8px; box-shadow:inset 2px 2px 0 #000; }
+  .torneo-arma-btn {
+    font-family:'PressStart2P',monospace; font-size:.38rem; padding:5px 8px;
+    background:var(--surface); border:2px solid #000; color:var(--text-dim);
+    cursor:pointer; text-align:left; transition:all .1s; box-shadow:1px 1px 0 #000;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .torneo-arma-btn:hover { transform:translate(-1px,-1px); box-shadow:2px 2px 0 #000; color:var(--text); }
+  .torneo-arma-btn.sel { border-color:var(--accent); color:var(--accent2); background:rgba(138,155,168,.1); }
+  .torneo-resultados {
+    background:var(--surface); border:2px solid #000; padding:14px 16px;
+    box-shadow:3px 3px 0 #000;
+  }
+  .torneo-result-title { font-family:'PressStart2P',monospace; font-size:.5rem; color:var(--accent2); margin-bottom:12px; text-shadow:1px 1px 0 #000; }
+  .torneo-result-row {
+    display:flex; align-items:center; gap:10px; padding:8px 10px;
+    border:2px solid #000; margin-bottom:6px; box-shadow:2px 2px 0 #000;
+    background:var(--surface2);
+    border-left:4px solid var(--tier-color,#333);
+  }
+  .torneo-result-nombre { font-family:'PressStart2P',monospace; font-size:.45rem; color:var(--text-bright); flex:1; }
+  .torneo-result-bar-bg { flex:2; height:6px; background:#000; border:1px solid #000; overflow:hidden; }
+  .torneo-result-bar { height:100%; background:linear-gradient(90deg,var(--metal-dark),var(--metal-light)); transition:width .4s ease; }
+  .torneo-result-wr { font-family:'PressStart2P',monospace; font-size:.45rem; color:var(--accent); width:50px; text-align:right; }
+  .torneo-result-ttk { font-family:'PressStart2P',monospace; font-size:.38rem; color:var(--text-dim); width:70px; text-align:right; }
+  .torneo-progreso { font-family:'PressStart2P',monospace; font-size:.42rem; color:var(--text-dim); text-align:center; padding:16px; }
+  .torneo-result-row.winner { border-color:#b8a848; box-shadow:2px 2px 0 #b8a848; }
+  .torneo-result-row.winner .torneo-result-nombre { color:#b8a848; text-shadow:0 0 8px rgba(184,168,72,.4); }
 </style>
 
 </head>
@@ -578,6 +629,7 @@
   <button class="view-tab" data-view="armas">Arsenal</button>
   <button class="view-tab" data-view="ranking">Rankings</button>
   <button class="view-tab" data-view="comparador">Comparador</button>
+  <button class="view-tab" data-view="torneo">Torneo</button>
 </div>
 
 <!-- Arsenal bars -->
@@ -619,6 +671,7 @@
 <div id="inicioPanel"></div>
 <div id="rankingPanel"></div>
 <div id="comparadorPanel"></div>
+<div id="torneoPanel" style="display:none;padding:24px 32px;max-width:1000px;margin:0 auto;animation:fadeIn .3s ease both"></div>
 
 <footer>DATABASE BY JKBO27 &mdash; RBreach Weapons Compendium</footer>
 
@@ -634,7 +687,7 @@ const MAX_RECOIL=6; const HP=100;
 let lang='en';
 const T={
   es:{
-    tabs:['Inicio','Arsenal','Rankings','Comparador'],
+    tabs:['Inicio','Arsenal','Rankings','Comparador','Torneo'],
     header_sub:'Wiki de armas sobre el videojuego SPC Retro Breach Roblox',
     todas:'Todas', rareza:'Rareza: Todas', tier:'Tier: Todos', orden:'Orden: Default',
     comun:'Común', poco_comun:'Poco común', inusual:'Inusual', rara:'Rara', muy_rara:'Muy rara',
@@ -647,7 +700,7 @@ const T={
     footer:'DATABASE BY JKBO27 — SPC RBreach Weapons Compendium',
   },
   en:{
-    tabs:['Home','Arsenal','Rankings','Comparator'],
+    tabs:['Home','Arsenal','Rankings','Comparator','Tournament'],
     header_sub:'Weapon wiki for the Roblox game SPC Retro Breach',
     todas:'All', rareza:'Rarity: All', tier:'Tier: All', orden:'Sort: Default',
     comun:'Common', poco_comun:'Uncommon', inusual:'Unusual', rara:'Rare', muy_rara:'Very Rare',
@@ -701,6 +754,7 @@ function setLang(l){
   else if(currentView==='armas') renderArsenalView();
   else if(currentView==='ranking') renderRanking();
   else if(currentView==='comparador') renderComparador();
+  else if(currentView==='torneo') renderTorneo();
 }
 
 // ── CALCULOS ──
@@ -782,6 +836,13 @@ let compareSlots=[];
 let compMode='stats';
 let simHP=100;
 let simDist='medio';
+// ── TORNEO ──
+let torneoRival=null;       // arma que pelea contra todas
+let torneoRivales=new Set(); // set de keys 'cat::nombre' para modo múltiple
+let torneoHP=100;
+let torneoDist='medio';
+let torneoRondas=50;
+let torneoModo='uno_vs_todos'; // 'uno_vs_todos' | 'todos_vs_todos'
 
 
 function toggleCompare(cat,nombre){
@@ -1282,6 +1343,177 @@ function renderComparador(){
 
 function setCompMode(m){compMode=m;renderComparador();}
 
+// ── TORNEO ──
+function simularN(a, b, n, hp, dist) {
+  let winsA=0, winsB=0, draws=0, ttksA=[], ttksB=[];
+  for(let i=0;i<n;i++){
+    const r=simularCombate(a,b,hp,dist);
+    if(r.hpA>0&&r.hpB<=0){winsA++;ttksA.push(r.timeMs);}
+    else if(r.hpB>0&&r.hpA<=0){winsB++;ttksB.push(r.timeMs);}
+    else draws++;
+  }
+  const avgTTK=arr=>arr.length?(arr.reduce((s,v)=>s+v,0)/arr.length/1000).toFixed(2)+'s':'—';
+  return{winsA,winsB,draws,wrA:(winsA/n*100).toFixed(1),wrB:(winsB/n*100).toFixed(1),ttkA:avgTTK(ttksA),ttkB:avgTTK(ttksB)};
+}
+
+function renderTorneo(){
+  const panel=document.getElementById('torneoPanel');
+  const en=lang==='en';
+  const todasArmas=allArmas();
+  const hpOpts=[100,200,500,1000,2000].map(v=>`<option value="${v}"${v===torneoHP?' selected':''}>${v} HP</option>`).join('');
+  const distOpts=Object.entries(DIST_MODES).map(([k,v])=>`<option value="${k}"${k===torneoDist?' selected':''}>${v.label()}</option>`).join('');
+  const rondasOpts=[10,25,50,100,200].map(v=>`<option value="${v}"${v===torneoRondas?' selected':''}>${v} ${en?'rounds':'rondas'}</option>`).join('');
+
+  // selector del rival principal
+  const rivalSelLabel=torneoRival?torneoRival.nombre:(en?'-- pick a weapon --':'-- elige un arma --');
+  const rivalGrid=todasArmas.map(a=>{
+    const key=`${a._cat}::${a.nombre}`;
+    const sel=torneoRival&&torneoRival.nombre===a.nombre?'sel':'';
+    return`<button class="torneo-arma-btn ${sel}" onclick="torneoSetRival('${a._cat}','${a.nombre.replace(/'/g,"\\'")}')">${a.nombre}</button>`;
+  }).join('');
+
+  // selector de oponentes
+  const opGrid=todasArmas.map(a=>{
+    const key=`${a._cat}::${a.nombre}`;
+    const sel=torneoRivales.has(key)?'sel':'';
+    return`<button class="torneo-arma-btn ${sel}" onclick="torneoToggleRival('${a._cat}','${a.nombre.replace(/'/g,"\\'")}')">${a.nombre}</button>`;
+  }).join('');
+
+  const canRun=torneoRival&&torneoRivales.size>0;
+
+  panel.innerHTML=`
+  <div class="torneo-wrap">
+    <div class="torneo-config">
+      <div class="torneo-config-row">
+        <span class="torneo-config-label">${en?'// TOURNAMENT — Weapon vs All':'// TORNEO — Arma vs Todas'}</span>
+      </div>
+      <div class="torneo-config-row">
+        <select class="select-styled" onchange="torneoHP=parseInt(this.value)">${hpOpts}</select>
+        <select class="select-styled" onchange="torneoDist=this.value">${distOpts}</select>
+        <select class="select-styled" onchange="torneoRondas=parseInt(this.value)">${rondasOpts}</select>
+      </div>
+      <div class="torneo-config-row">
+        <span class="torneo-config-label">${en?'Main weapon:':'Arma principal:'}</span>
+        <span style="font-family:'PressStart2P',monospace;font-size:.42rem;color:var(--accent2)">${rivalSelLabel}</span>
+      </div>
+      <div style="font-family:'PressStart2P',monospace;font-size:.38rem;color:var(--text-dim);margin-bottom:4px">${en?'Click to pick main weapon:':'Click para elegir arma principal:'}</div>
+      <div class="torneo-arma-grid">${rivalGrid}</div>
+      <div style="font-family:'PressStart2P',monospace;font-size:.38rem;color:var(--text-dim);margin:8px 0 4px">${en?'Opponents (click to select, select all = fight everyone):':'Oponentes (click para seleccionar, todos = pelea contra todas):'}</div>
+      <div class="torneo-config-row" style="gap:6px">
+        <button class="btn-action" onclick="torneoSelectAll()">${en?'All':'Todas'}</button>
+        <button class="filter-btn" onclick="torneoSelectCat('pistolas')">${en?'Pistols':'Pistolas'}</button>
+        <button class="filter-btn" onclick="torneoSelectCat('submachine_guns')">SMGs</button>
+        <button class="filter-btn" onclick="torneoSelectCat('escopetas')">${en?'Shotguns':'Escopetas'}</button>
+        <button class="filter-btn" onclick="torneoSelectCat('fusiles_asalto')">${en?'Assault':'Asalto'}</button>
+        <button class="filter-btn" onclick="torneoSelectCat('fusiles_combate')">${en?'Battle':'Combate'}</button>
+        <button class="filter-btn" onclick="torneoSelectCat('armas_ligeras')">${en?'LMGs':'Ligeras'}</button>
+        <button class="filter-btn" onclick="torneoClearRivales()">${en?'Clear':'Limpiar'}</button>
+        <span style="font-family:'PressStart2P',monospace;font-size:.38rem;color:var(--text-dim)">${torneoRivales.size} ${en?'selected':'seleccionadas'}</span>
+      </div>
+      <div class="torneo-arma-grid">${opGrid}</div>
+      <div class="torneo-config-row">
+        <button class="btn-action" ${canRun?'':'disabled style="opacity:.4;cursor:not-allowed"'} onclick="torneoCorrer()">${en?'▶ Run Tournament':'▶ Correr Torneo'}</button>
+        ${!canRun?`<span style="font-family:'PressStart2P',monospace;font-size:.38rem;color:var(--text-dim)">${en?'Pick main weapon + at least 1 opponent':'Elige arma principal + al menos 1 oponente'}</span>`:''}
+      </div>
+    </div>
+    <div id="torneoResultados"></div>
+  </div>`;
+}
+
+function torneoSetRival(cat,nombre){
+  torneoRival=findArma(cat,nombre);
+  // quitar al rival de los oponentes si estaba
+  torneoRivales.delete(`${cat}::${nombre}`);
+  renderTorneo();
+}
+
+function torneoToggleRival(cat,nombre){
+  const key=`${cat}::${nombre}`;
+  if(torneoRivales.has(key)) torneoRivales.delete(key);
+  else torneoRivales.add(key);
+  renderTorneo();
+}
+
+function torneoSelectAll(){
+  torneoRivales.clear();
+  allArmas().forEach(a=>{
+    if(!torneoRival||a.nombre!==torneoRival.nombre)
+      torneoRivales.add(`${a._cat}::${a.nombre}`);
+  });
+  renderTorneo();
+}
+
+function torneoSelectCat(cat){
+  (ARMAS[cat]||[]).forEach(a=>{
+    if(!torneoRival||a.nombre!==torneoRival.nombre)
+      torneoRivales.add(`${cat}::${a.nombre}`);
+  });
+  renderTorneo();
+}
+
+function torneoClearRivales(){
+  torneoRivales.clear();
+  renderTorneo();
+}
+
+function torneoCorrer(){
+  if(!torneoRival||!torneoRivales.size)return;
+  const en=lang==='en';
+  const resDiv=document.getElementById('torneoResultados');
+  resDiv.innerHTML=`<div class="torneo-progreso">${en?'Running...':'Corriendo...'} (${torneoRondas} ${en?'rounds each':'rondas por pelea'})</div>`;
+
+  // usar setTimeout para que el DOM actualice antes de bloquear con cálculos
+  setTimeout(()=>{
+    const resultados=[];
+    for(const key of torneoRivales){
+      const[cat,nombre]=key.split('::');
+      const oponente=findArma(cat,nombre);
+      if(!oponente)continue;
+      const r=simularN(torneoRival,oponente,torneoRondas,torneoHP,torneoDist);
+      resultados.push({arma:oponente,r,cat});
+    }
+
+    // ordenar por winrate del rival principal desc
+    resultados.sort((a,b)=>parseFloat(b.r.wrA)-parseFloat(a.r.wrA));
+
+    const maxWR=parseFloat(resultados[0]?.r.wrA||100);
+    const rows=resultados.map((res,i)=>{
+      const{arma,r}=res;
+      const tc=TIER_COLORS[arma.tier]||'#333';
+      const wr=parseFloat(r.wrA);
+      const wrColor=wr>50?'#6a9a6a':wr===50?'var(--accent)':'#9a6a5a';
+      const resultado=wr>50?(en?'WIN':'GANA'):wr<50?(en?'LOSE':'PIERDE'):'DRAW';
+      const resColor=wr>50?'#6a9a6a':wr<50?'#9a6a5a':'var(--accent)';
+      return`<div class="torneo-result-row${i===0&&wr>50?' winner':''}" style="--tier-color:${tc}">
+        <span style="font-family:'PressStart2P',monospace;font-size:.42rem;color:var(--text-dim);width:22px;text-align:right;flex-shrink:0">${i+1}</span>
+        <span class="torneo-result-nombre">${torneoRival.nombre} vs ${arma.nombre}</span>
+        <span style="font-family:'PressStart2P',monospace;font-size:.38rem;color:var(--text-dim);flex-shrink:0">${en?'W':'V'}:${r.winsA} ${en?'L':'D'}:${r.winsB}</span>
+        <span style="font-family:'PressStart2P',monospace;font-size:.38rem;color:var(--text-dim);width:60px;text-align:right;flex-shrink:0">TTK ${r.ttkA}</span>
+        <span style="font-family:'PressStart2P',monospace;font-size:.42rem;color:${resColor};width:52px;text-align:right;flex-shrink:0">${resultado}</span>
+      </div>`;
+    }).join('');
+
+    const totalPeleas=resultados.reduce((s,r)=>s+r.r.winsA+r.r.winsB+r.r.draws,0);
+    const totalWins=resultados.reduce((s,r)=>s+r.r.winsA,0);
+    const totalLoss=resultados.reduce((s,r)=>s+r.r.winsB,0);
+    const globalWR=(totalWins/(totalWins+totalLoss)*100).toFixed(1);
+    const avgTTKnum=resultados.filter(r=>r.r.ttkA!=='—');
+    const avgTTK=avgTTKnum.length?(avgTTKnum.reduce((s,r)=>s+parseFloat(r.r.ttkA),0)/avgTTKnum.length).toFixed(2):'—';
+    const globalColor=parseFloat(globalWR)>50?'#6a9a6a':'#9a6a5a';
+
+    resDiv.innerHTML=`
+    <div class="torneo-resultados">
+      <div class="torneo-result-title">
+        ${torneoRival.nombre} — ${en?'Global WR':'WR Global'}: <span style="color:${globalColor}">${globalWR}%</span>
+        &nbsp;·&nbsp; ${en?'Wins':'Victorias'}: <span style="color:#6a9a6a">${totalWins}</span>
+        &nbsp;·&nbsp; ${en?'Losses':'Derrotas'}: <span style="color:#9a6a5a">${totalLoss}</span>
+        &nbsp;·&nbsp; TTK ${en?'avg':'prom'}: <span style="color:var(--accent)">${avgTTK}s</span>
+      </div>
+      ${rows}
+    </div>`;
+  },30);
+}
+
 // ── VIEWS ──
 function setView(v){
   currentView=v;
@@ -1290,12 +1522,14 @@ function setView(v){
   document.getElementById('inicioPanel').style.display=v==='inicio'?'block':'none';
   document.getElementById('rankingPanel').style.display=v==='ranking'?'block':'none';
   document.getElementById('comparadorPanel').style.display=v==='comparador'?'block':'none';
+  document.getElementById('torneoPanel').style.display=v==='torneo'?'block':'none';
   document.getElementById('toolbar').style.display=v==='armas'?'':'none';
   document.getElementById('searchbarWrap').style.display=v==='armas'?'':'none';
   if(v==='inicio')    renderInicio();
   if(v==='ranking')   renderRanking();
   if(v==='comparador')renderComparador();
   if(v==='armas')     renderArsenalView();
+  if(v==='torneo')    renderTorneo();
 }
 
 // ── BUILD TOOLBAR ──
@@ -1320,10 +1554,3 @@ setView('inicio');
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
